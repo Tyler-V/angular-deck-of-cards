@@ -1,0 +1,5 @@
+<mat-card class="card">
+  <div class="suit-image top-left" [ngClass]='card.suit'></div>
+  <div class="card-name" [ngClass]='card.suit == "club" || card.suit == "spade" ? "black" : "red"'>{{card.name}}</div>
+  <div class="suit-image bottom-right" [ngClass]='card.suit'></div>
+</mat-card>

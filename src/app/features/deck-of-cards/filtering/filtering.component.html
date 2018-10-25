@@ -1,0 +1,83 @@
+<mat-card class='filtering-card'>
+  <mat-card-header>
+    <mat-card-title>Filtering</mat-card-title>
+    <mat-card-subtitle>Choose your desired filters and select the draw button to draw your cards.</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <div fxLayout='row' class='filtering'>
+      <div fxFlex='25'>
+        <mat-card class='filtering-option-card'>
+          <mat-card-subtitle>Decks</mat-card-subtitle>
+          <mat-form-field class='number-of-decks'>
+            <input matInput type='number' placeholder='Number of Decks' [disabled]='cardService.cards.length > 0' [min]='1'
+              [max]='3' [(ngModel)]='cardService.deckSize'>
+          </mat-form-field>
+        </mat-card>
+      </div>
+      <div fxFlex='25'>
+        <mat-card class='filtering-option-card'>
+          <mat-card-subtitle>Number of Cards ({{cardService.numberOfCards}})</mat-card-subtitle>
+          <div fxLayout='row'>
+            <div fxFlex='10' class='slider-range'>1</div>
+            <div fxFlex='80'>
+              <mat-slider color="primary" [min]='1' [max]='cardService.deck.length > 0 || cardService.cards.length > 0 ? cardService.deck.length : 52 * cardService.deckSize'
+                [step]='1' [thumbLabel]='true' [(ngModel)]='cardService.numberOfCards'>
+              </mat-slider>
+            </div>
+            <div fxFlex='10' class='slider-range'>{{cardService.deck.length > 0 || cardService.cards.length > 0 ?
+              cardService.deck.length :
+              52 * cardService.deckSize}}</div>
+          </div>
+        </mat-card>
+      </div>
+      <div fxFlex='25'>
+        <mat-card class='filtering-option-card'>
+          <mat-card-subtitle>Card Value</mat-card-subtitle>
+          <div fxLayout='row' fxLayoutGap='25px'>
+            <div fxFlex='calc(50% - 25px)'>
+              <mat-form-field class='number-of-decks'>
+                <input matInput type='number' placeholder='Min' [min]='1' [max]='10' [(ngModel)]='cardService.minCardValue'>
+              </mat-form-field>
+            </div>
+            <div fxFlex='calc(50% - 25px)'>
+              <mat-form-field class='number-of-decks'>
+                <input matInput type='number' placeholder='Max' [min]='1' [max]='10' [(ngModel)]='cardService.maxCardValue'>
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+      <div fxFlex='25'>
+        <mat-card class='filtering-option-card'>
+          <mat-card-subtitle>Card Suit</mat-card-subtitle>
+          <div fxLayout='row' fxLayoutGap='25px'>
+            <div fxFlex='calc(25% - 25px)'>
+              <mat-checkbox color="primary" [(ngModel)]="cardService.clubCheckbox">
+                <div class="suit-image club"></div>
+              </mat-checkbox>
+            </div>
+            <div fxFlex='calc(25% - 25px)'>
+              <mat-checkbox color="primary" [(ngModel)]="cardService.diamondCheckbox">
+                <div class="suit-image diamond"></div>
+              </mat-checkbox>
+            </div>
+            <div fxFlex='calc(25% - 25px)'>
+              <mat-checkbox color="primary" [(ngModel)]="cardService.heartCheckbox">
+                <div class="suit-image heart"></div>
+              </mat-checkbox>
+            </div>
+            <div fxFlex='calc(25% - 25px)'>
+              <mat-checkbox color="primary" [(ngModel)]="cardService.spadeCheckbox">
+                <div class="suit-image spade"></div>
+              </mat-checkbox>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color='primary' (click)="cardService.draw(cardService.numberOfCards)">Draw</button>
+    <button mat-raised-button (click)="cardService.reset()">Shuffle</button>
+  </mat-card-actions>
+</mat-card>
