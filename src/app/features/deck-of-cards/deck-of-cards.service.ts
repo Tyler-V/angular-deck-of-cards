@@ -19,45 +19,12 @@ export class DeckOfCardsService {
   public deck: Card[] = [];
   public cards: Card[] = [];
 
-  constructor() { }
+  constructor() {
+    this.initialize();
+  }
 
-  public reset() {
+  public initialize(): void {
     this.cards = [];
-    this.deck = [];
-  }
-
-  public draw(amount: number) {
-    if (this.cards.length === 0) {
-      this.createDeck();
-    }
-    let cards: Card[] = [];
-    for (let i = 0; i < amount; i++) {
-      const index: number = this.deck
-        .findIndex(card => {
-          if (card.value < this.minCardValue || card.value > this.maxCardValue) {
-            return false;
-          }
-          return ((this.clubCheckbox && card.suit === Suit.Club) || (this.diamondCheckbox && card.suit === Suit.Diamond)
-            || (this.heartCheckbox && card.suit === Suit.Heart) || (this.spadeCheckbox && card.suit === Suit.Spade));
-        });
-      if (index > -1) {
-        cards = cards.concat(this.deck.splice(index, 1));
-      } else {
-        break;
-      }
-    }
-    this.cards = this.cards.concat(cards);
-  }
-
-  private isValid(card: Card): boolean {
-    if (this.minCardValue < card.value || this.maxCardValue > card.value) {
-      return false;
-    }
-    return ((this.clubCheckbox && card.suit === Suit.Club) || (this.diamondCheckbox && card.suit === Suit.Diamond)
-      || (this.heartCheckbox && card.suit === Suit.Heart) || (this.spadeCheckbox && card.suit === Suit.Spade));
-  }
-
-  public createDeck(): void {
     const suits = this.getSuits();
     for (let i = 0; i < this.deckSize; i++) {
       for (let j = 2; j <= 10; j++) {
@@ -99,5 +66,25 @@ export class DeckOfCardsService {
       array[randomIndex] = temporaryValue;
     }
     return array;
+  }
+
+  public draw(amount: number) {
+    let cards: Card[] = [];
+    for (let i = 0; i < amount; i++) {
+      const index: number = this.deck
+        .findIndex(card => {
+          if (card.value < this.minCardValue || card.value > this.maxCardValue) {
+            return false;
+          }
+          return ((this.clubCheckbox && card.suit === Suit.Club) || (this.diamondCheckbox && card.suit === Suit.Diamond)
+            || (this.heartCheckbox && card.suit === Suit.Heart) || (this.spadeCheckbox && card.suit === Suit.Spade));
+        });
+      if (index > -1) {
+        cards = cards.concat(this.deck.splice(index, 1));
+      } else {
+        break;
+      }
+    }
+    this.cards = this.cards.concat(cards);
   }
 }
