@@ -2,6 +2,9 @@
 
 ## Zipari Front End Project
 
+## Demo
+https://angular-deck-of-cards.firebaseapp.com/
+
 ## Task
 Create a simple angular 2 application to draw a hand from a deck of cards. 
 
