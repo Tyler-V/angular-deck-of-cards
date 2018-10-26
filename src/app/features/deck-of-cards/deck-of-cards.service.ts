@@ -24,6 +24,7 @@ export class DeckOfCardsService {
   }
 
   public initialize(): void {
+    this.deck = [];
     this.cards = [];
     const suits = this.getSuits();
     for (let i = 0; i < this.deckSize; i++) {
