@@ -1,11 +1,11 @@
 <mat-card class='filtering-card'>
   <mat-card-header>
-    <mat-card-title>Filtering</mat-card-title>
+    <mat-card-title>Card Filtering</mat-card-title>
     <mat-card-subtitle>Choose your desired filters and select the draw button to draw your cards.</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <div fxLayout='row' class='filtering'>
-      <div fxFlex='25'>
+    <div fxLayout="row" fxLayout.lt-md='column' class='filtering'>
+      <div fxFlex='25%'>
         <mat-card class='filtering-option-card'>
           <mat-card-subtitle>Decks</mat-card-subtitle>
           <mat-form-field class='number-of-decks'>
@@ -14,7 +14,7 @@
           </mat-form-field>
         </mat-card>
       </div>
-      <div fxFlex='25'>
+      <div fxFlex='25%'>
         <mat-card class='filtering-option-card'>
           <mat-card-subtitle>Number of Cards ({{cardService.numberOfCards}})</mat-card-subtitle>
           <div fxLayout='row'>
@@ -30,10 +30,10 @@
           </div>
         </mat-card>
       </div>
-      <div fxFlex='25'>
+      <div fxFlex='25%'>
         <mat-card class='filtering-option-card'>
           <mat-card-subtitle>Card Value</mat-card-subtitle>
-          <div fxLayout='row' fxLayoutGap='25px'>
+          <div fxLayout='row' fxLayoutAlign='space-evenly' fxLayoutGap='25px'>
             <div fxFlex='calc(50% - 25px)'>
               <mat-form-field class='number-of-decks'>
                 <input matInput type='number' placeholder='Min' [min]='1' [max]='10' [(ngModel)]='cardService.minCardValue'>
@@ -47,26 +47,26 @@
           </div>
         </mat-card>
       </div>
-      <div fxFlex='25'>
+      <div fxFlex='25%'>
         <mat-card class='filtering-option-card'>
           <mat-card-subtitle>Card Suit</mat-card-subtitle>
-          <div fxLayout='row' fxLayoutGap='25px'>
-            <div fxFlex='calc(25% - 25px)'>
+          <div fxLayout='row' fxLayoutAlign='space-between' [style.marginTop.px]="25">
+            <div fxFlex='50px'>
               <mat-checkbox color="primary" [(ngModel)]="cardService.clubCheckbox">
                 <div class="suit-image club"></div>
               </mat-checkbox>
             </div>
-            <div fxFlex='calc(25% - 25px)'>
+            <div fxFlex='50px'>
               <mat-checkbox color="primary" [(ngModel)]="cardService.diamondCheckbox">
                 <div class="suit-image diamond"></div>
               </mat-checkbox>
             </div>
-            <div fxFlex='calc(25% - 25px)'>
+            <div fxFlex='50px'>
               <mat-checkbox color="primary" [(ngModel)]="cardService.heartCheckbox">
                 <div class="suit-image heart"></div>
               </mat-checkbox>
             </div>
-            <div fxFlex='calc(25% - 25px)'>
+            <div fxFlex='50px'>
               <mat-checkbox color="primary" [(ngModel)]="cardService.spadeCheckbox">
                 <div class="suit-image spade"></div>
               </mat-checkbox>

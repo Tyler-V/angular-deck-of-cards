@@ -8,7 +8,7 @@ import { Suit } from '../../shared/models/suit.model';
 export class DeckOfCardsService {
 
   public deckSize = 1;
-  public numberOfCards = 1;
+  public numberOfCards = 5;
   public minCardValue = 1;
   public maxCardValue = 10;
   public clubCheckbox = true;
