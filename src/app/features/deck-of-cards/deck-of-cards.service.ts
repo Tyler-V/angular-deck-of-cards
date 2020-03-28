@@ -18,7 +18,7 @@ export class DeckOfCardsService {
 
   public deck: Card[] = [];
   public cards: Card[] = [];
-
+  // cardindeces come in here
   constructor() {
     this.initialize();
   }

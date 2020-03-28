@@ -1,0 +1,79 @@
+.container {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    .menu-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-image: url('../../assets/background/bg.jpeg');
+        background-size: cover;
+        .menu-card {
+            padding: 0;
+            min-width: 25rem;
+            height: 30rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-radius: 2rem;
+            box-shadow: 0px 5px 3px -2px rgba(0, 0, 0, 0.2), 0px 3px 3px 0px rgba(0, 0, 0, 0.14), 0px 3px 5px 0px rgba(0, 0, 0, 0.12);
+            .title-strip {
+                height: 5rem;
+                margin-left: 20px;
+                margin-top: 20px;
+            }
+            .mat-card-actions, .mat-card-footer {
+                margin: 0;
+                padding: 0;
+            }
+            .action-container {
+                display: flex;
+                flex-grow: 1;
+                justify-content: center;
+                align-items: center;
+                background: #FAF7F8;
+                .action-button {
+                    width: 60%;
+                    height: 3rem;
+                    background-color: white;
+                    color: gray;
+                    border: .6px solid grey;
+                    font-size: 2rem;
+                    font-weight: 300;
+                    letter-spacing: .3rem;
+                }
+            }
+            .menu-footer {
+                margin: 20px 20px 20px 0px;
+                height: 4rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                .unique-id {
+                    width: 70%;
+                    display: flex;
+                    justify-content: center;
+                    font-size: 2rem;
+                    font-weight: 300;
+                    font-style: oblique;
+                }
+                .player-in-room {
+                    width: 20%;
+                    height: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-around;
+                    .user-icon {
+                        img {
+                            width: 1rem;
+                            height: 1rem;
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+}
