@@ -6,7 +6,4 @@ import { Socket } from 'ngx-socket-io';
 export class GameService {
   constructor(private socket: Socket) { }
 
-  currentDocument = this.socket.fromEvent<string>('player');
-  documents = this.socket.fromEvent<string[]>('players');
-
 }
