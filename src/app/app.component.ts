@@ -4,7 +4,6 @@ import { GameService } from './services/game-service/game.service';
 @Component({
   selector: 'doc-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./styles/app-styles.scss']
 })
 export class AppComponent {
   uniqueId = '#1234567890';

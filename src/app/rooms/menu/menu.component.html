@@ -1,0 +1,27 @@
+<div class="container">
+    <mat-toolbar color="primary">
+        <span class="title-center">Angular + Socket.io Rikiki</span>
+    </mat-toolbar>
+    <div class="menu-container">
+      <mat-card class="menu-card">
+        <div class="title-strip">
+          <mat-card-title>Menu</mat-card-title>
+          <mat-card-subtitle>Join the room to play!</mat-card-subtitle>  
+        </div>
+        <mat-card-actions class="action-container">
+          <button mat-button class="action-button" [routerLink]="['lobby']">Join!</button>
+        </mat-card-actions>
+        <mat-card-footer class="menu-footer">
+          <div class="unique-id">
+            {{ uniqueId }}
+          </div>
+          <div class="player-in-room">
+            <div class="user-icon">
+              <img src="../assets/icons/user-icon.png"/>
+            </div>
+            <label>{{ playersInRoom }}</label>
+          </div>
+        </mat-card-footer>
+      </mat-card>  
+    </div>
+  </div>
