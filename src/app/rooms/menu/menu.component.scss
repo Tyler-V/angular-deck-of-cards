@@ -43,12 +43,16 @@
             }
             .action-container {
                 display: flex;
+                flex-direction: column;
                 flex-grow: 1;
                 justify-content: center;
                 align-items: center;
                 background: #FAF7F8;
+                mat-form-field {
+                    width: 90%;
+                }
                 .action-button {
-                    width: 60%;
+                    width: 30%;
                     height: 3rem;
                     background-color: white;
                     color: gray;
@@ -60,7 +64,7 @@
                 }
             }
             .menu-footer {
-                margin: 20px 20px 20px 0px;
+                margin: 10px 20px 20px 20px;
                 height: 4rem;
                 display: flex;
                 justify-content: space-between;
@@ -71,7 +75,8 @@
                     width: 70%;
                     display: flex;
                     justify-content: center;
-                    font-size: 2rem;
+                    white-space: nowrap;
+                    font-size: 1.6rem;
                     font-weight: 300;
                 }
                 .player-in-room {

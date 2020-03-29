@@ -9,6 +9,7 @@ import { MaterialModule } from './shared/modules/material.module';
 import { GameRoomComponent } from './rooms/game-room/game-room.component';
 import { MenuComponent } from './rooms/menu/menu.component';
 import { LobbyRoomComponent } from './rooms/lobby-room/lobby-room.component';
+import { FormsModule } from '@angular/forms';
 
 
 const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
@@ -19,6 +20,7 @@ const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
     BrowserAnimationsModule,
     MaterialModule,
     DeckOfCardsModule,
+    FormsModule,
     SocketIoModule.forRoot(config),
     RouterModule.forRoot([
       { path: '', component: MenuComponent },

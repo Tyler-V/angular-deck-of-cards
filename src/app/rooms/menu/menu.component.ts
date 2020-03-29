@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuService } from 'src/app/services/menu-service/menu.service';
 import { Player } from '../interfaces/player.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'doc-menu',
@@ -9,15 +10,29 @@ import { Player } from '../interfaces/player.interface';
 })
 export class MenuComponent implements OnInit {
   player: Player = {
-    uniqueId: 123456789
+    uniqueId: 123456789,
+    username: ''
   };
   playersInRoom = 5;
-  constructor(private readonly menu: MenuService) { }
+  isJoining: boolean;
+  constructor(
+    readonly menu: MenuService,
+    private readonly router: Router
+    ) { }
 
   ngOnInit(): void {
-    this.menu.currentPlayer.subscribe(player => {
-      this.player = player;
-    });
+    this.menu.land();
+    // this.menu.currentPlayer.subscribe(player => {
+    //   this.player = player;
+    // });
+    // this.menu.allPlayers.subscribe(players => {
+    //   this.playersInRoom = players.length;
+    // });
+  }
+  joinGame(): void {
+    this.isJoining = true;
+    this.menu.addUser(this.player.username);
+    this.router.navigate(['lobby']);
   }
 
 }

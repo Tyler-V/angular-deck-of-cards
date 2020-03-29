@@ -9,17 +9,21 @@
           <mat-card-subtitle>Join the room to play!</mat-card-subtitle>  
         </div>
         <mat-card-actions class="action-container">
-          <button mat-button class="action-button" [routerLink]="['lobby']">Join!</button>
+          <mat-form-field class="">
+            <mat-label>Name</mat-label>
+            <input matInput placeholder="Noobmaster69" [(ngModel)]="player.username" autocomplete="off">
+          </mat-form-field>
+          <button mat-button class="action-button" (click)="joinGame()">Join!</button>
         </mat-card-actions>
         <mat-card-footer class="menu-footer">
           <div class="unique-id">
-            Unique ID: # {{ player.uniqueId }}
+            Username: #{{ player.username }}
           </div>
           <div class="player-in-room">
             <div class="user-icon">
               <img src="../assets/icons/user-icon.png"/>
             </div>
-            <label>{{ playersInRoom }}</label>
+            <label>{{ menu.landingData.numOfPlayers }}</label>
           </div>
         </mat-card-footer>
       </mat-card>  
