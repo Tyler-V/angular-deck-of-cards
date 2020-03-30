@@ -1,0 +1,32 @@
+.user-strip-container {
+    position: relative;
+    width: 20rem;
+    height: 30px;
+    background: white;
+    display: flex;
+    border: 1px solid #444442;
+    border-radius: 5rem;;
+    align-items: center;
+    .img-container {
+        width: 4rem;
+        height: 4rem;
+        border: 1px solid #fff;
+        border-radius: 10rem;
+        background: lightgrey;
+        margin-left: -1rem;
+        img {
+            width: 4rem;
+        }
+    }
+    label {
+        margin:0;
+        font-size: 1.5rem;
+        color: #444442;
+    }
+    .status-container {
+        img {
+            width: 1.7rem;
+            
+        }
+    }
+}

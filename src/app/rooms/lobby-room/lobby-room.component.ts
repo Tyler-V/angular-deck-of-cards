@@ -11,5 +11,7 @@ export class LobbyRoomComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  getHostButtonText(): string {
+    return 'startGame';
+  }
 }

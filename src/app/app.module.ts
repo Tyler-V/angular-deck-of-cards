@@ -10,6 +10,7 @@ import { GameRoomComponent } from './rooms/game-room/game-room.component';
 import { MenuComponent } from './rooms/menu/menu.component';
 import { LobbyRoomComponent } from './rooms/lobby-room/lobby-room.component';
 import { FormsModule } from '@angular/forms';
+import { UserStripComponent } from './rooms/lobby-room/user-strip/user-strip.component';
 
 
 const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
@@ -32,7 +33,8 @@ const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
     AppComponent,
     GameRoomComponent,
     LobbyRoomComponent,
-    MenuComponent
+    MenuComponent,
+    UserStripComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

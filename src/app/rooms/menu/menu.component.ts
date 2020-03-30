@@ -32,7 +32,5 @@ export class MenuComponent implements OnInit {
   joinGame(): void {
     this.isJoining = true;
     this.menu.addUser(this.player.username);
-    this.router.navigate(['lobby']);
   }
-
 }
