@@ -1,11 +1,39 @@
 <div class="user-strip-container">
-    <div class="img-container">
-        <img src="../../../../assets/user-icons/male.png"/>
+    <div class="img-container" [ngClass]="{'my-image': isMyStrip}" (click)="openChangeIconModal()">
+        <img [src]="userIconSrc"/>
     </div>
-    <label>Username</label>
+    <label>{{ username }}</label>
     <div class="status-container">
         <img [src]="isReady
             ? '../../../../assets/icons/tick.png'
             : '../../../../assets/icons/three-dots.png'"/>
     </div>
 </div>
+<ngx-smart-modal #myModal identifier="myModal">
+    <div class="modal-head">
+        <mat-card-title>Icons</mat-card-title>
+        <mat-card-subtitle>Select your user icon!</mat-card-subtitle>  
+    </div>
+    <div class="modal-body">
+        <div class="icon-container" *ngFor="let file of files">
+            <mat-card class="example-card">
+                <mat-card-header>
+                  <mat-card-title>{{ file.title }}</mat-card-title>
+                </mat-card-header>
+                <div class="icon-container">
+                    <img mat-card-image [src]="file.src" [alt]="file.title + ' image'">
+                </div>
+                <mat-card-actions>
+                    <button 
+                        mat-button [ngClass]="{'active-button': file.selected}"
+                        (click)="selectIcon(file.title)">
+                            {{ file.selected ? 'Selected' : 'Select'}}
+                    </button>
+                </mat-card-actions>
+              </mat-card>
+        </div>
+    </div>
+    <div class="action-strip">
+        <button mat-button (click)="applyNewIcon()">Apply</button>
+    </div>
+</ngx-smart-modal>

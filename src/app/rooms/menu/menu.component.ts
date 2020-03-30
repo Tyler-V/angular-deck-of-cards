@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuService } from 'src/app/services/menu-service/menu.service';
-import { Player } from '../interfaces/player.interface';
+import { Player } from '../../interfaces/player.interface';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,7 +10,6 @@ import { Router } from '@angular/router';
 })
 export class MenuComponent implements OnInit {
   player: Player = {
-    uniqueId: 123456789,
     username: ''
   };
   playersInRoom = 5;

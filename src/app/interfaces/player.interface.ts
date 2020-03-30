@@ -1,4 +1,4 @@
 export interface Player {
-    uniqueId: number;
     username: string;
+    isHost?: boolean;
 }

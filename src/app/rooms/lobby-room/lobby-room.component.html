@@ -9,7 +9,11 @@
           <mat-card-subtitle>Get ready!</mat-card-subtitle>  
         </div>
         <mat-card-actions class="action-container">
-            <asr-user-strip></asr-user-strip>
+          <asr-user-strip [username]="currentPlayer.username" [isReady]="true"></asr-user-strip>
+          <hr/>
+          <ng-container *ngFor="let player of otherPlayers; trackBy: trackByFn">
+            <asr-user-strip [username]="player.username" [isReady]="false" ></asr-user-strip>
+          </ng-container>
             <button mat-button class="action-button">
                 <ng-container>
                     {{ getHostButtonText() }}

@@ -18,15 +18,76 @@
             width: 4rem;
         }
     }
+    .my-image {
+        cursor: pointer;
+    }
     label {
         margin:0;
         font-size: 1.5rem;
         color: #444442;
     }
     .status-container {
+        position: absolute;
+        right: 0;
+        top: -2px;
+        border-radius: 5rem;
+        padding: .25rem;
         img {
             width: 1.7rem;
+        }
+    }
+}
+.modal-head {
+    font-family: Roboto, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: 300;
+}
+.modal-body {
+    display: flex;
+    justify-content: space-between;
+    margin: -0.5rem;
+    flex-wrap: wrap;
+    height: fit-content;
+    .icon-container {
+        width: fit-content;
+        height: fit-content;
+        padding: .5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+        .mat-card-header-text {
+            text-align: center;
+        }
+        img {
+            width: 7rem;
+            height: 8rem;
+            margin-bottom: 0;
+        }
+        button {
+            width: 100%;
+        }
+        .active-button {
+            background: #5fdba7;
+        }
+        label {
+            width: 5rem;
+            text-align: center;
+            border-left: 1px solid #444442;
+            border-right: 1px solid #444442;
+            border-bottom: 1px solid #444442;
             
         }
     }
+}
+
+.action-strip {
+    display: flex;
+    flex-direction: row-reverse;
+    button {
+        width: 7rem;
+        font-size: 1.5rem;
+        font-weight: 300;
+        margin-top: 10px;
+    }
+    
 }

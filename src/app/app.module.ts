@@ -11,6 +11,7 @@ import { MenuComponent } from './rooms/menu/menu.component';
 import { LobbyRoomComponent } from './rooms/lobby-room/lobby-room.component';
 import { FormsModule } from '@angular/forms';
 import { UserStripComponent } from './rooms/lobby-room/user-strip/user-strip.component';
+import { NgxSmartModalModule } from 'ngx-smart-modal';
 
 
 const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
@@ -22,6 +23,7 @@ const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
     MaterialModule,
     DeckOfCardsModule,
     FormsModule,
+    NgxSmartModalModule.forRoot(),
     SocketIoModule.forRoot(config),
     RouterModule.forRoot([
       { path: '', component: MenuComponent },
@@ -34,7 +36,7 @@ const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
     GameRoomComponent,
     LobbyRoomComponent,
     MenuComponent,
-    UserStripComponent
+    UserStripComponent,
   ],
   providers: [],
   bootstrap: [AppComponent]
