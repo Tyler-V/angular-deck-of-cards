@@ -10,7 +10,9 @@ import { Router } from '@angular/router';
 })
 export class MenuComponent implements OnInit {
   player: Player = {
-    username: ''
+    username: '',
+    isReady: false,
+    iconTitle: '../../../../assets/user-icons/male.png'
   };
   playersInRoom = 5;
   isJoining: boolean;
@@ -21,15 +23,18 @@ export class MenuComponent implements OnInit {
 
   ngOnInit(): void {
     this.menu.land();
-    // this.menu.currentPlayer.subscribe(player => {
-    //   this.player = player;
-    // });
-    // this.menu.allPlayers.subscribe(players => {
-    //   this.playersInRoom = players.length;
-    // });
+    this.initUser();
   }
   joinGame(): void {
     this.isJoining = true;
-    this.menu.addUser(this.player.username);
+    this.menu.login(this.player);
+  }
+  private initUser() {
+    this.player = {
+      username: '',
+      uniqueId: JSON.parse(sessionStorage.getItem('userId')),
+      isReady: false,
+      iconTitle: 'male'
+    };
   }
 }

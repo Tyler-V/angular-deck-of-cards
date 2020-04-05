@@ -1,6 +1,6 @@
 <div class="user-strip-container">
-    <div class="img-container" [ngClass]="{'my-image': isMyStrip}" (click)="openChangeIconModal()">
-        <img [src]="userIconSrc"/>
+    <div [class]="isMyStrip ? 'img-container my-image' : 'img-container'" (click)="openChangeIconModal()">
+        <img [src]="imgSource"/>
     </div>
     <label>{{ username }}</label>
     <div class="status-container">
@@ -9,7 +9,7 @@
             : '../../../../assets/icons/three-dots.png'"/>
     </div>
 </div>
-<ngx-smart-modal #myModal identifier="myModal">
+<ngx-smart-modal [id]="modalName" [identifier]="modalName">
     <div class="modal-head">
         <mat-card-title>Icons</mat-card-title>
         <mat-card-subtitle>Select your user icon!</mat-card-subtitle>  

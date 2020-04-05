@@ -1,66 +1,56 @@
-import { Component, OnInit, NgModule, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { NgxSmartModalService } from 'ngx-smart-modal';
 import { Icon } from '../../../interfaces/icon.interface';
+import { IconService } from 'src/app/services/helper-services/icon.service';
 
 @Component({
   selector: 'asr-user-strip',
   templateUrl: './user-strip.component.html',
-  styleUrls: ['./user-strip.component.scss']
+  styleUrls: ['./user-strip.component.scss'],
 })
 export class UserStripComponent implements OnInit {
-  @Input() username: string;
-  @Input() isReady: boolean;
-  userIconSrc = '../../../../assets/user-icons/male.png';
-  isMyStrip: boolean;
+  // fields
+  imgSource = '../../../../assets/user-icons/male.png';
   selectedIcon: Icon = {
     src: '../../../../assets/user-icons/male.png',
     title: 'Male',
     selected: true
   };
-  files: Icon[] = [
-    {
-      src: '../../../../assets/user-icons/male.png',
-      title: 'Male',
-      selected: true
-    },
-    {
-      src: '../../../../assets/user-icons/female.png',
-      title: 'Female'
-    },
-    {
-      src: '../../../../assets/user-icons/anya.png',
-      title: 'Anya'
-    },
-    {
-      src: '../../../../assets/user-icons/apa.png',
-      title: 'Apa'
-    },
-    {
-      src: '../../../../assets/user-icons/freba.png',
-      title: 'Freba'
-    },
-    {
-      src: '../../../../assets/user-icons/dodo.png',
-      title: 'Dodo'
-    },
-    {
-      src: '../../../../assets/user-icons/adam.png',
-      title: 'Adam'
-    },
-    {
-      src: '../../../../../assets/user-icons/soma.png',
-      title: 'Soma'
-    },
-];
-  constructor(public modal: NgxSmartModalService) { }
+  files: Icon[];
+  modalName = 'myModal';
+
+  // i/o
+  @Input() username: string;
+  @Input() isReady: boolean;
+  @Input() isMyStrip: boolean;
+  @Output() iconChanged: EventEmitter<string> = new EventEmitter<string>();
+
+  private _imgTitle: string;
+  get imgTitle(): string {
+    return this._imgTitle;
+  }
+
+  @Input()
+  set imgTitle(val: string) {
+    this._imgTitle = val;
+    this.imgSource = this.iconService.getIconSrc(val);
+  }
+
+  constructor(
+    public modal: NgxSmartModalService,
+    private readonly iconService: IconService
+  ) { }
 
   ngOnInit(): void {
-    this.isMyStrip = JSON.parse(sessionStorage.getItem('user')).username === this.username;
+    this.modalName = this.isMyStrip ? 'myModal' : 'other';
+    this.files = Array.from(this.iconService.getIcons());
   }
   openChangeIconModal(): void {
     if (!this.isMyStrip) {
       return;
     }
+    const iconTitle = JSON.parse(sessionStorage.getItem('user')).iconTitle;
+    this.selectIcon(iconTitle);
     this.modal.getModal('myModal').open();
   }
   selectIcon(title: string): void {
@@ -68,12 +58,13 @@ export class UserStripComponent implements OnInit {
     if (prevInd !== -1) {
       this.files[prevInd].selected = false;
     }
-    const newInd = this.files.findIndex(icon => icon.title === title);
+    const newInd = this.files.findIndex(icon => icon.title.toLowerCase() === title.toLowerCase());
     this.selectedIcon = Object.assign({}, this.files[newInd]);
     this.files[newInd].selected = true;
+    this.imgSource = this.iconService.getIconSrc(title);
   }
   applyNewIcon(): void {
-    this.userIconSrc = this.files.find(icon => icon.title === this.selectedIcon.title).src;
+    this.iconChanged.emit(this.selectedIcon.title);
     this.modal.getModal('myModal').close();
   }
 }
