@@ -12,4 +12,7 @@ export class GameRoomComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  toggleScorePanel(): void {
+    console.log('toggling score panel');
+  }
 }

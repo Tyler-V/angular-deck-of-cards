@@ -1,0 +1,52 @@
+.container {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    .toolbar {
+        height: 8vh;
+        .title-center {
+            margin: 0 auto;
+        }
+    }
+    .score-board {
+        width: 15vw;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        button {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            img {
+                width: 2rem;
+                height: 2rem;
+            }
+        }
+    }
+    mat-card {
+        font-family: AdventPro, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        
+        mat-card-title {
+            font-size: 3rem;
+        }
+        mat-card-subtitle {
+            font-size: 1.4rem;
+        }
+    }
+
+    .game-container {
+        height: 92vh;
+        background-image: url('../../../assets/background/game-bg.jpg');
+        background-size: cover;
+        position: relative;
+        .user-action-container {
+            background: red;
+            width: 100vw;
+            height: 30vh;
+            position: absolute;
+            bottom: 0;
+        }
+    }
+}

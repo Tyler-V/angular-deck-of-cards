@@ -1,1 +1,16 @@
-<p>game-room works!</p>
+<div class="container">
+    <mat-toolbar color="primary" class="toolbar">
+        <span class="title-center">Live Game</span>
+        <div class="score-board" (click)="toggleScorePanel()">
+            <h5 for="score-panel-toggle">Scoreboard</h5>
+            <button id="score-panel-toggle">
+                <img src="../../../assets/icons/menu.png"/>
+            </button>
+        </div>
+    </mat-toolbar>
+    <div class="game-container">
+        <div class="user-action-container">
+            <!-- Deck of Cards come here  -->
+        </div>
+    </div>
+</div>
