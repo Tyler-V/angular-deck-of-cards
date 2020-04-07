@@ -1,0 +1,11 @@
+.round-pile-container {
+    width: 50vw;
+    height: 35vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // background: red;
+    .card{
+        width: 7rem;
+    }
+}

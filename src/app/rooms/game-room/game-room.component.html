@@ -9,8 +9,21 @@
         </div>
     </mat-toolbar>
     <div class="game-container">
+        <div class="mid-section">
+            <asr-round-pile></asr-round-pile>
+        </div>
         <div class="user-action-container">
+            <!-- Info strip -->
+            <mat-toolbar color="primary" class="toolbar info-strip">
+                <img src="../../../assets/icons/info.png"/>
+                <h6 class="info-text">
+                    It is your turn
+                </h6>
+            </mat-toolbar>
             <!-- Deck of Cards come here  -->
+            <div class="cards-container">
+                <doc-cards></doc-cards>
+            </div>
         </div>
     </div>
 </div>

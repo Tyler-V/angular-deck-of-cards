@@ -1,18 +1,19 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
-import { RouterModule } from '@angular/router';
-import { AppComponent } from './app.component';
-import { DeckOfCardsModule } from './features/deck-of-cards/deck-of-cards.module';
-import { MaterialModule } from './shared/modules/material.module';
-import { GameRoomComponent } from './rooms/game-room/game-room.component';
-import { MenuComponent } from './rooms/menu/menu.component';
-import { LobbyRoomComponent } from './rooms/lobby-room/lobby-room.component';
-import { FormsModule } from '@angular/forms';
-import { UserStripComponent } from './rooms/lobby-room/user-strip/user-strip.component';
-import { NgxSmartModalModule } from 'ngx-smart-modal';
+import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 
+import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { GameResourcesModule } from './game-src/game-resources.module';
+import { GameRoomComponent } from './rooms/game-room/game-room.component';
+import { GameRoomModule } from './rooms/game-room/game-room.module';
+import { LobbyRoomComponent } from './rooms/lobby-room/lobby-room.component';
+import { MaterialModule } from './shared/modules/material.module';
+import { MenuComponent } from './rooms/menu/menu.component';
+import { NgModule } from '@angular/core';
+import { NgxSmartModalModule } from 'ngx-smart-modal';
+import { RouterModule } from '@angular/router';
+import { UserStripComponent } from './rooms/lobby-room/user-strip/user-strip.component';
 
 const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
 
@@ -21,8 +22,9 @@ const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
     BrowserModule,
     BrowserAnimationsModule,
     MaterialModule,
-    DeckOfCardsModule,
     FormsModule,
+    GameRoomModule,
+    GameResourcesModule,
     NgxSmartModalModule.forRoot(),
     SocketIoModule.forRoot(config),
     RouterModule.forRoot([
@@ -33,10 +35,9 @@ const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
   ],
   declarations: [
     AppComponent,
-    GameRoomComponent,
     LobbyRoomComponent,
     MenuComponent,
-    UserStripComponent,
+    UserStripComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

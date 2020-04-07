@@ -1,5 +1,6 @@
+import { animate, keyframes, query, stagger, style, transition, trigger } from '@angular/animations';
+
 import { Component } from '@angular/core';
-import { trigger, style, transition, animate, keyframes, query, stagger } from '@angular/animations';
 import { DeckOfCardsService } from '../deck-of-cards.service';
 
 @Component({
@@ -27,6 +28,9 @@ import { DeckOfCardsService } from '../deck-of-cards.service';
 })
 export class CardsComponent {
 
-  constructor(public cardService: DeckOfCardsService) { }
+  constructor(public cardService: DeckOfCardsService) {
+    this.cardService.initialize();
+    this.cardService.draw(5);
+  }
 
 }
