@@ -2,79 +2,114 @@
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    .toolbar {
-        height: 8vh;
-        .title-center {
-            margin: 0 auto;
-        }
-    }
-    .score-board {
-        width: 15vw;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        cursor: pointer;
-        button {
-            background: none;
-            border: none;
-            padding: 0;
-            cursor: pointer;
-            img {
-                width: 2rem;
-                height: 2rem;
-            }
-        }
-    }
-    mat-card {
-        font-family: AdventPro, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        
-        mat-card-title {
-            font-size: 3rem;
-        }
-        mat-card-subtitle {
-            font-size: 1.4rem;
-        }
-    }
-
-    .game-container {
-        height: 92vh;
-        background-image: url('../../../assets/background/game-bg.jpg');
-        background-size: cover;
-        position: relative;
-
-        display: flex;
-        justify-content: center;
-        .user-action-container {
-            width: 100vw;
-            height: 30vh;
-            position: absolute;
-            bottom: 0;
+    .sidebar-scoreboard {
+        .scoreboard-panel-container {
+            width: calc(15vw + 16px);
+            // padding: 1rem;
             display: flex;
-            
-            .cards-container {
-                position: absolute;
-                overflow-x: auto;
-                width: 100%;
-                height: 22vh;
-                bottom: 8vh;
-                white-space: nowrap;
-            }
-            .info-strip {
-                position: absolute;
-                bottom: 0;
-                width: 100%;
-                max-height: 8vh;
-                background: rgb(0, 150, 136);
-                
+            align-items: flex-start;
+            .icon-container {
+                background: #E0E0E0;
+                border-left: 3px solid black;
+                box-shadow: 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                padding: .25rem;
                 img {
-                    filter: invert(100%);
-                    -webkit-filter: invert(100%);
-                    margin-right: 1rem;
+                    width: 35px;
+                }
+            }
+
+
+
+            .scoreboard-table {
+                width: 100%;
+                background: #E0E0E0;
+                padding: .5rem;
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                text-align: center;
+                thead {
+                    border-bottom: 1px solid black;
                 }
             }
         }
-        .mid-section {
-            top: 30%;
+    }
+    .content-container {
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        .toolbar {
+            height: 8vh;
+            .title-center {
+                margin: 0 auto;
+            }
+        }
+        .score-board {
+            width: 15vw;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            button {
+                background: none;
+                border: none;
+                padding: 0;
+                cursor: pointer;
+                img {
+                    width: 2rem;
+                    height: 2rem;
+                }
+            }
+        }
+        mat-card {
+            font-family: AdventPro, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            
+            mat-card-title {
+                font-size: 3rem;
+            }
+            mat-card-subtitle {
+                font-size: 1.4rem;
+            }
+        }
+    
+        .game-container {
+            height: 92vh;
+            background-image: url('../../../assets/background/game-bg.jpg');
+            background-size: cover;
+            position: relative;
+    
+            display: flex;
+            justify-content: center;
+            .user-action-container {
+                width: 100vw;
+                height: 30vh;
+                position: absolute;
+                bottom: 0;
+                display: flex;
+                
+                .cards-container {
+                    position: absolute;
+                    overflow-x: auto;
+                    width: 100%;
+                    height: 22vh;
+                    bottom: 8vh;
+                    white-space: nowrap;
+                }
+                .info-strip {
+                    position: absolute;
+                    bottom: 0;
+                    width: 100%;
+                    max-height: 8vh;
+                    background: rgb(0, 150, 136);
+                    
+                    img {
+                        filter: invert(100%);
+                        -webkit-filter: invert(100%);
+                        margin-right: 1rem;
+                    }
+                }
+            }
+            .mid-section {
+                top: 30%;
+            }
         }
     }
 }

@@ -1,29 +1,58 @@
-<div class="container">
-    <mat-toolbar color="primary" class="toolbar">
-        <span class="title-center">Live Game</span>
-        <div class="score-board" (click)="toggleScorePanel()">
-            <h5 for="score-panel-toggle">Scoreboard</h5>
-            <button id="score-panel-toggle">
-                <img src="../../../assets/icons/menu.png"/>
-            </button>
+<ng-sidebar-container class="container">
+    <ng-sidebar class="sidebar-scoreboard ng-sidebar--right" 
+        [(opened)]="scoreboardToggle" 
+        [position]="'right'"
+        [dock]="true"
+        [dockedSize]="'25px'">
+        <div class="scoreboard-panel-container">
+            <div class="icon-container">
+                <img src="../../../assets/icons/score.png"/>
+            </div>
+            <table class="scoreboard-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="ranked-player" *ngFor="let player of rankedPlayers">
+                        <td>{{ player.rank }}</td>
+                        <td>{{ player.name }}</td>
+                        <td>{{ player.points }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-    </mat-toolbar>
-    <div class="game-container">
-        <div class="mid-section">
-            <asr-round-pile></asr-round-pile>
-        </div>
-        <div class="user-action-container">
-            <!-- Info strip -->
-            <mat-toolbar color="primary" class="toolbar info-strip">
-                <img src="../../../assets/icons/info.png"/>
-                <h6 class="info-text">
-                    It is your turn
-                </h6>
-            </mat-toolbar>
-            <!-- Deck of Cards come here  -->
-            <div class="cards-container">
-                <doc-cards></doc-cards>
+    </ng-sidebar>
+    <div class="content-container" ng-sidebar-content>
+        <mat-toolbar color="primary" class="toolbar">
+            <span class="title-center">Live Game</span>
+            <div class="score-board" (click)="toggleScorePanel()">
+                <h5 for="score-panel-toggle">Scoreboard</h5>
+                <button id="score-panel-toggle">
+                    <img src="../../../assets/icons/menu.png"/>
+                </button>
+            </div>
+        </mat-toolbar>
+        <div class="game-container">
+            <div class="mid-section">
+                <asr-round-pile></asr-round-pile>
+            </div>
+            <div class="user-action-container">
+                <!-- Info strip -->
+                <mat-toolbar color="primary" class="toolbar info-strip">
+                    <img src="../../../assets/icons/info.png"/>
+                    <h6 class="info-text">
+                        It is your turn
+                    </h6>
+                </mat-toolbar>
+                <!-- Deck of Cards come here  -->
+                <div class="cards-container">
+                    <doc-cards></doc-cards>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</ng-sidebar-container>

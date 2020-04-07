@@ -23,6 +23,7 @@
     "@angular/platform-browser-dynamic": "^9.0.7",
     "@angular/router": "^9.0.7",
     "core-js": "^2.5.4",
+    "ng-sidebar": "^9.2.0",
     "ngx-smart-modal": "^7.4.0",
     "ngx-socket-io": "^3.0.1",
     "rxjs": "^6.5.4",

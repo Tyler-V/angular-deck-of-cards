@@ -14,13 +14,31 @@ export class GameRoomComponent implements OnInit {
     value: 2,
     suit: Suit.Club
   };
+  rankedPlayers = [
+    {
+      rank: 1,
+      name: 'Soma',
+      points: 100
+    },
+    {
+      rank: 2,
+      name: 'Apa',
+      points: 50
+    },
+    {
+      rank: 3,
+      name: 'Anya',
+      points: 20
+    }
+  ];
 
+  scoreboardToggle = true;
   constructor() { }
 
   ngOnInit(): void {
   }
 
   toggleScorePanel(): void {
-    console.log('toggling score panel');
+    this.scoreboardToggle = !this.scoreboardToggle;
   }
 }
