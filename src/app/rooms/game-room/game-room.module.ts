@@ -1,3 +1,5 @@
+import { PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface, PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { DeckOfCardsModule } from '../../features/deck-of-cards/deck-of-cards.module';
@@ -7,6 +9,10 @@ import { MaterialModule } from '../../shared/modules/material.module';
 import { NgModule } from '@angular/core';
 import { SidebarModule } from 'ng-sidebar';
 
+const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
+  suppressScrollX: true
+};
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -14,12 +20,18 @@ import { SidebarModule } from 'ng-sidebar';
     MaterialModule,
     DeckOfCardsModule,
     GameResourcesModule,
-    SidebarModule.forRoot()
+    SidebarModule.forRoot(),
+    PerfectScrollbarModule
   ],
   declarations: [
     GameRoomComponent
   ],
-  providers: [],
+  providers: [
+    {
+      provide: PERFECT_SCROLLBAR_CONFIG,
+      useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
+    }
+  ],
   exports: [
     GameRoomComponent
   ]

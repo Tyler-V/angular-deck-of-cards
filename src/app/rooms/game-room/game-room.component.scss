@@ -13,6 +13,7 @@
                 border-left: 3px solid black;
                 box-shadow: 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
                 padding: .25rem;
+                cursor: pointer;
                 img {
                     width: 35px;
                 }
@@ -78,6 +79,13 @@
     
             display: flex;
             justify-content: center;
+            .user-status-container {
+                position: absolute;
+                left: 0;
+                height: 70%;
+                width: 20vw;
+                overflow: auto;
+            }
             .user-action-container {
                 width: 100vw;
                 height: 30vh;

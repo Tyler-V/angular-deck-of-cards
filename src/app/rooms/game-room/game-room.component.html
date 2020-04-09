@@ -5,7 +5,7 @@
         [dock]="true"
         [dockedSize]="'25px'">
         <div class="scoreboard-panel-container">
-            <div class="icon-container">
+            <div class="icon-container" (click)="toggleScorePanel()">
                 <img src="../../../assets/icons/score.png"/>
             </div>
             <table class="scoreboard-table">
@@ -37,6 +37,18 @@
             </div>
         </mat-toolbar>
         <div class="game-container">
+            <div class="user-status-container">
+                <perfect-scrollbar style="max-width: 600px; max-height: 400px;" >
+                    <!-- dont forget to do auto scroll for events!!! -->
+                    <asr-user-card></asr-user-card>
+                    <asr-user-card></asr-user-card>
+                    <asr-user-card></asr-user-card>
+                    <asr-user-card></asr-user-card>
+                    <asr-user-card></asr-user-card>
+                    <asr-user-card></asr-user-card>
+                    <asr-user-card></asr-user-card>
+                </perfect-scrollbar>
+            </div>
             <div class="mid-section">
                 <asr-round-pile></asr-round-pile>
             </div>
