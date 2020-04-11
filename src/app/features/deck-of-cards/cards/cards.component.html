@@ -1,13 +1,5 @@
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Your hand</mat-card-title>
-    <mat-card-subtitle>Your randomly selected cards.</mat-card-subtitle>
-  </mat-card-header>
-  <mat-card-content>
-    <div fxLayout='row wrap' fxLayoutGap="10px" class='card-layout' [@cardAnimation]="cardService.cards.length">
-      <div *ngFor="let card of cardService.cards" fxFlex="90px">
-        <doc-card [card]='card'></doc-card>
-      </div>
-    </div>
-  </mat-card-content>
-</mat-card>
+<div fxLayout='row wrap' fxLayoutGap="10px" class='card-layout' [@cardAnimation]="cardService.cards.length">
+  <div *ngFor="let card of cardService.cards" fxFlex="90px">
+    <doc-card [card]='card'></doc-card>
+  </div>
+</div>

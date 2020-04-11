@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
 import { Card } from '../../shared/models/card.model';
+import { Injectable } from '@angular/core';
 import { Suit } from '../../shared/models/suit.model';
 
 @Injectable({
@@ -23,6 +23,7 @@ export class DeckOfCardsService {
     this.initialize();
   }
 
+  // init deck
   public initialize(): void {
     this.deck = [];
     this.cards = [];
@@ -86,6 +87,7 @@ export class DeckOfCardsService {
         break;
       }
     }
+    console.log(cards);
     this.cards = this.cards.concat(cards);
   }
 }

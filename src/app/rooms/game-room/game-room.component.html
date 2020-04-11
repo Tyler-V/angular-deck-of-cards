@@ -1,1 +1,78 @@
-<p>game-room works!</p>
+<!-- <div class="round-start">
+    <h1>
+        ROUND 1
+    </h1>
+</div> -->
+<ng-sidebar-container class="container">
+    <ng-sidebar class="sidebar-scoreboard ng-sidebar--right" 
+        [(opened)]="scoreboardToggle" 
+        [position]="'right'"
+        [dock]="true"
+        [dockedSize]="'25px'">
+        <div class="scoreboard-panel-container">
+            <div class="icon-container" (click)="toggleScorePanel()">
+                <img src="../../../assets/icons/score.png"/>
+            </div>
+            <div class="data-container">
+                <table class="scoreboard-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Name</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="ranked-player" *ngFor="let player of rankedPlayers">
+                            <td>{{ player.rank }}</td>
+                            <td>{{ player.name }}</td>
+                            <td>{{ player.points }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="bottom-cont">
+                    <div class="trump-container">
+                        <h4>Trump</h4>
+                        <div class="suit-image club"></div>
+                    </div>
+                    <div class="round-container">
+                        <h4>Round</h4>
+                        <div class="">1</div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </ng-sidebar>
+    <div class="content-container" ng-sidebar-content>
+        <mat-toolbar color="primary" class="toolbar">
+            <span class="title-center">Live Game</span>
+        </mat-toolbar>
+        <div class="game-container">
+            <div class="user-status-container">
+                    <asr-user-card></asr-user-card>
+                    <asr-user-card></asr-user-card>
+                    <asr-user-card></asr-user-card>
+                    <asr-user-card></asr-user-card>
+                    <asr-user-card></asr-user-card>
+                    <asr-user-card></asr-user-card>
+            </div>
+            <div class="mid-section">
+                <asr-round-pile></asr-round-pile>
+            </div>
+            <div class="user-action-container">
+                <!-- Info strip -->
+                <mat-toolbar color="primary" class="toolbar info-strip">
+                    <img src="../../../assets/icons/info.png"/>
+                    <h6 class="info-text">
+                        It is your turn
+                    </h6>
+                </mat-toolbar>
+                <!-- Deck of Cards come here  -->
+                <div class="cards-container">
+                    <doc-cards></doc-cards>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-sidebar-container>
