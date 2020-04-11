@@ -1,3 +1,8 @@
+<!-- <div class="round-start">
+    <h1>
+        ROUND 1
+    </h1>
+</div> -->
 <ng-sidebar-container class="container">
     <ng-sidebar class="sidebar-scoreboard ng-sidebar--right" 
         [(opened)]="scoreboardToggle" 
@@ -8,46 +13,49 @@
             <div class="icon-container" (click)="toggleScorePanel()">
                 <img src="../../../assets/icons/score.png"/>
             </div>
-            <table class="scoreboard-table">
-                <thead>
-                    <tr>
-                        <th>Rank</th>
-                        <th>Name</th>
-                        <th>Score</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="ranked-player" *ngFor="let player of rankedPlayers">
-                        <td>{{ player.rank }}</td>
-                        <td>{{ player.name }}</td>
-                        <td>{{ player.points }}</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="data-container">
+                <table class="scoreboard-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Name</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="ranked-player" *ngFor="let player of rankedPlayers">
+                            <td>{{ player.rank }}</td>
+                            <td>{{ player.name }}</td>
+                            <td>{{ player.points }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="bottom-cont">
+                    <div class="trump-container">
+                        <h4>Trump</h4>
+                        <div class="suit-image club"></div>
+                    </div>
+                    <div class="round-container">
+                        <h4>Round</h4>
+                        <div class="">1</div>
+                    </div>
+                </div>
+            </div>
+            
         </div>
     </ng-sidebar>
     <div class="content-container" ng-sidebar-content>
         <mat-toolbar color="primary" class="toolbar">
             <span class="title-center">Live Game</span>
-            <div class="score-board" (click)="toggleScorePanel()">
-                <h5 for="score-panel-toggle">Scoreboard</h5>
-                <button id="score-panel-toggle">
-                    <img src="../../../assets/icons/menu.png"/>
-                </button>
-            </div>
         </mat-toolbar>
         <div class="game-container">
             <div class="user-status-container">
-                <perfect-scrollbar style="max-width: 600px; max-height: 400px;" >
-                    <!-- dont forget to do auto scroll for events!!! -->
                     <asr-user-card></asr-user-card>
                     <asr-user-card></asr-user-card>
                     <asr-user-card></asr-user-card>
                     <asr-user-card></asr-user-card>
                     <asr-user-card></asr-user-card>
                     <asr-user-card></asr-user-card>
-                    <asr-user-card></asr-user-card>
-                </perfect-scrollbar>
             </div>
             <div class="mid-section">
                 <asr-round-pile></asr-round-pile>

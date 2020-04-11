@@ -1,6 +1,7 @@
 import { BettingModalComponent } from './betting-modal/betting-modal.component';
 import { CommonModule } from '@angular/common';
 import { DeckOfCardsModule } from '../features/deck-of-cards/deck-of-cards.module';
+import { FormsModule } from '@angular/forms';
 import { HandComponent } from './hand/hand.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -14,6 +15,7 @@ import { UserCardComponent } from './user-card/user-card.component';
   declarations: [HandComponent, RoundPileComponent, UserCardComponent, BettingModalComponent],
   imports: [
     CommonModule,
+    FormsModule,
     DeckOfCardsModule,
     PerfectScrollbarModule,
     MatFormFieldModule,

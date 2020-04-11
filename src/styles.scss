@@ -5,16 +5,22 @@
   font-family: AdventPro;
   src: url('./assets/fonts/AdventPro-Light.ttf');
 }
+
+@font-face {
+  font-family: Raleway;
+  src: url('./assets/fonts/Raleway-ExtraLight.ttf');
+}
+
 body {
   margin: 0;
   padding: 0;
-  font-family: AdventPro, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: Raleway, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 .ng-sidebar {
   height: 100%;
 }
 .ng-sidebar--right {
-  top: 8vh !important;
+  top: 30vh !important;
 }
 .nsm-dialog {
   min-width: 720px;

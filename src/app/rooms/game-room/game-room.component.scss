@@ -4,8 +4,7 @@
     overflow: hidden;
     .sidebar-scoreboard {
         .scoreboard-panel-container {
-            width: calc(15vw + 16px);
-            // padding: 1rem;
+            width: 30vw;
             display: flex;
             align-items: flex-start;
             .icon-container {
@@ -18,17 +17,36 @@
                     width: 35px;
                 }
             }
-
-
-
-            .scoreboard-table {
+            .data-container {
                 width: 100%;
                 background: #E0E0E0;
                 padding: .5rem;
                 box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-                text-align: center;
-                thead {
-                    border-bottom: 1px solid black;
+                .scoreboard-table {
+                    text-align: center;
+                    width: 100%;
+    
+                    thead {
+                        border-bottom: 1px solid black;
+                    }
+                }
+                .bottom-cont {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+                .round-container, .trump-container {
+                    width: 50%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-around;
+                    align-items: center;
+                    .suit-image {
+                        height: 20px;
+                        width: 20px;
+                        background-position: center center;
+                        background-size: 20px;
+                    }
                 }
             }
         }
@@ -82,9 +100,12 @@
             .user-status-container {
                 position: absolute;
                 left: 0;
-                height: 70%;
-                width: 20vw;
-                overflow: auto;
+                width: 100%;
+                display: flex;
+                asr-user-card {
+                    flex-grow: 1;
+                    flex-basis: 0;
+                }
             }
             .user-action-container {
                 width: 100vw;
@@ -107,7 +128,9 @@
                     width: 100%;
                     max-height: 8vh;
                     background: #1A1B1F;
-                    
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
                     img {
                         width: 30px;
                         margin-right: 1rem;
@@ -115,12 +138,27 @@
                 }
             }
             .mid-section {
-                top: 30%;
+                top: 50%;
             }
         }
     }
 }
+.round-start {
+    width: 100vw;
+    height: 100vh;
+    background-image: url('../../../assets/background/loading-bg.jpg');
+    background-size: cover;
 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    h1 {
+        margin: 0;
+        color: white;
+        font-size: 50px;
+        font-family: 'Raleway', Helvetica, sans-serif; 
+    }
+}
 .modal {
     background: #CECECE;
 }
