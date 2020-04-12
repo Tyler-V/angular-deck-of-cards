@@ -1,6 +1,6 @@
 <div class="round-start" *ngIf="isLoading">
     <h1>
-        ROUND 1
+        ROUND {{ currentRound }}
     </h1>
 </div>
 <ng-sidebar-container class="container" *ngIf="!isLoading">
@@ -33,7 +33,7 @@
                 <div class="bottom-cont">
                     <div class="trump-container">
                         <h4>Trump</h4>
-                        <div class="suit-image club"></div>
+                        <doc-card [card]="trumpoCard"></doc-card>
                     </div>
                     <div class="round-container">
                         <h4>Round</h4>
@@ -70,7 +70,7 @@
                 </mat-toolbar>
                 <!-- Deck of Cards come here  -->
                 <div class="cards-container">
-                    <doc-cards></doc-cards>
+                    <asr-user-hand [cards]="currentHand"></asr-user-hand>
                 </div>
             </div>
         </div>

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Hand, Round } from 'src/app/interfaces/round.interface';
 
 import { BettingModalComponent } from 'src/app/game-src/betting-modal/betting-modal.component';
 import { Card } from 'src/app/shared/models/card.model';
 import { GameService } from 'src/app/services/game-service/game.service';
 import { MatDialog } from '@angular/material/dialog';
-import { Round } from 'src/app/interfaces/round.interface';
 import { Suit } from 'src/app/shared/models/suit.model';
 import { take } from 'rxjs/operators';
 
@@ -36,6 +36,10 @@ export class GameRoomComponent implements OnInit {
       points: 20
     }
   ];
+  currentRound = 1;
+  currentHand: any;
+
+  trumpoCard: Card;
   isLoading = true;
   roundData: Round;
   scoreboardToggle = true;
@@ -58,6 +62,7 @@ export class GameRoomComponent implements OnInit {
   }
   private initRound(): void {
     this.gameService.getCurrentRound().pipe(take(1)).subscribe(round => {
+      this.currentRound = round;
       this.gameService.initRound(round).pipe(take(1)).subscribe(roundData => {
         this.roundData = roundData;
         this.initUiComponents();
@@ -66,10 +71,9 @@ export class GameRoomComponent implements OnInit {
     });
   }
   private initUiComponents(): void {
-    console.log(this.roundData);
-    console.log(this.cardOnTop);
-    this.cardOnTop = Object.assign({}, this.roundData.trumpCard);
-    console.log(this.cardOnTop);
+    this.currentHand = Array.from(this.roundData.myHand.firstRoundHand);
+    console.log(this.currentHand);
+    this.trumpoCard = Object.assign({}, this.roundData.trumpCard);
   }
 
 }

@@ -10,9 +10,10 @@ import { NgModule } from '@angular/core';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { RoundPileComponent } from './round-pile/round-pile.component';
 import { UserCardComponent } from './user-card/user-card.component';
+import { UserHandComponent } from './user-hand/user-hand.component';
 
 @NgModule({
-  declarations: [HandComponent, RoundPileComponent, UserCardComponent, BettingModalComponent],
+  declarations: [HandComponent, RoundPileComponent, UserCardComponent, BettingModalComponent, UserHandComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -22,6 +23,6 @@ import { UserCardComponent } from './user-card/user-card.component';
     MatSelectModule,
     MatInputModule
   ],
-  exports: [HandComponent, RoundPileComponent, UserCardComponent]
+  exports: [HandComponent, RoundPileComponent, UserCardComponent, UserHandComponent]
 })
 export class GameResourcesModule { }

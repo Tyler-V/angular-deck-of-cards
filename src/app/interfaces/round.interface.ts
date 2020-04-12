@@ -11,7 +11,8 @@ export interface OthersHand {
     card: Card;
 }
 export interface Hand {
-    myHand: Card[];
+    myHand?: Card[];
+    firstRoundHand?: OthersHand[];
 }
 export interface RoundPlayer {
     uniqueId: number;
@@ -24,7 +25,7 @@ export interface RoundPlayer {
     seatInd: number;
 }
 export interface Round {
-    myHand: Hand | OthersHand[];
+    myHand: Hand;
     myBets: Bet;
     players: RoundPlayer[];
     trumpCard: Card;

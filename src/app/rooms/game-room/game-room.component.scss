@@ -47,6 +47,10 @@
                         background-position: center center;
                         background-size: 20px;
                     }
+                    doc-card {
+                        max-width: 100px;
+                        width: 90%;
+                    }
                 }
             }
         }
@@ -118,8 +122,11 @@
                     position: absolute;
                     overflow-x: auto;
                     width: 100%;
-                    height: 22vh;
+                    height: 25vh;
                     bottom: 8vh;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-end;
                     white-space: nowrap;
                 }
                 .info-strip {

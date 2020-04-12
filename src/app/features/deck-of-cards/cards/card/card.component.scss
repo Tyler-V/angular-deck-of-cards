@@ -42,3 +42,17 @@
     transform: rotate(180deg);
   }
 }
+.first-round-card {
+  margin-right: 25px;
+  .first-round-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 10rem;
+    border: 2px solid white;
+    position: absolute;
+    right: -25px;
+    top: -25px;
+    z-index: 100;
+  }
+}
+
