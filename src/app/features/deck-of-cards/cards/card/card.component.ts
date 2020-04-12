@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+
 import { Card } from '../../../../shared/models/card.model';
 
 @Component({
@@ -8,8 +9,10 @@ import { Card } from '../../../../shared/models/card.model';
 })
 export class CardComponent {
 
-  @Input() public card: Card;
+  @Input() public card: any;
 
-  constructor() { }
+  constructor() {
+    console.log(this.card);
+   }
 
 }

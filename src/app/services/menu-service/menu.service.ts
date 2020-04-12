@@ -1,11 +1,10 @@
-import { Injectable } from '@angular/core';
-import { Socket } from 'ngx-socket-io';
-import { Router } from '@angular/router';
 import { Player, UpdatedPlayer } from '../../interfaces/player.interface';
+
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
+import { Socket } from 'ngx-socket-io';
 import { take } from 'rxjs/operators';
-
-
 
 interface LandingData {
   numOfPlayers: number;
@@ -88,10 +87,20 @@ export class MenuService {
   listenForUpdatedPlayer(): Observable<UpdatedPlayer> {
     return this.socket.fromEvent<UpdatedPlayer>('player updated');
   }
+  goToGameListener(): Observable<any> {
+    return this.socket.fromEvent<any>('go to game');
+  }
+
 
   updatePlayer(player: Player): void {
     this.socket.emit('update player', player);
   }
+  
+  // Start Game
+  startGame(): void {
+    this.socket.emit('start game');
+  }
+  
   private createUniqueId() {
     let candidateId = Math.floor(Math.random() * 1000);
     let isGood = false;

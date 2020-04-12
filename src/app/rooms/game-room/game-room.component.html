@@ -1,9 +1,9 @@
-<!-- <div class="round-start">
+<div class="round-start" *ngIf="isLoading">
     <h1>
         ROUND 1
     </h1>
-</div> -->
-<ng-sidebar-container class="container">
+</div>
+<ng-sidebar-container class="container" *ngIf="!isLoading">
     <ng-sidebar class="sidebar-scoreboard ng-sidebar--right" 
         [(opened)]="scoreboardToggle" 
         [position]="'right'"
@@ -50,15 +50,15 @@
         </mat-toolbar>
         <div class="game-container">
             <div class="user-status-container">
-                    <asr-user-card></asr-user-card>
-                    <asr-user-card></asr-user-card>
-                    <asr-user-card></asr-user-card>
-                    <asr-user-card></asr-user-card>
-                    <asr-user-card></asr-user-card>
-                    <asr-user-card></asr-user-card>
+                    <asr-user-card *ngFor="let usercard of roundData.players"
+                        [name]="usercard.username"
+                        [bets]="usercard.bets"
+                        [status]="usercard.status"
+                        [iconTitle]="usercard.iconTitle"
+                    ></asr-user-card>
             </div>
             <div class="mid-section">
-                <asr-round-pile></asr-round-pile>
+                <asr-round-pile [card]="cardOnTop"></asr-round-pile>
             </div>
             <div class="user-action-container">
                 <!-- Info strip -->

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+
 import { MenuService } from 'src/app/services/menu-service/menu.service';
 import { Player } from 'src/app/interfaces/player.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'doc-lobby-room',
@@ -12,12 +14,16 @@ export class LobbyRoomComponent implements OnInit {
   currentPlayer: Player;
   isLoading = true;
 
-  constructor(private readonly menu: MenuService) { }
+  constructor(
+    private readonly menu: MenuService,
+    private readonly router: Router
+    ) { }
   ngOnInit(): void {
     this.getCurrentPlayer();
     this.getLobbyPlayers();
     this.listenForNewPlayers();
     this.listenForUpdatedPlayer();
+    this.goToGameListener();
     this.isLoading = false;
   }
 
@@ -47,6 +53,7 @@ export class LobbyRoomComponent implements OnInit {
   startGame(): void {
     if (this.currentPlayer.isHost) {
       console.log('im a host so i can start the game');
+      this.menu.startGame();
     }
   }
   private getCurrentPlayer(): void {
@@ -60,12 +67,19 @@ export class LobbyRoomComponent implements OnInit {
     });
   }
 
+  private goToGameListener(): void {
+    this.menu.goToGameListener().subscribe(() => {
+      this.router.navigate(['game']);
+    });
+  }
+
   private listenForUpdatedPlayer() {
     this.menu.listenForUpdatedPlayer().subscribe(playerUpdated => {
       console.log('someone got updated');
       const ind = this.otherPlayers.findIndex(player => player.uniqueId === playerUpdated.id);
       if (ind !== -1) {
         this.otherPlayers[ind] = Object.assign({}, playerUpdated.player);
+        sessionStorage.setItem('otherPlayers', JSON.stringify(this.otherPlayers));
       }
     });
   }

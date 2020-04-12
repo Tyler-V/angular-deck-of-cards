@@ -1,7 +1,7 @@
 <div class="user-card">
     <div class="card-head">
-        <img src="../../../assets/user-icons/soma.png"/>
-        <h4 class="user-name">Soma</h4>
+        <img [src]="iconSrc"/>
+        <h4 class="user-name">{{ name }}</h4>
     </div>
     <div class="current-bets-container">
         <div class="head">
@@ -9,11 +9,11 @@
             <div class="hits">Hits</div>
         </div>
         <div class="values">
-            <div class="bet">5</div>
-            <div class="hits">3</div>
+            <div class="bet">{{ bets.bet }}</div>
+            <div class="hits">{{ bets.hits }}</div>
         </div>
     </div>
     <div class="status-container">
-        STATUS
+        {{ status }}
     </div>
 </div>
