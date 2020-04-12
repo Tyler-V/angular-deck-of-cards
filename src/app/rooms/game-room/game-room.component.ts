@@ -5,6 +5,7 @@ import { BettingModalComponent } from 'src/app/game-src/betting-modal/betting-mo
 import { Card } from 'src/app/shared/models/card.model';
 import { GameService } from 'src/app/services/game-service/game.service';
 import { MatDialog } from '@angular/material/dialog';
+import { Subject } from 'rxjs';
 import { Suit } from 'src/app/shared/models/suit.model';
 import { take } from 'rxjs/operators';
 
@@ -43,6 +44,8 @@ export class GameRoomComponent implements OnInit {
   isLoading = true;
   roundData: Round;
   scoreboardToggle = true;
+
+  private unsubscribez = new Subject<any>();
   constructor(
     public dialog: MatDialog,
     private readonly gameService: GameService

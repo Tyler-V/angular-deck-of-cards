@@ -70,7 +70,8 @@ export class MenuService {
   }
   addNewUser(user: Player) {
     this.socket.emit('add new user', user);
-    console.log('adding new user');
+    console.log('soz game already started');
+    this.router.navigate(['soz-gotta-wait-a-bit']);
   }
   overrideUser(user: Player) {
     console.log('override a lobby user');

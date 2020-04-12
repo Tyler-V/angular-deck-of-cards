@@ -1,6 +1,7 @@
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 
 import { AppComponent } from './app.component';
+import { AuthGuardService } from './auth-guard.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
@@ -13,6 +14,7 @@ import { MenuComponent } from './rooms/menu/menu.component';
 import { NgModule } from '@angular/core';
 import { NgxSmartModalModule } from 'ngx-smart-modal';
 import { RouterModule } from '@angular/router';
+import { SozGottaWaitComponent } from './features/soz-gotta-wait/soz-gotta-wait.component';
 import { UserStripComponent } from './rooms/lobby-room/user-strip/user-strip.component';
 
 const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
@@ -29,15 +31,17 @@ const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
     SocketIoModule.forRoot(config),
     RouterModule.forRoot([
       { path: '', component: MenuComponent },
-      { path: 'lobby', component: LobbyRoomComponent },
-      { path: 'game', component: GameRoomComponent },
+      { path: 'soz-gotta-wait-a-bit', component: SozGottaWaitComponent },
+      { path: 'lobby', component: LobbyRoomComponent, canActivate: [AuthGuardService] },
+      { path: 'game', component: GameRoomComponent, canActivate: [AuthGuardService]  },
     ])
   ],
   declarations: [
     AppComponent,
     LobbyRoomComponent,
     MenuComponent,
-    UserStripComponent
+    UserStripComponent,
+    SozGottaWaitComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
