@@ -107,6 +107,7 @@
                 width: 100%;
                 display: flex;
                 asr-user-card {
+                    max-width: 300px;
                     flex-grow: 1;
                     flex-basis: 0;
                 }

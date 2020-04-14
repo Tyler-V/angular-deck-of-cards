@@ -2,13 +2,13 @@
     <div class="title-strip">
         What's your Bet?
     </div>
-    <mat-form-field>
-      <mat-label>Favorite food</mat-label>
+    <mat-form-field *ngIf="!isLoading">
+      <mat-label>Number of hits, you wanna take</mat-label>
       <mat-select [(ngModel)]="selectedValue" name="food">
-        <mat-option *ngFor="let food of foods" [value]="food.value">
-          {{food.viewValue}}
+        <mat-option *ngFor="let opt of options" [value]="opt">
+          {{ opt }}
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <button mat-button >Go!</button>
+    <button mat-button (click)="close(selectedValue)" [disabled]="selectedValue === undefined">Go!</button>
 </div>

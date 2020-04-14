@@ -1,7 +1,7 @@
+import { Observable, of } from 'rxjs';
 import { Player, UpdatedPlayer } from '../../interfaces/player.interface';
 
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
 import { take } from 'rxjs/operators';
@@ -55,23 +55,25 @@ export class MenuService {
       this.socket.fromEvent<any>('joining lobby')
         .pipe(take(1))
         .subscribe(joiningLobby => {
-          const enemies = JSON.stringify(
-            joiningLobby.players.filter(player =>
-              player.uniqueId !== joiningLobby.user.uniqueId
-            ));
-          sessionStorage.setItem('user', JSON.stringify(joiningLobby.user));
-          sessionStorage.setItem(
-            'otherPlayers',
-            enemies
-          );
-          this.router.navigate(['lobby']);
+          if (joiningLobby === 401) {
+            this.router.navigate(['soz-gotta-wait-a-bit']);
+          } else {
+            const enemies = JSON.stringify(
+              joiningLobby.players.filter(player =>
+                player.uniqueId !== joiningLobby.user.uniqueId
+              ));
+            sessionStorage.setItem('user', JSON.stringify(joiningLobby.user));
+            sessionStorage.setItem(
+              'otherPlayers',
+              enemies
+            );
+            this.router.navigate(['lobby']);
+          }
         });
     });
   }
   addNewUser(user: Player) {
     this.socket.emit('add new user', user);
-    console.log('soz game already started');
-    this.router.navigate(['soz-gotta-wait-a-bit']);
   }
   overrideUser(user: Player) {
     console.log('override a lobby user');
@@ -88,20 +90,21 @@ export class MenuService {
   listenForUpdatedPlayer(): Observable<UpdatedPlayer> {
     return this.socket.fromEvent<UpdatedPlayer>('player updated');
   }
-  goToGameListener(): Observable<any> {
-    return this.socket.fromEvent<any>('go to game');
+  goToGameListener(isHost: boolean): Observable<any> {
+    return isHost ? of() : this.socket.fromEvent<any>('go to game');
   }
 
 
   updatePlayer(player: Player): void {
     this.socket.emit('update player', player);
   }
-  
+
   // Start Game
   startGame(): void {
     this.socket.emit('start game');
+    this.router.navigate(['game']);
   }
-  
+
   private createUniqueId() {
     let candidateId = Math.floor(Math.random() * 1000);
     let isGood = false;

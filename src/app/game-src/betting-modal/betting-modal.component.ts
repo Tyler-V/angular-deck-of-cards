@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 interface Food {
   value: string;
@@ -19,26 +20,24 @@ interface Car {
 export class BettingModalComponent implements OnInit {
   selected: any;
 
-  selectedValue: string;
-  selectedCar: string;
+  selectedValue: number;
 
-  foods: Food[] = [
-    {value: 'steak-0', viewValue: 'Steak'},
-    {value: 'pizza-1', viewValue: 'Pizza'},
-    {value: 'tacos-2', viewValue: 'Tacos'}
-  ];
+  isLoading = true;
+  options: number[];
 
-  cars: Car[] = [
-    {value: 'volvo', viewValue: 'Volvo'},
-    {value: 'saab', viewValue: 'Saab'},
-    {value: 'mercedes', viewValue: 'Mercedes'}
-  ];
-
-  
-
-  constructor() { }
+  constructor(
+    private dialogRef: MatDialogRef<BettingModalComponent>,
+    @Inject(MAT_DIALOG_DATA) data
+  ) {
+    this.options = data.bettingOptions;
+    this.isLoading = false;
+  }
 
   ngOnInit(): void {
+  }
+
+  close(val: number): void {
+    this.dialogRef.close(val);
   }
 
 }

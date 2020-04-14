@@ -12,7 +12,8 @@ export class AuthService {
         console.log('here');
         const id = JSON.parse(sessionStorage.getItem('userId'));
         this.socket.emit('is auth', id);
-        console.log(this.socket.removeAllListeners());
+        this.socket.removeAllListeners();
+        console.log();
         return new Promise(resolve => {
             this.socket.fromEvent<boolean>('can log in')
                 .pipe(
@@ -20,7 +21,7 @@ export class AuthService {
                 ).subscribe(canLogIn => {
                     console.log('here but i shouldnt be');
                     console.log(canLogIn);
-                    resolve(canLogIn);
+                    resolve(false);
                 }, err => {
                     console.log('here');
                     resolve(false);

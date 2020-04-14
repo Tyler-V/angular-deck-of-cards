@@ -77,7 +77,8 @@ export class LobbyRoomComponent implements OnInit, OnDestroy {
   }
 
   private goToGameListener(): void {
-    this.menu.goToGameListener().pipe(takeUntil(this.unsubscribes)).subscribe(() => {
+    this.menu.goToGameListener(this.currentPlayer.isHost).pipe(takeUntil(this.unsubscribes)).subscribe(() => {
+      console.log('hey there');
       this.router.navigate(['game']);
     });
   }

@@ -3,6 +3,7 @@ import { Card } from '../shared/models/card.model';
 export interface Bet {
     bet: number;
     hits: number;
+    uniqueId?: number;
     bettingOptions?: Array<number>;
 }
 
@@ -25,6 +26,7 @@ export interface RoundPlayer {
     seatInd: number;
 }
 export interface Round {
+    me: RoundPlayer;
     myHand: Hand;
     myBets: Bet;
     players: RoundPlayer[];
