@@ -1,9 +1,9 @@
-<!-- <div class="round-start">
+<div class="round-start" *ngIf="isLoading">
     <h1>
-        ROUND 1
+        ROUND {{ currentRound }}
     </h1>
-</div> -->
-<ng-sidebar-container class="container">
+</div>
+<ng-sidebar-container class="container" *ngIf="!isLoading">
     <ng-sidebar class="sidebar-scoreboard ng-sidebar--right" 
         [(opened)]="scoreboardToggle" 
         [position]="'right'"
@@ -33,7 +33,7 @@
                 <div class="bottom-cont">
                     <div class="trump-container">
                         <h4>Trump</h4>
-                        <div class="suit-image club"></div>
+                        <doc-card [card]="trumpoCard"></doc-card>
                     </div>
                     <div class="round-container">
                         <h4>Round</h4>
@@ -41,7 +41,6 @@
                     </div>
                 </div>
             </div>
-            
         </div>
     </ng-sidebar>
     <div class="content-container" ng-sidebar-content>
@@ -50,27 +49,27 @@
         </mat-toolbar>
         <div class="game-container">
             <div class="user-status-container">
-                    <asr-user-card></asr-user-card>
-                    <asr-user-card></asr-user-card>
-                    <asr-user-card></asr-user-card>
-                    <asr-user-card></asr-user-card>
-                    <asr-user-card></asr-user-card>
-                    <asr-user-card></asr-user-card>
+                    <asr-user-card *ngFor="let usercard of roundData.players"
+                        [name]="usercard.username"
+                        [bets]="usercard.bets"
+                        [status]="usercard.status"
+                        [iconTitle]="usercard.iconTitle"
+                    ></asr-user-card>
             </div>
             <div class="mid-section">
-                <asr-round-pile></asr-round-pile>
+                <asr-round-pile [card]="cardOnTop"></asr-round-pile>
             </div>
             <div class="user-action-container">
                 <!-- Info strip -->
                 <mat-toolbar color="primary" class="toolbar info-strip">
                     <img src="../../../assets/icons/info.png"/>
                     <h6 class="info-text">
-                        It is your turn
+                        {{ userInfo }}
                     </h6>
                 </mat-toolbar>
                 <!-- Deck of Cards come here  -->
                 <div class="cards-container">
-                    <doc-cards></doc-cards>
+                    <asr-user-hand [cards]="currentHand"></asr-user-hand>
                 </div>
             </div>
         </div>

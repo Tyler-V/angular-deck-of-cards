@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { DeckOfCardsComponent } from './deck-of-cards.component';
 import { FilteringComponent } from './filtering/filtering.component';
 import { FormsModule } from '@angular/forms';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MaterialModule } from '../../shared/modules/material.module';
 import { NgModule } from '@angular/core';
 
@@ -11,7 +12,8 @@ import { NgModule } from '@angular/core';
   imports: [
     CommonModule,
     FormsModule,
-    MaterialModule
+    MaterialModule,
+    MatTooltipModule
   ],
   declarations: [DeckOfCardsComponent, FilteringComponent, CardsComponent, CardComponent],
   exports: [DeckOfCardsComponent, CardsComponent, CardComponent],

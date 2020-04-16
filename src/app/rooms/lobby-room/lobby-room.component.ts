@@ -1,24 +1,39 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { take, takeUntil } from 'rxjs/operators';
+
 import { MenuService } from 'src/app/services/menu-service/menu.service';
 import { Player } from 'src/app/interfaces/player.interface';
+import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'doc-lobby-room',
   templateUrl: './lobby-room.component.html',
   styleUrls: ['./lobby-room.component.scss'],
 })
-export class LobbyRoomComponent implements OnInit {
+export class LobbyRoomComponent implements OnInit, OnDestroy {
   otherPlayers: Player[] = [];
   currentPlayer: Player;
   isLoading = true;
+  private unsubscribes = new Subject<void>();
+  constructor(
+    private readonly menu: MenuService,
+    private readonly router: Router
+    ) { }
 
-  constructor(private readonly menu: MenuService) { }
   ngOnInit(): void {
     this.getCurrentPlayer();
     this.getLobbyPlayers();
     this.listenForNewPlayers();
     this.listenForUpdatedPlayer();
+    this.goToGameListener();
     this.isLoading = false;
+  }
+
+  ngOnDestroy(): void {
+    console.log('here');
+    this.unsubscribes.next();
+    this.unsubscribes.complete();
   }
 
   getHostButtonText(): string {
@@ -47,6 +62,7 @@ export class LobbyRoomComponent implements OnInit {
   startGame(): void {
     if (this.currentPlayer.isHost) {
       console.log('im a host so i can start the game');
+      this.menu.startGame();
     }
   }
   private getCurrentPlayer(): void {
@@ -54,18 +70,26 @@ export class LobbyRoomComponent implements OnInit {
   }
 
   private listenForNewPlayers() {
-    this.menu.listenForNewPlayers().subscribe(user => {
+    this.menu.listenForNewPlayers().pipe(takeUntil(this.unsubscribes)).subscribe(user => {
       console.log('someone joined');
       this.safeAdd(user);
     });
   }
 
+  private goToGameListener(): void {
+    this.menu.goToGameListener(this.currentPlayer.isHost).pipe(takeUntil(this.unsubscribes)).subscribe(() => {
+      console.log('hey there');
+      this.router.navigate(['game']);
+    });
+  }
+
   private listenForUpdatedPlayer() {
-    this.menu.listenForUpdatedPlayer().subscribe(playerUpdated => {
+    this.menu.listenForUpdatedPlayer().pipe(takeUntil(this.unsubscribes)).subscribe(playerUpdated => {
       console.log('someone got updated');
       const ind = this.otherPlayers.findIndex(player => player.uniqueId === playerUpdated.id);
       if (ind !== -1) {
         this.otherPlayers[ind] = Object.assign({}, playerUpdated.player);
+        sessionStorage.setItem('otherPlayers', JSON.stringify(this.otherPlayers));
       }
     });
   }
@@ -81,7 +105,7 @@ export class LobbyRoomComponent implements OnInit {
   }
 
   private getLobbyPlayers(): void {
-    this.menu.getLobbyPlayers().subscribe(players => {
+    this.menu.getLobbyPlayers().pipe(take(1)).subscribe(players => {
       this.otherPlayers = players.filter(player => this.currentPlayer.username !== player.username);
       sessionStorage.setItem(
         'otherPlayers',

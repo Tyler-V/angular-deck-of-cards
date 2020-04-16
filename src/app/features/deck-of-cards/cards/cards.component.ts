@@ -1,7 +1,5 @@
+import { Component, Input, OnInit } from '@angular/core';
 import { animate, keyframes, query, stagger, style, transition, trigger } from '@angular/animations';
-
-import { Component } from '@angular/core';
-import { DeckOfCardsService } from '../deck-of-cards.service';
 
 @Component({
   selector: 'doc-cards',
@@ -26,11 +24,14 @@ import { DeckOfCardsService } from '../deck-of-cards.service';
 
   ]
 })
-export class CardsComponent {
+export class CardsComponent implements OnInit {
+  @Input() cards: any[];
+  @Input() isFirstRound = false;
 
-  constructor(public cardService: DeckOfCardsService) {
-    this.cardService.initialize();
-    this.cardService.draw(5);
+  cardsLen = 0;
+  constructor() {}
+  ngOnInit(): void {
+    console.log(this.cards);
   }
 
 }

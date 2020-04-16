@@ -1,5 +1,6 @@
-<div fxLayout='row wrap' fxLayoutGap="10px" class='card-layout' [@cardAnimation]="cardService.cards.length">
-  <div *ngFor="let card of cardService.cards" fxFlex="90px">
-    <doc-card [card]='card'></doc-card>
+<div fxLayout='row wrap' fxLayoutGap="30px" class='card-layout'
+  [@cardAnimation]="cards.length">
+  <div *ngFor="let card of cards" fxFlex="90px" >
+    <doc-card [card]='card' [isFirstRound]="isFirstRound"></doc-card>
   </div>
 </div>

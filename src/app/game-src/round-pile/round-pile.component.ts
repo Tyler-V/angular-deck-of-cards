@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 import { Card } from 'src/app/shared/models/card.model';
 import { Suit } from 'src/app/shared/models/suit.model';
@@ -9,7 +9,7 @@ import { Suit } from 'src/app/shared/models/suit.model';
   styleUrls: ['./round-pile.component.scss']
 })
 export class RoundPileComponent implements OnInit {
-  cardOnTop: Card = {
+  @Input() card: Card = {
     name: '2',
     value: 2,
     suit: Suit.Club

@@ -1,5 +1,13 @@
-<mat-card class="card">
-  <div class="suit-image top-left" [ngClass]='card.suit'></div>
-  <div class="card-name" [ngClass]='card.suit == "club" || card.suit == "spade" ? "black" : "red"'>{{card.name}}</div>
-  <div class="suit-image bottom-right" [ngClass]='card.suit'></div>
+<mat-card   
+    [matTooltip]="cardName"
+    matTooltipPosition="above"
+    [class]="isFirstRound ? 'card first-round-card' : 'card'"
+    *ngIf="cardToDisplay">
+  <img [src]="imgSrc" *ngIf="isFirstRound" class="first-round-img"/>
+  <div class="suit-image top-left" [ngClass]='cardToDisplay.suit'></div>
+  <div class="card-name" 
+      [ngClass]='cardToDisplay.suit == "club" || cardToDisplay.suit == "spade" ? "black" : "red"'>
+        {{ cardToDisplay.name }}
+      </div>
+  <div class="suit-image bottom-right" [ngClass]='cardToDisplay.suit'></div>
 </mat-card>
