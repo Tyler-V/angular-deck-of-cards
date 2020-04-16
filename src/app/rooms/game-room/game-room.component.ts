@@ -1,4 +1,4 @@
-import { Bet, Hand, Round } from 'src/app/interfaces/round.interface';
+import { Bet, Round } from 'src/app/interfaces/round.interface';
 import { Component, OnInit } from '@angular/core';
 import { take, takeUntil } from 'rxjs/operators';
 
@@ -7,7 +7,6 @@ import { Card } from 'src/app/shared/models/card.model';
 import { GameService } from 'src/app/services/game-service/game.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
-import { Suit } from 'src/app/shared/models/suit.model';
 
 @Component({
   selector: 'doc-game-room',
@@ -132,7 +131,8 @@ export class GameRoomComponent implements OnInit {
   private listenForReveal(): void {
     this.gameService.listenForReveal()
       .pipe(take(1))
-      .subscribe(() => {
+      .subscribe((roundBets) => {
+        console.log(roundBets);
         this.roundData.players.forEach((_, ind, arr) => {
           const playerInd = this.betsHolder.findIndex(bet => bet.uniqueId === _.uniqueId);
           this.roundData.players[ind].bets = Object.assign({}, this.betsHolder[playerInd]);
