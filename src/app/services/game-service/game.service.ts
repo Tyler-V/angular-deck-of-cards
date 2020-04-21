@@ -22,6 +22,10 @@ export class GameService implements OnInit {
     this.socket.emit('get round data', {round, id});
     return this.socket.fromEvent<Round>('round data');
   }
+  initNextRound(): Observable<any> {
+    this.socket.emit('set up next round');
+    return this.socket.fromEvent<any>('start next round');
+  }
   makeBet(bet: Bet, id: any): void {
     this.socket.emit('making a bet', {...bet, uniqueId: id});
   }
@@ -36,6 +40,12 @@ export class GameService implements OnInit {
   }
   listenForReveal(): Observable<any> {
     return this.socket.fromEvent<any>('reveal bets');
+  }
+  listenForRound1Results(): Observable<any> {
+    return this.socket.fromEvent<any>('play out first round');
+  }
+  listenForNextRound(): Observable<any> {
+    return this.socket.fromEvent<any>('start next round');
   }
 
 }

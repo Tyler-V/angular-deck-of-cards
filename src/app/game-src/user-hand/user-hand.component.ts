@@ -1,7 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Hand, OthersHand } from 'src/app/interfaces/round.interface';
-
-import { Card } from 'src/app/shared/models/card.model';
 
 @Component({
   selector: 'asr-user-hand',
@@ -10,6 +7,7 @@ import { Card } from 'src/app/shared/models/card.model';
 })
 export class UserHandComponent implements OnInit {
   @Input() cards: any[];
+  @Input() isFirstRound: boolean;
   constructor() { }
 
   ngOnInit(): void {

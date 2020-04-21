@@ -6,13 +6,16 @@ export interface Bet {
     uniqueId?: number;
     bettingOptions?: Array<number>;
 }
-
+export interface MyHand {
+    uniqueId: number;
+    hand: Card[];
+}
 export interface OthersHand {
     uniqueId: number;
     card: Card;
 }
 export interface Hand {
-    myHand?: Card[];
+    myHand?: MyHand;
     firstRoundHand?: OthersHand[];
 }
 export interface RoundPlayer {
@@ -24,6 +27,7 @@ export interface RoundPlayer {
     isDealer: boolean;
     isFirst: boolean;
     seatInd: number;
+    isHost?: boolean;
 }
 export interface Round {
     me: RoundPlayer;
@@ -31,4 +35,5 @@ export interface Round {
     myBets: Bet;
     players: RoundPlayer[];
     trumpCard: Card;
+    firstRoundData?: any;
 }

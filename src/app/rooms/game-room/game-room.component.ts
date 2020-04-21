@@ -1,11 +1,12 @@
 import { Bet, Round } from 'src/app/interfaces/round.interface';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { take, takeUntil } from 'rxjs/operators';
 
 import { BettingModalComponent } from 'src/app/game-src/betting-modal/betting-modal.component';
 import { Card } from 'src/app/shared/models/card.model';
+import { FirstRoundModalComponent } from 'src/app/game-src/first-round-modal/first-round-modal.component';
 import { GameService } from 'src/app/services/game-service/game.service';
-import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -15,26 +16,9 @@ import { Subject } from 'rxjs';
 })
 export class GameRoomComponent implements OnInit {
   cardOnTop: Card;
-  rankedPlayers = [
-    {
-      rank: 1,
-      name: 'Soma',
-      points: 100
-    },
-    {
-      rank: 2,
-      name: 'Apa',
-      points: 50
-    },
-    {
-      rank: 3,
-      name: 'Anya',
-      points: 20
-    }
-  ];
+  rankedPlayers = [];
   currentRound = 1;
   currentHand: any;
-  betsHolder: Bet[] = [];
 
   userInfo = 'Look at the opponent hands, and make your bet!';
   trumpoCard: Card;
@@ -47,15 +31,43 @@ export class GameRoomComponent implements OnInit {
   private unsubscribez = new Subject<any>();
   constructor(
     public dialog: MatDialog,
-    private readonly gameService: GameService
+    private readonly gameService: GameService,
+    // private dialogRef: MatDialogRef<FirstRoundModalComponent>
   ) { }
 
   ngOnInit(): void {
-    this.initRound();
+    this.initFirstRound();
+  }
+  openFirstRoundModal(firstRoundData: any): void {
+    // turn on start next round listener
+
+    const modalRef = this.dialog.open(FirstRoundModalComponent, {
+      width: '700px',
+      height: '70vh',
+      panelClass: 'modal',
+      hasBackdrop: false,
+      disableClose: true,
+      position: {
+        top: '8vh'
+      },
+      data: {
+        ...this.roundData,
+        firstRoundData
+      }
+    });
+    modalRef.afterClosed().pipe(take(1)).subscribe((roundFromModal) => {
+      if (this.roundData.me.isHost) {
+        this.gameService.initNextRound().pipe(take(1)).subscribe(round => {
+          this.initNextRound(round);
+        });
+      } else {
+        this.initNextRound(roundFromModal);
+      }
+    });
   }
   openBettingModal(isDealerRebet?: boolean): void {
     const modalRef = this.dialog.open(BettingModalComponent, {
-      width: '500px',
+      width: '700px',
       panelClass: 'modal',
       hasBackdrop: false,
       disableClose: true,
@@ -80,9 +92,28 @@ export class GameRoomComponent implements OnInit {
   toggleScorePanel(): void {
     this.scoreboardToggle = !this.scoreboardToggle;
   }
-  private initRound(): void {
+  private initNextRound(round: number): void {
+    this.isLoading = true;
+    this.currentRound = round;
+    // close all result modals
+    this.gameService.initRound(round).pipe(take(1)).subscribe(roundData => {
+      console.log(roundData);
+      this.roundData = roundData;
+      this.currentHand = Array.from(this.roundData.myHand.myHand.hand);
+      this.trumpoCard = Object.assign({}, this.roundData.trumpCard);
+      this.bettingOptions = this.roundData.myBets.bettingOptions;
+      console.log('trumpo card is ', this.trumpoCard);
+      console.log('my hand is ');
+      console.log(this.currentHand);
+      this.isLoading = false;
+    });
+    // start loading
+  }
+  private initFirstRound(): void {
+    this.isLoading = true;
     this.gameService.getCurrentRound().pipe(take(1)).subscribe(round => {
       this.currentRound = round;
+      // handling of reload comes here later for now its trashy
       this.gameService.initRound(round).pipe(take(1)).subscribe(roundData => {
         this.roundData = roundData;
         this.userId = this.roundData.me.uniqueId;
@@ -99,11 +130,22 @@ export class GameRoomComponent implements OnInit {
     this.currentHand = Array.from(this.roundData.myHand.firstRoundHand);
     this.trumpoCard = Object.assign({}, this.roundData.trumpCard);
     this.bettingOptions = this.roundData.myBets.bettingOptions;
+    const others = this.roundData.players.map(playa => {
+      return {
+        name: playa.username,
+        uniqueId: playa.uniqueId,
+        points: 0
+      };
+    });
+    this.rankedPlayers = [...others, {name: this.roundData.me.username, uniqueId: this.roundData.me.uniqueId, points: 0}];
   }
   private initBettingListeners(): void {
     if (this.roundData.me.isDealer) {
       console.log('im the dealer so im listening');
       this.listenForDealerInstruction();
+    }
+    if (this.currentRound === 1) {
+      this.listenForRound1();
     }
     this.listenForOthersMakingBet();
     this.listenForReveal();
@@ -119,12 +161,11 @@ export class GameRoomComponent implements OnInit {
   }
   private listenForOthersMakingBet(): void {
     this.gameService.listenForPlayerMakingBet()
-      .pipe(takeUntil(this.unsubscribez)) //<-- needs to be a subject
+      .pipe(takeUntil(this.unsubscribez)) // <-- needs to be a subject
       .subscribe((playerBet: Bet) => {
         const ind = this.roundData.players.findIndex(player => player.uniqueId === playerBet.uniqueId);
         if (ind > -1) {
-          this.betsHolder.push(Object.assign({}, playerBet));
-          console.log('bets holder', this.betsHolder);
+          this.roundData.players[ind].status = 'Done!';
         }
       });
   }
@@ -134,13 +175,23 @@ export class GameRoomComponent implements OnInit {
       .subscribe((roundBets) => {
         console.log(roundBets);
         this.roundData.players.forEach((_, ind, arr) => {
-          const playerInd = this.betsHolder.findIndex(bet => bet.uniqueId === _.uniqueId);
-          this.roundData.players[ind].bets = Object.assign({}, this.betsHolder[playerInd]);
+          const playerInd = roundBets.findIndex(bet => bet.uniqueId === _.uniqueId);
+          this.roundData.players[ind].bets = Object.assign({}, roundBets[playerInd]);
         });
 
         this.unsubscribez.next();
         this.unsubscribez.complete();
       });
   }
-
+  private listenForRound1(): void {
+    this.gameService.listenForRound1Results()
+      .pipe(take(1))
+      .subscribe(roundData => {
+        console.log(roundData);
+        this.rankedPlayers.forEach(playa => {
+          playa.points = roundData.scoreboard.find(user => user.uniqueId === playa.uniqueId).points;
+        });
+        this.openFirstRoundModal(roundData);
+      });
+  }
 }

@@ -28,7 +28,10 @@ export class CardComponent implements OnInit {
   }
 
   private getInfo(id: number) {
-    const user = JSON.parse(sessionStorage.getItem('otherPlayers')).find(player => player.uniqueId === id);
+    let user = JSON.parse(sessionStorage.getItem('otherPlayers')).find(player => player.uniqueId === id);
+    if (user === void 0) {
+      user = JSON.parse(sessionStorage.getItem('user'));
+    }
     // image source
     const title = user.iconTitle;
     this.imgSrc = this.iconService.getIconSrc(title);
