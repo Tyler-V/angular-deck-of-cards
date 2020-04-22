@@ -1,0 +1,28 @@
+<div class="modal-container" *ngIf="!isLoading">
+    <div class="title-strip">
+        Round {{ currRound }} Results
+    </div>
+    <div class="result-container">
+        <div class="result" *ngFor="let bet of results">
+            <div class="name">
+                {{ bet.name }}
+            </div>
+            <div class="current-bets-container">
+                <div class="head">
+                    <div class="bet">Bets</div>
+                    <div class="hits">Hits</div>
+                </div>
+                <div class="values">
+                    <div class="bet">{{ bet.bet }}</div>
+                    <div class="hits">{{ bet.hits }}</div>
+                </div>
+            </div>
+            <div class="point">
+                {{ bet.point }}
+            </div>
+        </div>
+    </div>
+    <button mat-button (click)="startNextRound()" [disabled]="!isHost">
+        {{ isHost ? 'Start next round' : 'Waiting for host...'}}
+    </button>
+</div>

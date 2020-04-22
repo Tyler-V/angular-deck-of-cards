@@ -23,8 +23,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="ranked-player" *ngFor="let player of rankedPlayers">
-                            <td>{{ player.rank }}</td>
+                        <tr class="ranked-player" *ngFor="let player of rankedPlayers | orderByPoints; let i = index">
+                            <td>{{ i + 1 }}</td>
                             <td>{{ player.name }}</td>
                             <td>{{ player.points }}</td>
                         </tr>
@@ -69,7 +69,12 @@
                 </mat-toolbar>
                 <!-- Deck of Cards come here  -->
                 <div class="cards-container">
-                    <asr-user-hand [cards]="currentHand"></asr-user-hand>
+                    <asr-user-hand 
+                        [cards]="currentHand"
+                        [isFirstRound]="currentRound === 1"
+                        [canPlay]="canPlay" 
+                        (justPlayed)="justPlayedCard($event)"   
+                    ></asr-user-hand>
                 </div>
             </div>
         </div>

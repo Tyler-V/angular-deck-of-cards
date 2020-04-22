@@ -22,6 +22,10 @@ export class GameService implements OnInit {
     this.socket.emit('get round data', {round, id});
     return this.socket.fromEvent<Round>('round data');
   }
+  initNextRound(): Observable<any> {
+    this.socket.emit('set up next round');
+    return this.socket.fromEvent<any>('start next round');
+  }
   makeBet(bet: Bet, id: any): void {
     this.socket.emit('making a bet', {...bet, uniqueId: id});
   }
@@ -37,5 +41,24 @@ export class GameService implements OnInit {
   listenForReveal(): Observable<any> {
     return this.socket.fromEvent<any>('reveal bets');
   }
-
+  listenForRound1Results(): Observable<any> {
+    return this.socket.fromEvent<any>('play out first round');
+  }
+  listenForNextRound(): Observable<any> {
+    return this.socket.fromEvent<any>('start next round');
+  }
+  listenForOthersPlayingCard(): Observable<any> {
+    return this.socket.fromEvent<any>('somebody played card');
+  }
+  listenForHitWinner(): Observable<any> {
+    return this.socket.fromEvent<any>('hit winner is');
+  }
+  listenForRoundEnd(): Observable<any> {
+    return this.socket.fromEvent<any>('round finished');
+  }
+  playCard(card) {
+    const id = JSON.parse(sessionStorage.getItem('user')).uniqueId;
+    this.socket.emit('card played', {...card, uniqueId: id});
+    console.log(card);
+  }
 }

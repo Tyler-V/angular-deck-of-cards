@@ -1,1 +1,6 @@
-<doc-cards [isFirstRound]="true" [cards]="cards" *ngIf="cards.length > 0"></doc-cards>
+<doc-cards
+    [isFirstRound]="isFirstRound"
+    [cards]="cards"
+    [canPlay]="canPlay"
+    *ngIf="cards.length > 0" 
+    (cardPlayed)="playCard($event)"></doc-cards>

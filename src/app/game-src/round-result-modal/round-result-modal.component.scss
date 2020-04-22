@@ -1,0 +1,61 @@
+.modal-container {
+    padding: 2rem;;
+    min-width: 25rem;
+    height: 15rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .title-strip {
+        font-size: 35px;
+        text-align: center;
+        font-weight: 100;
+        font-family: sans-serif;
+    }
+    button {
+        height: 3rem;;
+        font-size: 35px;
+        font-weight: 100;
+        font-family: sans-serif;
+        background: #4051B6;
+        border: 1px solid white;
+        color: white;
+    }
+    .result-container {
+        display: flex;
+        .result {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            .current-bets-container {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                margin-top: .5rem;
+                margin-bottom: .5rem;
+                .head .bet, .head .hits {
+                    font-size: 20px;
+                }
+                .head, .values {
+                    display: flex;
+                }
+                .bet, .hits {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 50%;
+                    height: 2rem;
+                    font-size: 25px;
+                }
+                .bet {
+                    border-right: 1px solid black;;
+                }
+                .hits {
+                    border-left: 1px solid black;;
+                }
+            }
+        }
+        
+    }
+}

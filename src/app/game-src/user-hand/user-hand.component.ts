@@ -1,7 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Hand, OthersHand } from 'src/app/interfaces/round.interface';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
-import { Card } from 'src/app/shared/models/card.model';
+import { GameService } from '../../services/game-service/game.service';
 
 @Component({
   selector: 'asr-user-hand',
@@ -10,10 +9,19 @@ import { Card } from 'src/app/shared/models/card.model';
 })
 export class UserHandComponent implements OnInit {
   @Input() cards: any[];
-  constructor() { }
+  @Input() isFirstRound: boolean;
+  @Input() canPlay: boolean;
+  @Output() justPlayed: EventEmitter<any> = new EventEmitter<any>();
+  constructor(private readonly gameService: GameService) { }
 
   ngOnInit(): void {
     console.log(this.cards);
   }
-
+  playCard(data: any): void {
+    if (this.canPlay && !this.isFirstRound) {
+      this.gameService.playCard(data.card);
+      this.cards.splice(data.ind, 1);
+      this.justPlayed.emit(data.card);
+    }
+  }
 }
