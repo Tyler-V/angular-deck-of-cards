@@ -7,6 +7,7 @@ import { BettingModalComponent } from 'src/app/game-src/betting-modal/betting-mo
 import { Card } from 'src/app/shared/models/card.model';
 import { FirstRoundModalComponent } from 'src/app/game-src/first-round-modal/first-round-modal.component';
 import { GameService } from 'src/app/services/game-service/game.service';
+import { RoundResultModalComponent } from 'src/app/game-src/round-result-modal/round-result-modal.component';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -26,6 +27,7 @@ export class GameRoomComponent implements OnInit {
   roundData: Round;
   scoreboardToggle = true;
   bettingOptions: number[];
+  canPlay = false;
 
   userId: number;
   private unsubscribez = new Subject<any>();
@@ -43,7 +45,7 @@ export class GameRoomComponent implements OnInit {
 
     const modalRef = this.dialog.open(FirstRoundModalComponent, {
       width: '700px',
-      height: '70vh',
+      // height: '70vh',
       panelClass: 'modal',
       hasBackdrop: false,
       disableClose: true,
@@ -64,6 +66,10 @@ export class GameRoomComponent implements OnInit {
         this.initNextRound(roundFromModal);
       }
     });
+  }
+  justPlayedCard(card) {
+    this.canPlay = false;
+    this.cardOnTop = Object.assign({}, card);
   }
   openBettingModal(isDealerRebet?: boolean): void {
     const modalRef = this.dialog.open(BettingModalComponent, {
@@ -89,6 +95,29 @@ export class GameRoomComponent implements OnInit {
       }
     });
   }
+  openRoundResultModal(roundBets: any[]): void {
+    const modalRef = this.dialog.open(RoundResultModalComponent, {
+      width: '700px',
+      // height: '70vh',
+      panelClass: 'modal',
+      hasBackdrop: false,
+      disableClose: true,
+      position: {
+        top: '8vh'
+      },
+      data: {roundBets, currRound: this.currentRound, roundData: this.roundData}
+    });
+
+    modalRef.afterClosed().pipe(take(1)).subscribe((roundFromModal) => {
+      if (this.roundData.me.isHost) {
+        this.gameService.initNextRound().pipe(take(1)).subscribe(round => {
+          this.initNextRound(round);
+        });
+      } else {
+        this.initNextRound(roundFromModal);
+      }
+    });
+  }
   toggleScorePanel(): void {
     this.scoreboardToggle = !this.scoreboardToggle;
   }
@@ -106,6 +135,8 @@ export class GameRoomComponent implements OnInit {
       console.log('my hand is ');
       console.log(this.currentHand);
       this.isLoading = false;
+      this.openBettingModal();
+      this.initBettingListeners();
     });
     // start loading
   }
@@ -178,9 +209,13 @@ export class GameRoomComponent implements OnInit {
           const playerInd = roundBets.findIndex(bet => bet.uniqueId === _.uniqueId);
           this.roundData.players[ind].bets = Object.assign({}, roundBets[playerInd]);
         });
-
-        this.unsubscribez.next();
-        this.unsubscribez.complete();
+        this.listenForOthersPlayingCard();
+        this.listenForHitWinner();
+        this.listenForRoundEnd();
+        // if ure first then enable playing
+        if (this.roundData.me.isFirst) {
+          this.canPlay = true;
+        }
       });
   }
   private listenForRound1(): void {
@@ -192,6 +227,50 @@ export class GameRoomComponent implements OnInit {
           playa.points = roundData.scoreboard.find(user => user.uniqueId === playa.uniqueId).points;
         });
         this.openFirstRoundModal(roundData);
+      });
+  }
+  private listenForOthersPlayingCard(): void {
+    this.gameService.listenForOthersPlayingCard()
+      .pipe(takeUntil(this.unsubscribez))
+      .subscribe(data => {
+        console.log(data);
+        // card and nextId should come
+        // update top card
+        this.cardOnTop = Object.assign({}, data.card);
+        console.log(this.cardOnTop);
+        // let player play card if its their nextId
+        if (this.userId === data.nextId) {
+          console.log('youre next');
+          this.canPlay = true;
+          // get available cards
+        } else {
+          console.log('next to play: ', data.nextId);
+          // update status
+        }
+      });
+  }
+  private listenForHitWinner(): void {
+    this.gameService.listenForHitWinner()
+      .pipe(takeUntil(this.unsubscribez))
+      .subscribe(data => {
+        console.log(data);
+        this.cardOnTop = {};
+        // if u won u start
+        if (data.winnerId === this.userId) {
+          console.log('ure turn to play');
+          this.canPlay = true;
+        } else {
+          this.canPlay = false;
+        }
+      });
+  }
+  private listenForRoundEnd(): void {
+    this.gameService.listenForRoundEnd()
+      .pipe(take(1))
+      .subscribe(data => {
+        console.log(data);
+        // round results displayed
+        this.openRoundResultModal(data.roundBets);
       });
   }
 }

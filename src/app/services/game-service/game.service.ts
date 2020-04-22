@@ -47,5 +47,18 @@ export class GameService implements OnInit {
   listenForNextRound(): Observable<any> {
     return this.socket.fromEvent<any>('start next round');
   }
-
+  listenForOthersPlayingCard(): Observable<any> {
+    return this.socket.fromEvent<any>('somebody played card');
+  }
+  listenForHitWinner(): Observable<any> {
+    return this.socket.fromEvent<any>('hit winner is');
+  }
+  listenForRoundEnd(): Observable<any> {
+    return this.socket.fromEvent<any>('round finished');
+  }
+  playCard(card) {
+    const id = JSON.parse(sessionStorage.getItem('user')).uniqueId;
+    this.socket.emit('card played', {...card, uniqueId: id});
+    console.log(card);
+  }
 }

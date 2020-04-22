@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { animate, keyframes, query, stagger, style, transition, trigger } from '@angular/animations';
 
 @Component({
@@ -30,6 +30,8 @@ export class CardsComponent implements OnInit {
   @Input() isResult = false;
   @Input() winnerId = null;
   @Input() roundPoints = [];
+  @Input() canPlay = false;
+  @Output() cardPlayed: EventEmitter<any> = new EventEmitter<any>();
   cardsLen = 0;
 
   constructor() {}
@@ -52,4 +54,7 @@ export class CardsComponent implements OnInit {
     return out.points;
   }
 
+  emitCard(card: any, ind: number): void {
+    this.cardPlayed.emit({card, ind});
+  }
 }

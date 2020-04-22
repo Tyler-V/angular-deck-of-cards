@@ -13,6 +13,7 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { RoundPileComponent } from './round-pile/round-pile.component';
 import { UserCardComponent } from './user-card/user-card.component';
 import { UserHandComponent } from './user-hand/user-hand.component';
+import { RoundResultModalComponent } from './round-result-modal/round-result-modal.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { UserHandComponent } from './user-hand/user-hand.component';
     BettingModalComponent,
     UserHandComponent,
     FirstRoundModalComponent,
-    OrderByPointsPipe
+    OrderByPointsPipe,
+    RoundResultModalComponent
   ],
   imports: [
     CommonModule,

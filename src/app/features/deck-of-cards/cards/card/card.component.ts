@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 
 import { Card } from '../../../../shared/models/card.model';
 import { IconService } from 'src/app/services/helper-services/icon.service';
@@ -8,7 +8,7 @@ import { IconService } from 'src/app/services/helper-services/icon.service';
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss']
 })
-export class CardComponent implements OnInit {
+export class CardComponent implements OnInit, OnChanges {
   @Input() public card: any;
   @Input() isFirstRound = false;
   imgSrc = '';
@@ -25,6 +25,12 @@ export class CardComponent implements OnInit {
       this.cardToDisplay = this.card;
     }
     console.log(this.cardToDisplay);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['card']) {
+      this.cardToDisplay = Object.assign({}, this.card);
+    }
   }
 
   private getInfo(id: number) {
