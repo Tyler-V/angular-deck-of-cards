@@ -35,6 +35,7 @@ export class RoundResultModalComponent implements OnInit {
     // set up listener if not a host
     if (!this.isHost) {
       this.gameService.listenForNextRound().pipe(take(1)).subscribe(round => {
+        console.log('here in the closing modal listener response');
         this.dialogRef.close(round);
       });
     }
@@ -42,9 +43,7 @@ export class RoundResultModalComponent implements OnInit {
   }
 
   startNextRound(): void {
-    if (this.isHost) {
-      this.dialogRef.close();
-    }
+    this.dialogRef.close();
   }
   getRoundPoints(): any[] {
     const out = [];

@@ -31,14 +31,17 @@ export class LobbyRoomComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('here');
     this.unsubscribes.next();
     this.unsubscribes.complete();
   }
 
   getHostButtonText(): string {
     if (this.currentPlayer.isHost) {
-      return this.currentPlayer.isReady ? 'Start Game!' : 'Ready';
+      if (this.currentPlayer.isReady) {
+        return this.otherPlayers.findIndex(playa => !playa.isReady) !== -1 ? 'Waiting for others' : 'Start Game!';
+      } else {
+        return 'Ready!';
+      }
     }
     return this.currentPlayer.isReady ? 'Waiting for host' : 'Ready!';
   }
@@ -96,7 +99,7 @@ export class LobbyRoomComponent implements OnInit, OnDestroy {
 
   private safeAdd(user: any): void {
     // if user is already in the otherPlayers then just return
-    if (this.otherPlayers.findIndex(player => player.username === user.username) !== -1) {
+    if (this.otherPlayers.findIndex(player => player.uniqueId === user.uniqueId) !== -1) {
       return;
     }
     // add to sessionStorage

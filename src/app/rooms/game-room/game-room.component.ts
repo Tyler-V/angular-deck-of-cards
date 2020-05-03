@@ -1,7 +1,8 @@
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Bet, Round } from 'src/app/interfaces/round.interface';
-import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { take, takeUntil } from 'rxjs/operators';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { first, take, takeUntil } from 'rxjs/operators';
 
 import { BettingModalComponent } from 'src/app/game-src/betting-modal/betting-modal.component';
 import { Card } from 'src/app/shared/models/card.model';
@@ -13,36 +14,50 @@ import { Subject } from 'rxjs';
 @Component({
   selector: 'doc-game-room',
   templateUrl: './game-room.component.html',
-  styleUrls: ['./game-room.component.scss']
+  styleUrls: ['./game-room.component.scss'],
+  animations: [
+    trigger('RoundInitAnim', [
+      state('initial', style({
+        transform: 'translateX(-100px)'
+      })),
+      state('final', style({
+        opacity: 0,
+        transform: 'translateX(100%)'
+      })),
+      transition('* => *', animate('1000ms'))
+  ])]
 })
 export class GameRoomComponent implements OnInit {
+  animTrigger = 'initial';
+  isAnimationDone = false;
+  isLoading = true;
+
   cardOnTop: Card;
   rankedPlayers = [];
   currentRound = 1;
   currentHand: any;
 
-  userInfo = 'Look at the opponent hands, and make your bet!';
+  userInfo = 'Look at the opponent hands, and make your bet!'; // <- still to do
   trumpoCard: Card;
-  isLoading = true;
   roundData: Round;
   scoreboardToggle = true;
   bettingOptions: number[];
   canPlay = false;
+  idPivot = 0;
+
+  roundResultModalRef: MatDialogRef<RoundResultModalComponent>;
 
   userId: number;
   private unsubscribez = new Subject<any>();
   constructor(
     public dialog: MatDialog,
     private readonly gameService: GameService,
-    // private dialogRef: MatDialogRef<FirstRoundModalComponent>
   ) { }
 
   ngOnInit(): void {
     this.initFirstRound();
   }
   openFirstRoundModal(firstRoundData: any): void {
-    // turn on start next round listener
-
     const modalRef = this.dialog.open(FirstRoundModalComponent, {
       width: '700px',
       // height: '70vh',
@@ -76,6 +91,7 @@ export class GameRoomComponent implements OnInit {
       width: '700px',
       panelClass: 'modal',
       hasBackdrop: false,
+      id: `round-bets-${isDealerRebet ? 'delear-rebet-' + this.idPivot : this.idPivot}`,
       disableClose: true,
       position: {
         top: '8vh'
@@ -96,19 +112,22 @@ export class GameRoomComponent implements OnInit {
     });
   }
   openRoundResultModal(roundBets: any[]): void {
-    const modalRef = this.dialog.open(RoundResultModalComponent, {
+    this.roundResultModalRef = this.dialog.open(RoundResultModalComponent, {
       width: '700px',
       // height: '70vh',
       panelClass: 'modal',
       hasBackdrop: false,
       disableClose: true,
+      id: `round-result-${this.idPivot}`,
       position: {
         top: '8vh'
       },
       data: {roundBets, currRound: this.currentRound, roundData: this.roundData}
     });
 
-    modalRef.afterClosed().pipe(take(1)).subscribe((roundFromModal) => {
+    this.roundResultModalRef.afterClosed().pipe(take(1)).subscribe((roundFromModal) => {
+      console.log('here after closed');
+      console.log(this.roundResultModalRef);
       if (this.roundData.me.isHost) {
         this.gameService.initNextRound().pipe(take(1)).subscribe(round => {
           this.initNextRound(round);
@@ -123,6 +142,8 @@ export class GameRoomComponent implements OnInit {
   }
   private initNextRound(round: number): void {
     this.isLoading = true;
+    this.idPivot++;
+    this.initRoundAnimation();
     this.currentRound = round;
     // close all result modals
     this.gameService.initRound(round).pipe(take(1)).subscribe(roundData => {
@@ -134,14 +155,14 @@ export class GameRoomComponent implements OnInit {
       console.log('trumpo card is ', this.trumpoCard);
       console.log('my hand is ');
       console.log(this.currentHand);
-      this.isLoading = false;
-      this.openBettingModal();
       this.initBettingListeners();
     });
     // start loading
   }
   private initFirstRound(): void {
     this.isLoading = true;
+    this.initRoundAnimation();
+    console.log('nowww');
     this.gameService.getCurrentRound().pipe(take(1)).subscribe(round => {
       this.currentRound = round;
       // handling of reload comes here later for now its trashy
@@ -152,7 +173,6 @@ export class GameRoomComponent implements OnInit {
         this.initUiComponents();
         this.isLoading = false;
         // Make fn to decide what's happening ie spectating or round didnt start yet
-        this.openBettingModal();
         this.initBettingListeners();
       });
     });
@@ -170,6 +190,15 @@ export class GameRoomComponent implements OnInit {
     });
     this.rankedPlayers = [...others, {name: this.roundData.me.username, uniqueId: this.roundData.me.uniqueId, points: 0}];
   }
+  private initRoundAnimation(): void {
+    this.isAnimationDone = false;
+    this.animTrigger = this.animTrigger === 'initial' ? 'final' : 'initial';
+
+    setTimeout(() => {
+      this.isAnimationDone = true;
+      this.openBettingModal();
+    }, 2000);
+  }
   private initBettingListeners(): void {
     if (this.roundData.me.isDealer) {
       console.log('im the dealer so im listening');
@@ -183,7 +212,7 @@ export class GameRoomComponent implements OnInit {
   }
   private listenForDealerInstruction(): void {
     this.gameService.listenForDealerRebet()
-      .pipe(take(1))
+      .pipe(takeUntil(this.unsubscribez))
       .subscribe(bettingOptions => {
         console.log(bettingOptions);
         this.bettingOptions = bettingOptions;
@@ -266,7 +295,7 @@ export class GameRoomComponent implements OnInit {
   }
   private listenForRoundEnd(): void {
     this.gameService.listenForRoundEnd()
-      .pipe(take(1))
+      .pipe(first())
       .subscribe(data => {
         console.log(data);
         // round results displayed

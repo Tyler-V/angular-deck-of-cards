@@ -9,11 +9,9 @@ export class AuthService {
     constructor(private readonly socket: Socket) { }
 
     public isAuthenticated(): Promise<boolean> {
-        console.log('here');
         const id = JSON.parse(sessionStorage.getItem('userId'));
         this.socket.emit('is auth', id);
         this.socket.removeAllListeners();
-        console.log();
         return new Promise(resolve => {
             this.socket.fromEvent<boolean>('can log in')
                 .pipe(
@@ -23,7 +21,7 @@ export class AuthService {
                     console.log(canLogIn);
                     resolve(false);
                 }, err => {
-                    console.log('here');
+                    console.log('NOT AUTHORIZED');
                     resolve(false);
                 });
         });
