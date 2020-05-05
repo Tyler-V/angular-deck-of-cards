@@ -1,6 +1,6 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Bet, Round } from 'src/app/interfaces/round.interface';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { first, take, takeUntil } from 'rxjs/operators';
 
@@ -10,6 +10,18 @@ import { FirstRoundModalComponent } from 'src/app/game-src/first-round-modal/fir
 import { GameService } from 'src/app/services/game-service/game.service';
 import { RoundResultModalComponent } from 'src/app/game-src/round-result-modal/round-result-modal.component';
 import { Subject } from 'rxjs';
+
+const modalBaseConfig: MatDialogConfig = {
+  width: '700px',
+  panelClass: 'modal',
+  hasBackdrop: false,
+  disableClose: true,
+  position: {
+    top: '8vh'
+  },
+};
+
+
 
 @Component({
   selector: 'doc-game-room',
@@ -59,14 +71,7 @@ export class GameRoomComponent implements OnInit {
   }
   openFirstRoundModal(firstRoundData: any): void {
     const modalRef = this.dialog.open(FirstRoundModalComponent, {
-      width: '700px',
-      // height: '70vh',
-      panelClass: 'modal',
-      hasBackdrop: false,
-      disableClose: true,
-      position: {
-        top: '8vh'
-      },
+      ...modalBaseConfig,
       data: {
         ...this.roundData,
         firstRoundData
@@ -88,14 +93,8 @@ export class GameRoomComponent implements OnInit {
   }
   openBettingModal(isDealerRebet?: boolean): void {
     const modalRef = this.dialog.open(BettingModalComponent, {
-      width: '700px',
-      panelClass: 'modal',
-      hasBackdrop: false,
+      ...modalBaseConfig,
       id: `round-bets-${isDealerRebet ? 'delear-rebet-' + this.idPivot : this.idPivot}`,
-      disableClose: true,
-      position: {
-        top: '8vh'
-      },
       data: {
         bettingOptions: this.bettingOptions
       }
@@ -113,15 +112,8 @@ export class GameRoomComponent implements OnInit {
   }
   openRoundResultModal(roundBets: any[]): void {
     this.roundResultModalRef = this.dialog.open(RoundResultModalComponent, {
-      width: '700px',
-      // height: '70vh',
-      panelClass: 'modal',
-      hasBackdrop: false,
-      disableClose: true,
+      ...modalBaseConfig,
       id: `round-result-${this.idPivot}`,
-      position: {
-        top: '8vh'
-      },
       data: {roundBets, currRound: this.currentRound, roundData: this.roundData}
     });
 
