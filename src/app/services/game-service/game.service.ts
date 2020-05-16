@@ -3,6 +3,7 @@ import { Injectable, OnInit } from '@angular/core';
 
 import { Observable } from 'rxjs';
 import { Socket } from 'ngx-socket-io';
+import { take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -54,7 +55,7 @@ export class GameService implements OnInit {
     return this.socket.fromEvent<any>('hit winner is');
   }
   listenForRoundEnd(): Observable<any> {
-    return this.socket.fromEvent<any>('round finished');
+    return this.socket.fromEvent<any>('round finished').pipe(take(1));
   }
   playCard(card) {
     const id = JSON.parse(sessionStorage.getItem('user')).uniqueId;

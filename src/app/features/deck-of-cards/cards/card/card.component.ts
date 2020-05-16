@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 
 import { Card } from '../../../../shared/models/card.model';
-import { IconService } from 'src/app/services/helper-services/icon.service';
+import { IconService } from '../../../../services/helper-services/icon.service';
 
 @Component({
   selector: 'doc-card',
@@ -17,14 +17,12 @@ export class CardComponent implements OnInit, OnChanges {
 
   constructor(private readonly iconService: IconService) {}
   ngOnInit(): void {
-    console.log(this.card);
     if (this.isFirstRound) {
       this.getInfo(this.card.uniqueId);
       this.cardToDisplay = this.card.hand[0];
     } else {
       this.cardToDisplay = this.card;
     }
-    console.log(this.cardToDisplay);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

@@ -43,6 +43,7 @@ export class GameRoomComponent implements OnInit {
   scoreboardToggle = true;
   bettingOptions: number[];
   canPlay = false;
+  currentRoundModalName = '';
   idPivot = 0;
 
   roundResultModalRef: MatDialogRef<RoundResultModalComponent>;
@@ -101,9 +102,10 @@ export class GameRoomComponent implements OnInit {
     });
   }
   openRoundResultModal(roundBets: any[]): void {
+    this.currentRoundModalName = `round-result-${this.idPivot}`;
     this.roundResultModalRef = this.dialog.open(RoundResultModalComponent, {
       ...modalBaseConfig,
-      id: `round-result-${this.idPivot}`,
+      id: this.currentRoundModalName,
       data: {roundBets, currRound: this.currentRound, roundData: this.roundData}
     });
 
@@ -208,6 +210,7 @@ export class GameRoomComponent implements OnInit {
     this.gameService.listenForReveal()
       .pipe(take(1))
       .subscribe((roundBets) => {
+        console.log('reveal was triggered');
         this.roundData.players.forEach((_, ind, arr) => {
           const playerInd = roundBets.findIndex(bet => bet.uniqueId === _.uniqueId);
           this.roundData.players[ind].bets = Object.assign({}, roundBets[playerInd]);
@@ -267,7 +270,9 @@ export class GameRoomComponent implements OnInit {
       .subscribe(data => {
         console.log(data);
         // round results displayed
-        this.openRoundResultModal(data.roundBets);
+        if (this.currentRoundModalName !== `round-result-${this.idPivot - 1}`) {
+          this.openRoundResultModal(data.roundBets);
+        }
       });
   }
 }

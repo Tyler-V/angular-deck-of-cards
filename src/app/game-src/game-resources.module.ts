@@ -4,7 +4,6 @@ import { CorrectPlayerOrderPipe } from './pipes/correct-player-order.pipe';
 import { DeckOfCardsModule } from '../features/deck-of-cards/deck-of-cards.module';
 import { FirstRoundModalComponent } from './first-round-modal/first-round-modal.component';
 import { FormsModule } from '@angular/forms';
-import { HandComponent } from './hand/hand.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -18,7 +17,6 @@ import { UserHandComponent } from './user-hand/user-hand.component';
 
 @NgModule({
   declarations: [
-    HandComponent,
     RoundPileComponent,
     UserCardComponent,
     BettingModalComponent,
@@ -38,7 +36,6 @@ import { UserHandComponent } from './user-hand/user-hand.component';
     MatInputModule
   ],
   exports: [
-    HandComponent,
     RoundPileComponent,
     UserCardComponent,
     UserHandComponent,
