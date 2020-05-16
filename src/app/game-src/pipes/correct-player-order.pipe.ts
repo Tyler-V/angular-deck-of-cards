@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class CorrectPlayerOrderPipe implements PipeTransform {
 
   transform(value: unknown, currentSeat: number): unknown {
-    console.log(currentSeat);
+    
     return value;
   }
 

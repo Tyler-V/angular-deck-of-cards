@@ -79,7 +79,7 @@ export class MenuService {
     this.socket.emit('add new user', user);
   }
   overrideUser(user: Player) {
-    console.log('override a lobby user');
+    
     this.socket.emit('override user', user);
   }
 

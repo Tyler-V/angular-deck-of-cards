@@ -17,11 +17,11 @@ export class AuthService {
                 .pipe(
                     take(1)
                 ).subscribe(canLogIn => {
-                    console.log('here but i shouldnt be');
-                    console.log(canLogIn);
+                    
+                    
                     resolve(false);
                 }, err => {
-                    console.log('NOT AUTHORIZED');
+                    
                     resolve(false);
                 });
         });

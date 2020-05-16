@@ -15,7 +15,7 @@ export class UserHandComponent implements OnInit {
   constructor(private readonly gameService: GameService) { }
 
   ngOnInit(): void {
-    console.log(this.cards);
+    
   }
   playCard(data: any): void {
     if (this.canPlay && !this.isFirstRound) {

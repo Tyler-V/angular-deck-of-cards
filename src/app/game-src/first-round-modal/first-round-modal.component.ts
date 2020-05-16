@@ -26,7 +26,7 @@ export class FirstRoundModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.roundData);
+    
     this.isHost = JSON.parse(sessionStorage.getItem('user')).isHost;
     this.cardsToDisplay = Array.from(this.getCorrectOrderedCards());
     this.winnerId = this.roundData.firstRoundData.winnerId;
@@ -43,7 +43,7 @@ export class FirstRoundModalComponent implements OnInit {
     const out = [];
     this.roundData.firstRoundData.roundBets.forEach(bet => {
       const diff = Math.abs(bet.bet - bet.hits);
-      console.log(`diff of ${bet.bet} and ${bet.hits} is ${diff}`);
+      
       let pnts = 0;
       if (diff === 0) {
         pnts = (10 + (diff * 2));
@@ -52,7 +52,7 @@ export class FirstRoundModalComponent implements OnInit {
       }
       out.push({points: `${pnts > 0 ? '+' : '-'}${Math.abs(pnts)}`, id: bet.uniqueId});
     });
-    console.log(out);
+    
     return out;
   }
   startNextRound(): void {

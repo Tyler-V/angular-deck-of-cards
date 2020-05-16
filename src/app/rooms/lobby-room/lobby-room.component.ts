@@ -64,7 +64,7 @@ export class LobbyRoomComponent implements OnInit, OnDestroy {
 
   startGame(): void {
     if (this.currentPlayer.isHost) {
-      console.log('im a host so i can start the game');
+      
       this.menu.startGame();
     }
   }
@@ -74,21 +74,21 @@ export class LobbyRoomComponent implements OnInit, OnDestroy {
 
   private listenForNewPlayers() {
     this.menu.listenForNewPlayers().pipe(takeUntil(this.unsubscribes)).subscribe(user => {
-      console.log('someone joined');
+      
       this.safeAdd(user);
     });
   }
 
   private goToGameListener(): void {
     this.menu.goToGameListener(this.currentPlayer.isHost).pipe(takeUntil(this.unsubscribes)).subscribe(() => {
-      console.log('hey there');
+      
       this.router.navigate(['game']);
     });
   }
 
   private listenForUpdatedPlayer() {
     this.menu.listenForUpdatedPlayer().pipe(takeUntil(this.unsubscribes)).subscribe(playerUpdated => {
-      console.log('someone got updated');
+      
       const ind = this.otherPlayers.findIndex(player => player.uniqueId === playerUpdated.id);
       if (ind !== -1) {
         this.otherPlayers[ind] = Object.assign({}, playerUpdated.player);

@@ -57,7 +57,7 @@
                     ></asr-user-card>
             </div>
             <div class="mid-section">
-                <asr-round-pile [card]="cardOnTop"></asr-round-pile>
+                <asr-round-pile [card]="cardOnTop" *ngIf="cardOnTop !== null"></asr-round-pile>
             </div>
             <div class="user-action-container">
                 <!-- Info strip -->

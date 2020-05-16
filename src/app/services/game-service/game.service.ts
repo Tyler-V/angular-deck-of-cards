@@ -60,6 +60,6 @@ export class GameService implements OnInit {
   playCard(card) {
     const id = JSON.parse(sessionStorage.getItem('user')).uniqueId;
     this.socket.emit('card played', {...card, uniqueId: id});
-    console.log(card);
+    
   }
 }
