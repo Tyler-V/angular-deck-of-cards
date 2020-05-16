@@ -49,7 +49,7 @@
         </mat-toolbar>
         <div class="game-container">
             <div class="user-status-container">
-                    <asr-user-card *ngFor="let usercard of roundData.players"
+                    <asr-user-card *ngFor="let usercard of (roundData.players | correctPlayerOrder : roundData.me.seatInd  )"
                         [name]="usercard.username"
                         [bets]="usercard.bets"
                         [status]="usercard.status"

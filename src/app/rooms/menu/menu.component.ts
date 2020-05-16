@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+
 import { MenuService } from 'src/app/services/menu-service/menu.service';
 import { Player } from '../../interfaces/player.interface';
 import { Router } from '@angular/router';
@@ -16,10 +17,7 @@ export class MenuComponent implements OnInit {
   };
   playersInRoom = 5;
   isJoining: boolean;
-  constructor(
-    readonly menu: MenuService,
-    private readonly router: Router
-    ) { }
+  constructor(readonly menu: MenuService) { }
 
   ngOnInit(): void {
     this.menu.land();
