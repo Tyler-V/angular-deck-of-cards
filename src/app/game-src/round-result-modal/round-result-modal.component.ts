@@ -21,11 +21,11 @@ export class RoundResultModalComponent implements OnInit {
     private dialogRef: MatDialogRef<RoundResultModalComponent>,
     private readonly gameService: GameService
   ) {
-    console.log(data);
+    
     this.roundBets = data.roundBets;
     this.currRound = data.currRound;
     this.roundData = data.roundData;
-    console.log(this.roundData);
+    
    }
 
   ngOnInit(): void {
@@ -35,6 +35,7 @@ export class RoundResultModalComponent implements OnInit {
     // set up listener if not a host
     if (!this.isHost) {
       this.gameService.listenForNextRound().pipe(take(1)).subscribe(round => {
+        
         this.dialogRef.close(round);
       });
     }
@@ -42,15 +43,13 @@ export class RoundResultModalComponent implements OnInit {
   }
 
   startNextRound(): void {
-    if (this.isHost) {
-      this.dialogRef.close();
-    }
+    this.dialogRef.close();
   }
   getRoundPoints(): any[] {
     const out = [];
     this.roundBets.forEach(bet => {
       const diff = Math.abs(bet.bet - bet.hits);
-      console.log(`diff of ${bet.bet} and ${bet.hits} is ${diff}`);
+      
       let pnts = 0;
       if (diff === 0) {
         pnts = (10 + (diff * 2));
@@ -59,7 +58,7 @@ export class RoundResultModalComponent implements OnInit {
       }
       out.push({points: `${pnts > 0 ? '+' : '-'}${Math.abs(pnts)}`, id: bet.uniqueId});
     });
-    console.log(out);
+    
     return out;
   }
   private getResults(): any[] {

@@ -18,7 +18,7 @@ export class UserCardComponent implements OnInit {
 
   ngOnInit(): void {
     this.iconSrc = this.iconService.getIconSrc(this.iconTitle);
-    console.log(this.iconSrc);
+    
   }
 
 }

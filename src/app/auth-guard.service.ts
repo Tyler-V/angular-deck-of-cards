@@ -9,7 +9,7 @@ import { Injectable } from '@angular/core';
 export class AuthGuardService implements CanActivate {
     constructor(private readonly auth: AuthService, private readonly router: Router) { }
     canActivate(): boolean {
-        console.log('here');
+        
 
         if (!this.auth.isAuthenticated()) {
             this.router.navigate(['soz-gotta-wait-a-bit']);

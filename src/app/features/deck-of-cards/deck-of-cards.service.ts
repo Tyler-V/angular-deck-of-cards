@@ -87,7 +87,7 @@ export class DeckOfCardsService {
         break;
       }
     }
-    console.log(cards);
+    
     this.cards = this.cards.concat(cards);
   }
 }

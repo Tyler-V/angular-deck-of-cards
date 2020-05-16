@@ -1,10 +1,10 @@
-import { Observable, of } from 'rxjs';
+import { Observable, Subject, of } from 'rxjs';
 import { Player, UpdatedPlayer } from '../../interfaces/player.interface';
+import { take, takeUntil } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
-import { take } from 'rxjs/operators';
 
 interface LandingData {
   numOfPlayers: number;
@@ -19,11 +19,11 @@ export class MenuService {
     numOfPlayers: 0,
     isHost: false
   };
+  private unsubscribes = new Subject<void>();
   constructor(
     private socket: Socket,
     private readonly router: Router
   ) { }
-  // call this when landing on home page
   land(): void {
     const id = this.createUniqueId();
     // create uniqueID and store it in session storage if there is none so far
@@ -33,13 +33,16 @@ export class MenuService {
 
     this.socket.emit('landing', id);
     // Set landing data on number of players in the lobby
-    this.socket.fromEvent<number>('playerCount').subscribe(numOfPlayers => {
+    this.socket.fromEvent<number>('playerCount').pipe(takeUntil(this.unsubscribes)).subscribe(numOfPlayers => {
       this.landingData = { numOfPlayers };
     });
   }
 
   // Set current user and handle reloads
   login(user: Player): void {
+    this.unsubscribes.next();
+    this.unsubscribes.complete();
+
     const userId = JSON.parse(sessionStorage.getItem('userId'));
     let others = [];
     let isOverride = false;
@@ -76,7 +79,7 @@ export class MenuService {
     this.socket.emit('add new user', user);
   }
   overrideUser(user: Player) {
-    console.log('override a lobby user');
+    
     this.socket.emit('override user', user);
   }
 
