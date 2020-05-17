@@ -13,12 +13,22 @@ export class UserCardComponent implements OnInit {
   @Input() bets: Bet;
   @Input() status: string;
   @Input() iconTitle: string;
+  @Input() role: 'First' | 'Dealer' | 'None';
   iconSrc = '../../../assets/user-icons/soma.png';
   constructor(private readonly iconService: IconService) { }
 
   ngOnInit(): void {
     this.iconSrc = this.iconService.getIconSrc(this.iconTitle);
-    
+  }
+  getRole(): string {
+    switch (this.role) {
+      case 'First':
+        return '(F)';
+      case 'Dealer':
+        return '(D)';
+      default:
+        return '';
+    }
   }
 
 }

@@ -1,4 +1,4 @@
-import { Bet, Round } from '../../interfaces/round.interface';
+import { Bet, Round, RoundPlayer } from '../../interfaces/round.interface';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { first, take, takeUntil } from 'rxjs/operators';
@@ -17,7 +17,7 @@ const modalBaseConfig: MatDialogConfig = {
   hasBackdrop: false,
   disableClose: true,
   position: {
-    top: '8vh'
+    top: '30vh'
   },
 };
 
@@ -49,7 +49,6 @@ export class GameRoomComponent implements OnInit {
   roundResultModalRef: MatDialogRef<RoundResultModalComponent>;
 
   userId: number;
-  private unsubscribez = new Subject<any>();
   private bettingSubj = new Subject<any>();
   private playingSubj = new Subject<any>();
 
@@ -125,6 +124,15 @@ export class GameRoomComponent implements OnInit {
   toggleScorePanel(): void {
     this.scoreboardToggle = !this.scoreboardToggle;
   }
+  getUserRole(player: RoundPlayer): string {
+    if (player.isFirst) {
+      return 'First';
+    } else if (player.isDealer) {
+      return 'Dealer';
+    } else {
+      return 'None';
+    }
+  }
   // round init refactor needed cuz its pretty similar!!!
   private initNextRound(round: number): void {
     this.isLoading = true;
@@ -136,6 +144,7 @@ export class GameRoomComponent implements OnInit {
       this.roundData = roundData;
       this.currentHand = Array.from(this.roundData.myHand.myHand.hand);
       this.trumpoCard = Object.assign({}, this.roundData.trumpCard);
+      this.cardOnTop = null;
       this.bettingOptions = this.roundData.myBets.bettingOptions;
       this.initBettingListeners();
     });
@@ -183,6 +192,8 @@ export class GameRoomComponent implements OnInit {
   }
   private initBettingListeners(): void {
     console.log('initBettingListeners');
+    this.bettingSubj = new Subject<any>();
+
     if (this.roundData.me.isDealer) {
       this.listenForDealerInstruction();
     }
@@ -191,6 +202,17 @@ export class GameRoomComponent implements OnInit {
     } else {
       this.listenForOthersMakingBet();
       this.listenForReveal();
+    }
+  }
+  private initPlayingListeners(): void {
+    this.playingSubj = new Subject<any>();
+
+    this.listenForOthersPlayingCard();
+    this.listenForHitWinner();
+    this.listenForRoundEnd();
+    // if ure first then enable playing
+    if (this.roundData.me.isFirst) {
+      this.canPlay = true;
     }
   }
   private listenForDealerInstruction(): void {
@@ -204,7 +226,7 @@ export class GameRoomComponent implements OnInit {
   }
   private listenForOthersMakingBet(): void {
     this.gameService.listenForPlayerMakingBet()
-      .pipe(take(5)) // <-- needs to be a subject
+      .pipe(takeUntil(this.bettingSubj))
       .subscribe((playerBet: Bet) => {
         console.log('listenForOthersMakingBet', playerBet);
         const ind = this.roundData.players.findIndex(player => player.uniqueId === playerBet.uniqueId);
@@ -220,19 +242,12 @@ export class GameRoomComponent implements OnInit {
         console.log('listenForReveal', roundBets);
         this.bettingSubj.next();
         this.bettingSubj.complete();
-        this.bettingSubj = new Subject<any>();
 
         this.roundData.players.forEach((_, ind, arr) => {
           const playerInd = roundBets.findIndex(bet => bet.uniqueId === _.uniqueId);
           this.roundData.players[ind].bets = Object.assign({}, roundBets[playerInd]);
         });
-        this.listenForOthersPlayingCard();
-        this.listenForHitWinner();
-        this.listenForRoundEnd();
-        // if ure first then enable playing
-        if (this.roundData.me.isFirst) {
-          this.canPlay = true;
-        }
+        this.initPlayingListeners();
       });
   }
   private listenForRound1(): void {
@@ -248,7 +263,7 @@ export class GameRoomComponent implements OnInit {
   }
   private listenForOthersPlayingCard(): void {
     this.gameService.listenForOthersPlayingCard()
-      .pipe(takeUntil(this.unsubscribez))
+      .pipe(takeUntil(this.playingSubj))
       .subscribe(data => {
         console.log('listenForOthersPlayingCard', data);
         // card and nextId should come
@@ -266,7 +281,7 @@ export class GameRoomComponent implements OnInit {
   }
   private listenForHitWinner(): void {
     this.gameService.listenForHitWinner()
-      .pipe(takeUntil(this.unsubscribez))
+      .pipe(takeUntil(this.playingSubj))
       .subscribe(data => {
         console.log('listenForHitWinner', data);
         this.cardOnTop = null;
@@ -282,9 +297,11 @@ export class GameRoomComponent implements OnInit {
     this.gameService.listenForRoundEnd()
       .pipe(first())
       .subscribe(data => {
-        this.unsubscribez.next();
-        this.unsubscribez.complete();
-        this.unsubscribez = new Subject<any>();
+        this.cardOnTop = Object.assign({}, data.lastCard);
+        this.rankedPlayers = Array.from(data.scoreboard);
+        this.playingSubj.next();
+        this.playingSubj.complete();
+        this.playingSubj = new Subject<any>();
         console.log('listenForRoundEnd', data);
         // round results displayed
         this.openRoundResultModal(data.roundBets);

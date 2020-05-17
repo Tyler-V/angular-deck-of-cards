@@ -17,7 +17,7 @@
                             (iconChanged)="playerIconChanged($event)"
                             ></asr-user-strip>
             <hr/>
-            <div *ngFor="let player of otherPlayers">
+            <div *ngFor="let player of otherPlayers" class="component-container">
               <asr-user-strip [username]="player.username"
                 [isReady]="player.isReady" [imgTitle]="player.iconTitle"></asr-user-strip>
             </div>
