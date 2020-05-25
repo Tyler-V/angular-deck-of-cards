@@ -1,4 +1,4 @@
-import { Bet, Round } from '../../interfaces/round.interface';
+import { Bet, Round, Round1Result, RoundAPIResponse } from '../../interfaces/round.interface';
 import { Injectable, OnInit } from '@angular/core';
 
 import { Observable } from 'rxjs';
@@ -18,20 +18,17 @@ export class GameService implements OnInit {
     this.socket.emit('get current round');
     return this.socket.fromEvent<number>('current round is');
   }
-  initRound(round: number): Observable<Round> {
+  initRound(round: number): Observable<RoundAPIResponse> {
     const id = JSON.parse(sessionStorage.getItem('user')).uniqueId;
     this.socket.emit('get round data', {round, id});
-    return this.socket.fromEvent<Round>('round data');
+    return this.socket.fromEvent<RoundAPIResponse>('round data');
   }
   initNextRound(): Observable<any> {
     this.socket.emit('set up next round');
     return this.socket.fromEvent<any>('start next round');
   }
-  makeBet(bet: Bet, id: any): void {
-    this.socket.emit('making a bet', {...bet, uniqueId: id});
-  }
-  changeDealerBet(bet: number): void {
-    this.socket.emit('dealer changed bet', bet);
+  makeBet(bet: Bet, id: any, isDealerBet: boolean): void {
+    this.socket.emit('making a bet', {...bet, uniqueId: id, isDealerBet});
   }
   listenForPlayerMakingBet(): Observable<Bet> {
     return this.socket.fromEvent<Bet>('diff player made a bet');
@@ -43,7 +40,7 @@ export class GameService implements OnInit {
     return this.socket.fromEvent<any>('reveal bets');
   }
   listenForRound1Results(): Observable<any> {
-    return this.socket.fromEvent<any>('play out first round');
+    return this.socket.fromEvent<Round1Result>('play out first round');
   }
   listenForNextRound(): Observable<any> {
     return this.socket.fromEvent<any>('start next round');

@@ -29,6 +29,12 @@ export interface RoundPlayer {
     seatInd: number;
     isHost?: boolean;
 }
+export type RoundType = 'first' | 'last' | 'normal';
+
+export interface RoundAPIResponse {
+    roundData: Round;
+    isLastRound: boolean;
+}
 export interface Round {
     me: RoundPlayer;
     myHand: Hand;
@@ -36,4 +42,29 @@ export interface Round {
     players: RoundPlayer[];
     trumpCard: Card;
     firstRoundData?: any;
+}
+
+export interface Round1Result {
+    firstRoundData: FirstRoundData;
+    isDealerChangeNeeded: boolean;
+    options: Array<number>;
+}
+
+export interface RoundResult {
+    roundBets: Array<Bet>;
+    isDealerChangeNeeded: boolean;
+    options: Array<number>;
+}
+export interface FirstRoundData {
+    cards: Array<any>;
+    roundBets: Array<Bet>;
+    scoreboard: Array<ScoreBoard>;
+    seatIndOrder: Array<number>;
+    winnderId: number;
+}
+
+export interface ScoreBoard {
+    name: string;
+    uniqueId: number;
+    points: number;
 }

@@ -5,11 +5,11 @@ import { GameService } from 'src/app/services/game-service/game.service';
 import { take } from 'rxjs/operators';
 
 @Component({
-  selector: 'asr-first-round-modal',
-  templateUrl: './first-round-modal.component.html',
-  styleUrls: ['./first-round-modal.component.scss']
+  selector: 'asr-edge-round-modal',
+  templateUrl: './edge-round-modal.component.html',
+  styleUrls: ['./edge-round-modal.component.scss']
 })
-export class FirstRoundModalComponent implements OnInit {
+export class EdgeRoundModalComponent implements OnInit {
   roundData: Round;
   isLoading = true;
   isHost = false;
@@ -19,21 +19,23 @@ export class FirstRoundModalComponent implements OnInit {
   roundPoints = [];
   constructor(
     @Inject(MAT_DIALOG_DATA) data,
-    private dialogRef: MatDialogRef<FirstRoundModalComponent>,
+    private dialogRef: MatDialogRef<EdgeRoundModalComponent>,
     private readonly gameService: GameService
   ) {
     this.roundData = data;
   }
 
   ngOnInit(): void {
-    
     this.isHost = JSON.parse(sessionStorage.getItem('user')).isHost;
     this.cardsToDisplay = Array.from(this.getCorrectOrderedCards());
     this.winnerId = this.roundData.firstRoundData.winnerId;
     this.roundPoints = this.getRoundPoints();
+    console.log(this.isHost);
     // set up listener if not a host
     if (!this.isHost) {
       this.gameService.listenForNextRound().pipe(take(1)).subscribe(round => {
+        console.log('here cuz not a host');
+
         this.dialogRef.close(round);
       });
     }
@@ -43,16 +45,16 @@ export class FirstRoundModalComponent implements OnInit {
     const out = [];
     this.roundData.firstRoundData.roundBets.forEach(bet => {
       const diff = Math.abs(bet.bet - bet.hits);
-      
+
       let pnts = 0;
       if (diff === 0) {
         pnts = (10 + (diff * 2));
       } else {
         pnts = (diff * (-2));
       }
-      out.push({points: `${pnts > 0 ? '+' : '-'}${Math.abs(pnts)}`, id: bet.uniqueId});
+      out.push({ points: `${pnts > 0 ? '+' : '-'}${Math.abs(pnts)}`, id: bet.uniqueId });
     });
-    
+
     return out;
   }
   startNextRound(): void {

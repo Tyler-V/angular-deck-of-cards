@@ -1,4 +1,4 @@
-<div fxLayout='row wrap' fxLayoutGap="30px" class='card-layout'
+<div fxLayout='' fxLayoutGap="30px" class='card-layout' [class.force-start]="cards.length > 6"
   [@cardAnimation]="cards.length">
   <div *ngFor="let card of cards; let i = index" fxFlex="90px" >
     <div class="first" *ngIf="isResult" >{{ getHeader(card, i)}}</div>
@@ -7,7 +7,7 @@
       [card]='card'
       [isFirstRound]="isFirstRound"
       [ngClass]="{
-        'cursor-pointer': canPlay,
+        'cursor-pointer': canPlay && canPlayCard(card),
         'cursor-denied': !canPlay
       }"  
     ></doc-card>

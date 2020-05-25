@@ -2,5 +2,7 @@
     [isFirstRound]="isFirstRound"
     [cards]="cards"
     [canPlay]="canPlay"
+    [base]="base"
+    [trump]="trump"
     *ngIf="cards.length > 0" 
     (cardPlayed)="playCard($event)"></doc-cards>

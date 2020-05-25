@@ -72,6 +72,8 @@
                 <div class="cards-container">
                     <asr-user-hand 
                         [cards]="currentHand"
+                        [base]="baseCard"
+                        [trump]="trumpoCard"
                         [isFirstRound]="currentRound === 1"
                         [canPlay]="canPlay" 
                         (justPlayed)="justPlayedCard($event)"   

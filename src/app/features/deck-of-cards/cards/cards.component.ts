@@ -13,6 +13,8 @@ export class CardsComponent implements OnInit {
   @Input() isFirstRound = false;
   @Input() isResult = false;
   @Input() winnerId = null;
+  @Input() base: any;
+  @Input() trump: any;
   @Input() roundPoints = [];
   @Input() canPlay = false;
   @Output() cardPlayed: EventEmitter<any> = new EventEmitter<any>();
@@ -37,7 +39,9 @@ export class CardsComponent implements OnInit {
     }
     return out.points;
   }
-
+  canPlayCard(card: any): boolean {
+    return card.suite === this.base.suite || card.suite === this.trump.suite;
+  }
   emitCard(card: any, ind: number): void {
     this.cardPlayed.emit({card, ind});
   }
