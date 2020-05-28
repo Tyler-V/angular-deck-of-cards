@@ -1,9 +1,9 @@
 <mat-card   
     [matTooltip]="cardName"
     matTooltipPosition="above"
-    [class]="isFirstRound ? 'card first-round-card' : 'card'"
+    [class]="roundType !== 'normal' ? 'card first-round-card' : 'card'"
     *ngIf="cardToDisplay">
-  <img [src]="imgSrc" *ngIf="isFirstRound" class="first-round-img"/>
+  <img [src]="imgSrc" *ngIf="roundType !== 'normal'" class="first-round-img"/>
   <div class="suit-image top-left" [ngClass]='cardToDisplay.suit'></div>
   <div class="card-name" 
       [ngClass]='cardToDisplay.suit == "club" || cardToDisplay.suit == "spade" ? "black" : "red"'>

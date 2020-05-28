@@ -1,5 +1,17 @@
-<div class="round-pile-container">
+<div class="round-pile-container" *ngIf="!isLoading">
+    <div class="pile-strip">
+        <div class="title">Base</div>
+        <div class="suit-image" [ngClass]="base.suit"></div>
+        <div class="num">{{ base.name }}</div>
+        <img [src]="baseImgSrc"/>
+    </div>
+    <div class="pile-strip">
+        <div class="title">Winner</div>
+        <div class="suit-image" [ngClass]="winnerCard.suit"></div>
+        <div class="num">{{ winnerCard.name }}</div>
+        <img [src]="winnerImgSrc"/>
+    </div>
     <div class="card">
-        <doc-card [card]="card"></doc-card>
+        <doc-card [card]="justPlayedCard" [roundType]="'normal'"></doc-card>
     </div>
 </div>

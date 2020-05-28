@@ -1,8 +1,11 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Round } from 'src/app/interfaces/round.interface';
+import { Round, EdgeRoundResult } from 'src/app/interfaces/round.interface';
 import { GameService } from 'src/app/services/game-service/game.service';
 import { take } from 'rxjs/operators';
+import { RankedPlayer } from 'src/app/interfaces/player.interface';
+
+
 
 @Component({
   selector: 'asr-edge-round-modal',
@@ -10,19 +13,25 @@ import { take } from 'rxjs/operators';
   styleUrls: ['./edge-round-modal.component.scss']
 })
 export class EdgeRoundModalComponent implements OnInit {
-  roundData: Round;
+  roundData: EdgeRoundResult;
+  rankedPlayers: Array<RankedPlayer> = [];
   isLoading = true;
   isHost = false;
+  showEndResult = false;
   cardsToDisplay = [];
   firstId = 0;
   winnerId = 0;
   roundPoints = [];
+
   constructor(
-    @Inject(MAT_DIALOG_DATA) data,
+    @Inject(MAT_DIALOG_DATA) data: EdgeRoundResult,
     private dialogRef: MatDialogRef<EdgeRoundModalComponent>,
     private readonly gameService: GameService
   ) {
     this.roundData = data;
+    if (data.rankedPlayers) {
+      this.rankedPlayers = data.rankedPlayers;
+    }
   }
 
   ngOnInit(): void {
@@ -30,12 +39,13 @@ export class EdgeRoundModalComponent implements OnInit {
     this.cardsToDisplay = Array.from(this.getCorrectOrderedCards());
     this.winnerId = this.roundData.firstRoundData.winnerId;
     this.roundPoints = this.getRoundPoints();
-    console.log(this.isHost);
+
+    if (this.roundData.firstRoundData.type === 'last' && this.rankedPlayers.length > 0) {
+      this.showEndResult = true;
+    }
     // set up listener if not a host
     if (!this.isHost) {
       this.gameService.listenForNextRound().pipe(take(1)).subscribe(round => {
-        console.log('here cuz not a host');
-
         this.dialogRef.close(round);
       });
     }
@@ -60,11 +70,20 @@ export class EdgeRoundModalComponent implements OnInit {
   startNextRound(): void {
     this.dialogRef.close();
   }
+  getButtonText(): string {
+    if (this.roundData.firstRoundData.type === 'last') {
+      return 'Quit';
+    } else if (this.isHost) {
+      return 'Start next round';
+    } else {
+      return 'Waiting for host...';
+    }
+  }
   private getCorrectOrderedCards(): Array<any> {
     const out = [];
-    const candidate = this.roundData.players.find(playa => playa.isFirst);
+    const candidate = this.roundData.firstRoundData.players.find(playa => playa.isFirst);
     if (candidate === void 0) {
-      this.firstId = this.roundData.me.uniqueId;
+      this.firstId = this.roundData.firstRoundData.me.uniqueId;
     } else {
       this.firstId = candidate.uniqueId;
     }

@@ -1,4 +1,5 @@
 import { BettingModalComponent } from './betting-modal/betting-modal.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { CorrectPlayerOrderPipe } from './pipes/correct-player-order.pipe';
 import { DeckOfCardsModule } from '../features/deck-of-cards/deck-of-cards.module';
@@ -28,6 +29,7 @@ import { UserHandComponent } from './user-hand/user-hand.component';
   ],
   imports: [
     CommonModule,
+    BrowserAnimationsModule,
     FormsModule,
     DeckOfCardsModule,
     PerfectScrollbarModule,

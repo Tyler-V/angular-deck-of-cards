@@ -1,14 +1,26 @@
-import { Bet, Round, Round1Result, RoundAPIResponse, RoundPlayer, RoundResult, RoundType } from '../../interfaces/round.interface';
+import {
+  Bet,
+  FirstRoundData,
+  Round,
+  Round1APIResponse,
+  RoundAPIResponse,
+  RoundPlayer,
+  RoundResult,
+  RoundStage,
+  RoundType
+} from '../../interfaces/round.interface';
+import { Card, Hand } from 'src/app/interfaces/card.interface';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { first, take, takeUntil } from 'rxjs/operators';
 
 import { Animations } from '../../game-src/animations/animations';
 import { BettingModalComponent } from '../../game-src/betting-modal/betting-modal.component';
-import { Card } from '../../shared/models/card.model';
 import { EdgeRoundModalComponent } from 'src/app/game-src/edge-round-modal/edge-round-modal.component';
 import { GameService } from '../../services/game-service/game.service';
+import { RankedPlayer } from 'src/app/interfaces/player.interface';
 import { RoundResultModalComponent } from '../../game-src/round-result-modal/round-result-modal.component';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 
 const modalBaseConfig: MatDialogConfig = {
@@ -33,12 +45,12 @@ export class GameRoomComponent implements OnInit {
   isLoading = true;
 
   cardOnTop: Card;
-  rankedPlayers = [];
+  rankedPlayers: Array<RankedPlayer> = [];
   currentRound = 1;
-  currentHand: any;
+  currentHand: Hand;
   nextToPlay: RoundPlayer;
 
-  userInfo = 'Look at the opponent hands, and make your bet!'; // <- still to do
+  userInfo = 'Look at the opponent hands, and make your bet!';
   trumpoCard: Card;
   roundData: Round;
   scoreboardToggle = true;
@@ -46,10 +58,10 @@ export class GameRoomComponent implements OnInit {
   canPlay = false;
   currentRoundModalName = '';
   idPivot = 0;
-  baseCard: any = {};
+  baseCard: Card;
   numCardsPlayed = 0;
   roundType: RoundType;
-
+  resetPile: Array<Card> = null;
   roundResultModalRef: MatDialogRef<RoundResultModalComponent>;
 
   userId: number;
@@ -57,37 +69,43 @@ export class GameRoomComponent implements OnInit {
   private playingSubj = new Subject<any>();
   constructor(
     public dialog: MatDialog,
+    private readonly router: Router,
     private readonly gameService: GameService,
   ) { }
 
   ngOnInit(): void {
+    this.gameService.ngOnInit();
+    this.userId = this.gameService.getUserId();
     this.gameService.getCurrentRound().pipe(take(1)).subscribe(round => {
       this.initNextRound(round);
     });
   }
-  justPlayedCard(card) {
+  justPlayedCard(card: Card) {
     this.canPlay = false;
     this.cardOnTop = Object.assign({}, card);
+    this.numCardsPlayed++;
   }
-  // MODALS
-  openFirstRoundModal(firstRoundData: any): void {
+  // MODALS --> create test component and area
+  openEdgeRoundModal(firstRoundData: FirstRoundData): void {
     const modalRef = this.dialog.open(EdgeRoundModalComponent, {
       ...modalBaseConfig,
       data: {
         ...this.roundData,
-        firstRoundData
+        firstRoundData,
+        type: this.roundType
       }
     });
     modalRef.afterClosed().subscribe((roundFromModal) => {
       if (this.roundType === 'last') {
-
-      }
-      if (this.roundData.me.isHost) {
-        this.gameService.initNextRound().pipe(take(1)).subscribe(round => {
-          this.initNextRound(round);
-        });
+        this.router.navigate(['']);
       } else {
-        this.initNextRound(roundFromModal);
+        if (this.roundData.me.isHost) {
+          this.gameService.initNextRound().pipe(take(1)).subscribe(round => {
+            this.initNextRound(round);
+          });
+        } else {
+          this.initNextRound(roundFromModal);
+        }
       }
     });
   }
@@ -109,7 +127,7 @@ export class GameRoomComponent implements OnInit {
     modalRef.afterClosed().subscribe(bet => {
       this.roundData.me.bets.bet = bet;
       this.roundData.me.bets.bettingOptions = this.bettingOptions;
-      this.gameService.makeBet(this.roundData.me.bets, this.userId, isDealerRebet);
+      this.gameService.makeBet(this.roundData.me.bets, isDealerRebet);
     });
   }
   openRoundResultModal(roundBets: any[]): void {
@@ -124,7 +142,6 @@ export class GameRoomComponent implements OnInit {
     this.roundResultModalRef.afterClosed().subscribe((roundFromModal) => {
       if (this.roundData.me.isHost) {
         this.gameService.initNextRound().pipe(take(1)).subscribe(round => {
-          console.log('initNextRound', round);
           this.initNextRound(round);
         });
       } else {
@@ -154,7 +171,6 @@ export class GameRoomComponent implements OnInit {
     this.gameService.initRound(round).pipe(take(1)).subscribe(response => {
       this.allocateRoundData(response);
       this.isLoading = false;
-
     });
   }
   private getRoundType(resp: RoundAPIResponse): RoundType {
@@ -168,26 +184,54 @@ export class GameRoomComponent implements OnInit {
   }
   private allocateRoundData(response: RoundAPIResponse): void {
     this.roundType = this.getRoundType(response);
-      switch (this.roundType) {
-        case 'first':
-          this.setUpRankedPlayers();
-          this.currentHand = Array.from(this.roundData.myHand.firstRoundHand);
-          break;
-        case 'last':
-          this.currentHand = Array.from(this.roundData.myHand.firstRoundHand);
-          break;
-        case 'normal':
-          this.currentHand = Array.from(this.roundData.myHand.myHand.hand);
-          break;
-        default:
-          console.warn('RoundType Warning: RoundType not recognised!');
-          break;
-    }
     this.roundData = response.roundData;
     this.trumpoCard = Object.assign({}, this.roundData.trumpCard);
     this.cardOnTop = null;
     this.bettingOptions = this.roundData.myBets.bettingOptions;
-    this.initBettingListeners();
+
+    switch (this.roundType) {
+      case 'first':
+        this.setUpRankedPlayers();
+        this.currentHand = Array.from(this.roundData.myHand.firstRoundHand);
+        break;
+      case 'last':
+        this.currentHand = Array.from(this.roundData.myHand.firstRoundHand);
+        break;
+      case 'normal':
+        this.currentHand = Array.from(this.roundData.myHand.myHand.hand);
+        break;
+      default:
+        console.warn('RoundType Warning: RoundType not recognised!');
+        break;
+    }
+    const currStage = response.roundData.roundStage;
+    switch (currStage.stage) {
+      case 'betting':
+        setTimeout(() => {
+          this.isAnimationDone = true;
+          if (!currStage.madeBet) {
+            this.openBettingModal();
+          }
+        }, 2000);
+        this.initBettingListeners();
+        break;
+      case 'playing':
+        setTimeout(() => {
+          this.isAnimationDone = true;
+        });
+        this.resetPile = currStage.hitPile;
+        this.initPlayingListeners(currStage);
+        break;
+      case 'results':
+        setTimeout(() => {
+          this.isAnimationDone = true;
+        });
+        this.rankedPlayers = Array.from(currStage.results.scoreboard);
+        this.openRoundResultModal(currStage.results.roundBets);
+        break;
+      default:
+        break;
+    }
     this.isLoading = false;
   }
 
@@ -205,10 +249,10 @@ export class GameRoomComponent implements OnInit {
     this.isAnimationDone = false;
     this.animTrigger = this.animTrigger === 'initial' ? 'final' : 'initial';
 
-    setTimeout(() => {
-      this.isAnimationDone = true;
-      this.openBettingModal();
-    }, 2000);
+    // setTimeout(() => {
+    //   this.isAnimationDone = true;
+    //   this.openBettingModal();
+    // }, 2000);
   }
   private initBettingListeners(): void {
     console.log('initBettingListeners');
@@ -221,14 +265,18 @@ export class GameRoomComponent implements OnInit {
       this.listenForReveal();
     }
   }
-  private initPlayingListeners(): void {
+  private initPlayingListeners(stage?: RoundStage): void {
     this.playingSubj = new Subject<any>();
 
     this.listenForOthersPlayingCard();
     this.listenForHitWinner();
     this.listenForRoundEnd();
     // if ure first then enable playing
-    if (this.roundData.me.isFirst) {
+    if (!stage) {
+      this.canPlay = this.roundData.me.isFirst;
+      return;
+    }
+    if (stage.nextId === this.userId || (stage.nextId === -1 && this.roundData.me.isFirst)) {
       this.canPlay = true;
     }
   }
@@ -283,7 +331,7 @@ export class GameRoomComponent implements OnInit {
   private listenForRound1(): void {
     this.gameService.listenForRound1Results()
       .pipe(takeUntil(this.bettingSubj))
-      .subscribe((response: Round1Result) => {
+      .subscribe((response: Round1APIResponse) => {
         console.log('listenForRound1', response);
         if (response.isDealerChangeNeeded) {
           this.userInfo = `Dealer needs to change their bet!`;
@@ -297,7 +345,13 @@ export class GameRoomComponent implements OnInit {
           });
           this.bettingSubj.next();
           this.bettingSubj.complete();
-          this.openFirstRoundModal(response.firstRoundData);
+          this.openEdgeRoundModal(
+            {
+              ...response.firstRoundData,
+              me: this.roundData.me,
+              players: this.roundData.players,
+              type: this.roundType
+            });
         }
       });
   }
@@ -306,26 +360,27 @@ export class GameRoomComponent implements OnInit {
       .pipe(takeUntil(this.playingSubj))
       .subscribe(data => {
         console.log('listenForOthersPlayingCard', data);
-
-        if (this.numCardsPlayed === 0) {
-          this.baseCard = Object.assign({}, data.card);
-        }
-        // card and nextId should come
-        // update top card
-        this.cardOnTop = Object.assign({}, data.card);
-        this.roundData.players.forEach(playa => playa.status = 'Waiting...');
-        // let player play card if its their nextId
-        if (this.userId === data.nextId) {
-          this.canPlay = true;
-          this.userInfo = `It is Your turn!`;
-          // get available cards
-        } else {
-          this.canPlay = false;
-          const nextToPlay = this.roundData.players.findIndex(playa => playa.uniqueId === data.nextId);
-          this.userInfo = `It is ${this.roundData.players[nextToPlay].username}'s turn!`;
-          this.roundData.players[nextToPlay].status = 'Playing card...';
-
-          // update status
+        if (data.card.uniqueId !== this.userId) {
+          if (this.numCardsPlayed === 0) {
+            this.baseCard = Object.assign({}, data.card);
+          }
+          this.numCardsPlayed++;
+          // card and nextId should come
+          // update top card
+          this.cardOnTop = Object.assign({}, data.card);
+          this.roundData.players.forEach(playa => playa.status = 'Waiting...');
+          // let player play card if its their nextId
+          if (this.userId === data.nextId) {
+            this.canPlay = true;
+            this.userInfo = `It is Your turn!`;
+            // get available cards
+          } else {
+            this.canPlay = false;
+            const nextToPlay = this.roundData.players.findIndex(playa => playa.uniqueId === data.nextId);
+            this.userInfo = `It is ${this.roundData.players[nextToPlay].username}'s turn!`;
+            this.roundData.players[nextToPlay].status = 'Playing card...';
+            // update status
+          }
         }
       });
   }

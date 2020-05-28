@@ -10,3 +10,9 @@ export interface UpdatedPlayer {
     id: number;
     player: Player;
 }
+
+export interface RankedPlayer {
+    name: string;
+    uniqueId: number;
+    points: number;
+}

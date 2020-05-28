@@ -1,4 +1,5 @@
-import { Card } from '../shared/models/card.model';
+import { Card } from './card.interface';
+import { RankedPlayer } from './player.interface';
 
 export interface Bet {
     bet: number;
@@ -14,7 +15,7 @@ export interface OthersHand {
     uniqueId: number;
     card: Card;
 }
-export interface Hand {
+export interface HandAPIResponse {
     myHand?: MyHand;
     firstRoundHand?: OthersHand[];
 }
@@ -31,23 +32,36 @@ export interface RoundPlayer {
 }
 export type RoundType = 'first' | 'last' | 'normal';
 
+export type Stage = 'betting' | 'playing' | 'results';
+
+export interface RoundStage {
+    stage: Stage;
+    madeBet?: boolean;
+    nextId?: number;
+    hitPile?: Array<Card>;
+    results: any;
+}
+
 export interface RoundAPIResponse {
     roundData: Round;
     isLastRound: boolean;
 }
 export interface Round {
     me: RoundPlayer;
-    myHand: Hand;
+    myHand: HandAPIResponse;
     myBets: Bet;
     players: RoundPlayer[];
     trumpCard: Card;
     firstRoundData?: any;
+    type?: RoundType;
+    roundStage?: RoundStage;
 }
 
-export interface Round1Result {
+export interface EdgeRoundResult {
     firstRoundData: FirstRoundData;
     isDealerChangeNeeded: boolean;
     options: Array<number>;
+    rankedPlayers?: Array<RankedPlayer>;
 }
 
 export interface RoundResult {
@@ -55,12 +69,27 @@ export interface RoundResult {
     isDealerChangeNeeded: boolean;
     options: Array<number>;
 }
+export interface Round1APIResponse {
+    firstRoundData: FirstRoundAPIResponse;
+    isDealerChangeNeeded: boolean;
+    options: Array<number>;
+}
+export interface FirstRoundAPIResponse {
+    cards: Array<any>;
+    roundBets: Array<Bet>;
+    scoreboard: Array<ScoreBoard>;
+    seatIndOrder: Array<number>;
+    winnerId: number;
+}
 export interface FirstRoundData {
     cards: Array<any>;
     roundBets: Array<Bet>;
     scoreboard: Array<ScoreBoard>;
     seatIndOrder: Array<number>;
-    winnderId: number;
+    winnerId: number;
+    type: RoundType;
+    players: RoundPlayer[];
+    me: RoundPlayer;
 }
 
 export interface ScoreBoard {

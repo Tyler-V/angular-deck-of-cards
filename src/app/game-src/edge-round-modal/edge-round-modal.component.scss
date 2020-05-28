@@ -11,6 +11,42 @@
         font-weight: 100;
         font-family: sans-serif;
     }
+    .scoreboard-container {
+        height: 40%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        .result-tile {
+            width: 100%;
+            padding: .5rem;
+            background: lightgrey;
+            border: 1px solid gray;
+            .rank, .name, .points {
+                width: 33%;
+                padding-left: .25rem;
+                padding-right: .25rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-weight: 600;
+                font-size: larger;
+            }
+            .name {
+                border-right: 1px solid black;
+                border-left: 1px solid black;
+            }
+        }
+        .first-place {
+            background: lightgreen;
+        }
+        .second-place {
+            background: lightgrey;
+        }
+        .third-place {
+            background: lightsalmon;
+        }
+        
+    }
     button {
         height: 3rem;;
         font-size: 35px;
