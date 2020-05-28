@@ -1,6 +1,15 @@
-<doc-cards
-    [isFirstRound]="isFirstRound"
-    [cards]="cards"
-    [canPlay]="canPlay"
-    *ngIf="cards.length > 0" 
-    (cardPlayed)="playCard($event)"></doc-cards>
+<div class='card-layout' [class.force-start]="cards.length > 6"
+    [@cardAnimation]="cards.length" *ngIf="cards.length > 0">
+    <div *ngFor="let card of cards; let i = index" class="single-card">
+        <doc-card 
+            (click)="playCard(card, i)"
+            [card]='card'
+            [roundType]="roundType"
+            [ngClass]="{
+                'cursor-pointer': canPlay && roundType === 'normal',
+                'cursor-denied': !canPlay || roundType !== 'normal'
+            }"  
+        ></doc-card>
+    </div>
+</div>        
+

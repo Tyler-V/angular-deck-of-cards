@@ -1,7 +1,8 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 
-import { Card } from '../../../../shared/models/card.model';
+import { Card } from 'src/app/interfaces/card.interface';
 import { IconService } from '../../../../services/helper-services/icon.service';
+import { RoundType } from 'src/app/interfaces/round.interface';
 
 @Component({
   selector: 'doc-card',
@@ -9,15 +10,15 @@ import { IconService } from '../../../../services/helper-services/icon.service';
   styleUrls: ['./card.component.scss']
 })
 export class CardComponent implements OnInit, OnChanges {
-  @Input() public card: any;
-  @Input() isFirstRound = false;
+  @Input() public card: Card;
+  @Input() roundType: RoundType = 'first';
   imgSrc = '';
   cardName = '';
   cardToDisplay: Card;
 
   constructor(private readonly iconService: IconService) {}
   ngOnInit(): void {
-    if (this.isFirstRound) {
+    if (this.roundType !== 'normal' && this.card.hand) {
       this.getInfo(this.card.uniqueId);
       this.cardToDisplay = this.card.hand[0];
     } else {
@@ -36,11 +37,8 @@ export class CardComponent implements OnInit, OnChanges {
     if (user === void 0) {
       user = JSON.parse(sessionStorage.getItem('user'));
     }
-    // image source
     const title = user.iconTitle;
     this.imgSrc = this.iconService.getIconSrc(title);
-    // name
     this.cardName = user.username;
-
   }
 }

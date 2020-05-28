@@ -1,8 +1,9 @@
 import { BettingModalComponent } from './betting-modal/betting-modal.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { CorrectPlayerOrderPipe } from './pipes/correct-player-order.pipe';
 import { DeckOfCardsModule } from '../features/deck-of-cards/deck-of-cards.module';
-import { FirstRoundModalComponent } from './first-round-modal/first-round-modal.component';
+import { EdgeRoundModalComponent } from './edge-round-modal/edge-round-modal.component';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -21,13 +22,14 @@ import { UserHandComponent } from './user-hand/user-hand.component';
     UserCardComponent,
     BettingModalComponent,
     UserHandComponent,
-    FirstRoundModalComponent,
+    EdgeRoundModalComponent,
     OrderByPointsPipe,
     CorrectPlayerOrderPipe,
     RoundResultModalComponent
   ],
   imports: [
     CommonModule,
+    BrowserAnimationsModule,
     FormsModule,
     DeckOfCardsModule,
     PerfectScrollbarModule,

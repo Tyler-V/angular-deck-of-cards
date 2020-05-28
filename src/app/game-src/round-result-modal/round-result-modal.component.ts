@@ -35,7 +35,6 @@ export class RoundResultModalComponent implements OnInit {
     // set up listener if not a host
     if (!this.isHost) {
       this.gameService.listenForNextRound().pipe(take(1)).subscribe(round => {
-        
         this.dialogRef.close(round);
       });
     }
@@ -49,7 +48,7 @@ export class RoundResultModalComponent implements OnInit {
     const out = [];
     this.roundBets.forEach(bet => {
       const diff = Math.abs(bet.bet - bet.hits);
-      
+
       let pnts = 0;
       if (diff === 0) {
         pnts = (10 + (diff * 2));
@@ -58,7 +57,7 @@ export class RoundResultModalComponent implements OnInit {
       }
       out.push({points: `${pnts > 0 ? '+' : '-'}${Math.abs(pnts)}`, id: bet.uniqueId});
     });
-    
+
     return out;
   }
   private getResults(): any[] {

@@ -1,0 +1,28 @@
+<div class="modal-container" *ngIf="!isLoading">
+    <div class="title-strip">
+        {{showEndResult ? 'Last' : 'First'}} round results
+    </div>
+    <doc-cards
+        [isFirstRound]="true"
+        [isResult]="true"
+        [winnerId]="winnerId"
+        [cards]="cardsToDisplay"
+        [roundPoints]="roundPoints"    
+    ></doc-cards>
+    <div class="scoreboard-container">
+        <div    class="result-tile"
+            *ngFor="let playa of rankedPlayers | orderByPoints; let i = index"
+            [ngClass]="{
+                'first-place': i === 0,
+                'second-place': i === 1,
+                'third-place': i === 2
+            }">
+            <div class="rank">{{ i }}</div>
+            <div class="name">{{ playa.name }}</div>
+            <div class="points">{{ playa.points }}</div>
+        </div>
+    </div>
+    <button mat-button (click)="startNextRound()" [disabled]="!isHost && roundData.type !== 'last'">
+        {{ getButtonText() }}
+    </button>
+</div>

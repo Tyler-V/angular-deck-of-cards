@@ -1,10 +1,10 @@
-import { Observable, Subject, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Player, UpdatedPlayer } from '../../interfaces/player.interface';
-import { take, takeUntil } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
+import { take } from 'rxjs/operators';
 
 interface LandingData {
   numOfPlayers: number;
@@ -19,7 +19,6 @@ export class MenuService {
     numOfPlayers: 0,
     isHost: false
   };
-  private unsubscribes = new Subject<void>();
   constructor(
     private socket: Socket,
     private readonly router: Router
@@ -27,21 +26,18 @@ export class MenuService {
   land(): void {
     const id = this.createUniqueId();
     // create uniqueID and store it in session storage if there is none so far
-    if (sessionStorage.getItem('userId') === null) {
-      sessionStorage.setItem('userId', `${id}`);
-    }
+    sessionStorage.setItem('userId', `${id}`);
 
     this.socket.emit('landing', id);
     // Set landing data on number of players in the lobby
-    this.socket.fromEvent<number>('playerCount').pipe(takeUntil(this.unsubscribes)).subscribe(numOfPlayers => {
+    this.socket.fromEvent<number>('playerCount').pipe(take(1)).subscribe(numOfPlayers => {
       this.landingData = { numOfPlayers };
     });
   }
 
   // Set current user and handle reloads
   login(user: Player): void {
-    this.unsubscribes.next();
-    this.unsubscribes.complete();
+    console.log('Logging in...');
 
     const userId = JSON.parse(sessionStorage.getItem('userId'));
     let others = [];
@@ -49,11 +45,12 @@ export class MenuService {
     // check if user has an account in the lobby already
     this.getLobbyPlayers().pipe(take(1)).subscribe(otherPlayers => {
       others = Array.from(otherPlayers);
+
       isOverride = otherPlayers.findIndex(player => player.uniqueId === userId) !== -1;
       if (isOverride) {
-        this.overrideUser(user);
+        this.socket.emit('override user', user);
       } else {
-        this.addNewUser(user);
+        this.socket.emit('add new user', user);
       }
       this.socket.fromEvent<any>('joining lobby')
         .pipe(take(1))
@@ -74,13 +71,6 @@ export class MenuService {
           }
         });
     });
-  }
-  addNewUser(user: Player) {
-    this.socket.emit('add new user', user);
-  }
-  overrideUser(user: Player) {
-    
-    this.socket.emit('override user', user);
   }
 
   getLobbyPlayers(): Observable<Player[]> {

@@ -98,13 +98,13 @@
             background-image: url('../../../assets/background/game-bg.jpeg');
             background-size: cover;
             position: relative;
-    
             display: flex;
             justify-content: center;
             .user-status-container {
                 position: absolute;
                 left: 0;
                 width: 100%;
+                overflow-x: auto;
                 display: flex;
                 asr-user-card {
                     max-width: 300px;

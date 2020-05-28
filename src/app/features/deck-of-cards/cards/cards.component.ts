@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { Animations } from '../../../game-src/animations/animations';
+import { Hand } from 'src/app/interfaces/card.interface';
+import { RoundType } from 'src/app/interfaces/round.interface';
 
 @Component({
   selector: 'doc-cards',
@@ -8,18 +10,13 @@ import { Animations } from '../../../game-src/animations/animations';
   styleUrls: ['./cards.component.scss'],
   animations: [ Animations.cardAnimation ]
 })
-export class CardsComponent implements OnInit {
-  @Input() cards: any[];
-  @Input() isFirstRound = false;
-  @Input() isResult = false;
+export class CardsComponent {
+  @Input() cards: Hand;
+  @Input() roundType: RoundType = 'first';
   @Input() winnerId = null;
   @Input() roundPoints = [];
-  @Input() canPlay = false;
-  @Output() cardPlayed: EventEmitter<any> = new EventEmitter<any>();
-  cardsLen = 0;
 
   constructor() {}
-  ngOnInit(): void {}
 
   getHeader(card: any, ind: number) {
     if (card.uniqueId === this.winnerId) {
@@ -36,9 +33,5 @@ export class CardsComponent implements OnInit {
       throw Error(`Don't know who played this card ${card}`);
     }
     return out.points;
-  }
-
-  emitCard(card: any, ind: number): void {
-    this.cardPlayed.emit({card, ind});
   }
 }

@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
 import { Icon } from '../../interfaces/icon.interface';
-
+import { Injectable } from '@angular/core';
 
 const files: Icon[] = [
   {
@@ -50,5 +49,13 @@ export class IconService {
   getIconSrc(title: string): string {
     const ind = files.findIndex(icon => icon.title.toLowerCase() === title.toLowerCase());
     return files[ind].src;
+  }
+  getIconSrcFromId(id: number): string {
+    let user = JSON.parse(sessionStorage.getItem('otherPlayers')).find(player => player.uniqueId === id);
+    if (user === void 0) {
+      user = JSON.parse(sessionStorage.getItem('user'));
+    }
+    const title = user.iconTitle;
+    return this.getIconSrc(title);
   }
 }

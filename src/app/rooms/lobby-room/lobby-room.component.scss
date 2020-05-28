@@ -26,7 +26,7 @@
         .menu-card {
             padding: 0;
             min-width: 25rem;
-            height: 30rem;
+            height: fit-content;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -48,8 +48,15 @@
                 justify-content: space-around;
                 align-items: center;
                 background: #FAF7F8;
+                min-height: 19rem;
+                padding-top: 1rem;
                 mat-form-field {
                     width: 90%;
+                }
+                .component-container {
+                    height: 4rem;
+                    display: flex;
+                    align-items: center;
                 }
                 .action-button {
                     width: 90%;

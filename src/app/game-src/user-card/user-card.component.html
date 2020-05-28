@@ -1,7 +1,7 @@
 <div class="user-card">
     <div class="card-head">
         <img [src]="iconSrc"/>
-        <h4 class="user-name">{{ name }}</h4>
+        <h4 class="user-name">{{ name }} {{ getRole() }}</h4>
     </div>
     <div class="current-bets-container">
         <div class="head">

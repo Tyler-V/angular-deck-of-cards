@@ -1,15 +1,10 @@
-<div fxLayout='row wrap' fxLayoutGap="30px" class='card-layout'
-  [@cardAnimation]="cards.length">
+<div fxLayout='' fxLayoutGap="30px" class='card-layout' [class.force-start]="cards.length > 6"
+  [@cardAnimation]="cards.length" *ngIf="cards.length > 0">
   <div *ngFor="let card of cards; let i = index" fxFlex="90px" >
-    <div class="first" *ngIf="isResult" >{{ getHeader(card, i)}}</div>
+    <div class="first">{{ getHeader(card, i)}}</div>
     <doc-card 
-      (click)="emitCard(card, i)"
       [card]='card'
-      [isFirstRound]="isFirstRound"
-      [ngClass]="{
-        'cursor-pointer': canPlay,
-        'cursor-denied': !canPlay
-      }"  
+      [roundType]="roundType" 
     ></doc-card>
     <div class="points" *ngIf="roundPoints.length > 0">{{ getPoint(card) }}</div>
   </div>
