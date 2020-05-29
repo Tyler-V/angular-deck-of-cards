@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-import { Bet } from 'src/app/interfaces/round.interface';
-import { IconService } from 'src/app/services/helper-services/icon.service';
+import { Bet } from '../../interfaces/round.interface';
+import { IconService } from '../../services/helper-services/icon.service';
 
 @Component({
   selector: 'asr-user-card',

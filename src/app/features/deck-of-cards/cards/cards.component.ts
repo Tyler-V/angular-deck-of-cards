@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { Animations } from '../../../game-src/animations/animations';
-import { Hand } from 'src/app/interfaces/card.interface';
-import { RoundType } from 'src/app/interfaces/round.interface';
+import { Hand } from '../../../interfaces/card.interface';
+import { RoundType } from '../../../interfaces/round.interface';
 
 @Component({
   selector: 'doc-cards',

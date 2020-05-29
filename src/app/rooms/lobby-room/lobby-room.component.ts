@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { take, takeUntil } from 'rxjs/operators';
 
-import { MenuService } from 'src/app/services/menu-service/menu.service';
-import { Player } from 'src/app/interfaces/player.interface';
+import { MenuService } from '../../services/menu-service/menu.service';
+import { Player } from '../../interfaces/player.interface';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 

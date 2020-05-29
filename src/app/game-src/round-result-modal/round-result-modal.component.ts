@@ -1,7 +1,8 @@
-import { Component, OnInit, Input, Inject } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { GameService } from 'src/app/services/game-service/game.service';
 import { take } from 'rxjs/operators';
+
+import { GameService } from '../../services/game-service/game.service';
 
 @Component({
   selector: 'asr-round-result-modal',
@@ -21,11 +22,9 @@ export class RoundResultModalComponent implements OnInit {
     private dialogRef: MatDialogRef<RoundResultModalComponent>,
     private readonly gameService: GameService
   ) {
-    
     this.roundBets = data.roundBets;
     this.currRound = data.currRound;
     this.roundData = data.roundData;
-    
    }
 
   ngOnInit(): void {

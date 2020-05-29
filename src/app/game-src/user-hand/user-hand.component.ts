@@ -1,6 +1,6 @@
-import { Card, Hand } from 'src/app/interfaces/card.interface';
+import { Card, Hand } from '../../interfaces/card.interface';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { OthersHand, RoundType } from 'src/app/interfaces/round.interface';
+import { OthersHand, RoundType } from '../../interfaces/round.interface';
 
 import { Animations } from '../animations/animations';
 import { GameService } from '../../services/game-service/game.service';
@@ -40,7 +40,7 @@ export class UserHandComponent implements OnInit {
     }
   }
   canPlayCard(card: Card): boolean {
-    if (this.roundType !== 'normal') {
+    if (this.roundType !== 'normal' || !this.canPlay) {
       return false;
     } else if (!this.base) {
       return true;

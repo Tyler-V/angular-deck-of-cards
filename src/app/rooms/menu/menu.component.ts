@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { MenuService } from 'src/app/services/menu-service/menu.service';
+import { MenuService } from '../../services/menu-service/menu.service';
 import { Player } from '../../interfaces/player.interface';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'doc-menu',

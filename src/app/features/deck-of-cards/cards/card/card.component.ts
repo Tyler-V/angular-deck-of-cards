@@ -1,8 +1,8 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 
-import { Card } from 'src/app/interfaces/card.interface';
+import { Card } from '../../../../interfaces/card.interface';
 import { IconService } from '../../../../services/helper-services/icon.service';
-import { RoundType } from 'src/app/interfaces/round.interface';
+import { RoundType } from '../../../../interfaces/round.interface';
 
 @Component({
   selector: 'doc-card',

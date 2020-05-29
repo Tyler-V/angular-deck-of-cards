@@ -9,16 +9,16 @@ import {
   RoundStage,
   RoundType
 } from '../../interfaces/round.interface';
-import { Card, Hand } from 'src/app/interfaces/card.interface';
+import { Card, Hand } from '../../interfaces/card.interface';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { first, take, takeUntil } from 'rxjs/operators';
 
 import { Animations } from '../../game-src/animations/animations';
 import { BettingModalComponent } from '../../game-src/betting-modal/betting-modal.component';
-import { EdgeRoundModalComponent } from 'src/app/game-src/edge-round-modal/edge-round-modal.component';
+import { EdgeRoundModalComponent } from '../../game-src/edge-round-modal/edge-round-modal.component';
 import { GameService } from '../../services/game-service/game.service';
-import { RankedPlayer } from 'src/app/interfaces/player.interface';
+import { RankedPlayer } from '../../interfaces/player.interface';
 import { RoundResultModalComponent } from '../../game-src/round-result-modal/round-result-modal.component';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';

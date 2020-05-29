@@ -6,8 +6,8 @@
             [card]='card'
             [roundType]="roundType"
             [ngClass]="{
-                'cursor-pointer': canPlay && roundType === 'normal',
-                'cursor-denied': !canPlay || roundType !== 'normal'
+                'cursor-pointer': canPlayCard(card),
+                'cursor-denied': !canPlayCard(card)
             }"  
         ></doc-card>
     </div>

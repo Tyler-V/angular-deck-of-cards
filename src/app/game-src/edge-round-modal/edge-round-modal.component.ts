@@ -1,11 +1,10 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Round, EdgeRoundResult } from 'src/app/interfaces/round.interface';
-import { GameService } from 'src/app/services/game-service/game.service';
 import { take } from 'rxjs/operators';
-import { RankedPlayer } from 'src/app/interfaces/player.interface';
 
-
+import { EdgeRoundResult } from '../../interfaces/round.interface';
+import { GameService } from '../../services/game-service/game.service';
+import { RankedPlayer } from '../../interfaces/player.interface';
 
 @Component({
   selector: 'asr-edge-round-modal',

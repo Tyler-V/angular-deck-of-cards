@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-import { RoundPlayer } from 'src/app/interfaces/round.interface';
+import { RoundPlayer } from '../../interfaces/round.interface';
 
 @Pipe({
   name: 'correctPlayerOrder'

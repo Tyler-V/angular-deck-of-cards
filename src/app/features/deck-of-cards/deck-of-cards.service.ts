@@ -1,4 +1,4 @@
-import { Card } from 'src/app/interfaces/card.interface';
+import { Card } from '../../interfaces/card.interface';
 import { Injectable } from '@angular/core';
 import { Suit } from '../../shared/models/suit.model';
 

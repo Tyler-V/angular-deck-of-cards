@@ -1,10 +1,10 @@
 import { PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface, PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 
-import { BettingModalComponent } from 'src/app/game-src/betting-modal/betting-modal.component';
+import { BettingModalComponent } from '../../game-src/betting-modal/betting-modal.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { DeckOfCardsModule } from '../../features/deck-of-cards/deck-of-cards.module';
-import { GameResourcesModule } from 'src/app/game-src/game-resources.module';
+import { GameResourcesModule } from '../../game-src/game-resources.module';
 import { GameRoomComponent } from './game-room.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MaterialModule } from '../../shared/modules/material.module';

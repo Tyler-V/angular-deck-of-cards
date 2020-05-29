@@ -1,7 +1,8 @@
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { NgxSmartModalService } from 'ngx-smart-modal';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+
 import { Icon } from '../../../interfaces/icon.interface';
-import { IconService } from 'src/app/services/helper-services/icon.service';
+import { IconService } from '../../../services/helper-services/icon.service';
+import { NgxSmartModalService } from 'ngx-smart-modal';
 
 @Component({
   selector: 'asr-user-strip',
