@@ -18,7 +18,14 @@ import { SozGottaWaitComponent } from './features/soz-gotta-wait/soz-gotta-wait.
 import { UserStripComponent } from './rooms/lobby-room/user-strip/user-strip.component';
 
 // https://64.227.32.214:4444
-const config: SocketIoConfig = { url: 'https://localhost:4444', options: { transports: ['websocket'], rejectUnauthorized: false } };
+const config: SocketIoConfig = {
+  url: '//localhost:80',
+  options: {
+    secure: true,
+    rejectUnauthorized: false,
+    path: 'sock/socket.io'
+  }
+};
 
 @NgModule({
   imports: [

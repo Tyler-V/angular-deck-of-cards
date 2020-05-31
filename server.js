@@ -5,11 +5,13 @@ const path = require('path');
 const app = express();
 
 
-var options = {};
+var options = {
+    path: 'sock/socket.io'
+};
 
 var https = require('https');
 var httpsServer = https.createServer(options, app);
-var io = require('socket.io')(https);
+var io = require('socket.io')(https, options);
 
 // Serve only the static files form the dist directory
 app.use(express.static(__dirname + '/dist'));
