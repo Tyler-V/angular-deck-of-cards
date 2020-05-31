@@ -19,7 +19,7 @@ import { UserStripComponent } from './rooms/lobby-room/user-strip/user-strip.com
 
 // https://64.227.32.214:4444
 const config: SocketIoConfig = {
-  url: '//localhost:80',
+  url: '//64.227.32.214:4444',
   options: {
     secure: true,
     rejectUnauthorized: false,
