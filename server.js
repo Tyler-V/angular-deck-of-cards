@@ -5,13 +5,11 @@ const path = require('path');
 const app = express();
 
 
-var options = {
-    path: 'sock/socket.io'
-};
+var options = {};
 
-var https = require('https');
-var httpsServer = https.createServer(options, app);
-var io = require('socket.io')(https, options);
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+
 
 // Serve only the static files form the dist directory
 app.use(express.static(__dirname + '/dist'));
@@ -48,6 +46,8 @@ let roundPointsAllocated = false;
 
 
 io.on("connection", socket => {
+    console.log('success');
+    
     // On landing
     socket.on('landing', (id) => {
         console.log(id);
@@ -218,7 +218,7 @@ io.on("connection", socket => {
     });
 });
 
-httpsServer.listen(4444, function() {
+server.listen(4444, function() {
     console.log('Lets go!');
 });
 

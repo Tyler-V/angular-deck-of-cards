@@ -18,14 +18,14 @@ import { SozGottaWaitComponent } from './features/soz-gotta-wait/soz-gotta-wait.
 import { UserStripComponent } from './rooms/lobby-room/user-strip/user-strip.component';
 
 // https://64.227.32.214:4444
-const config: SocketIoConfig = {
-  url: 'http://localhost:4444',
-  options: {
-    secure: true,
-    rejectUnauthorized: false,
-    path: 'sock/socket.io'
-  }
-};
+// const config: SocketIoConfig = {
+//   url: 'http://localhost:4444',
+//   options: {
+//     secure: true,
+//     rejectUnauthorized: false,
+//     path: 'sock/socket.io'
+//   }
+// };
 
 @NgModule({
   imports: [
@@ -36,7 +36,7 @@ const config: SocketIoConfig = {
     GameRoomModule,
     GameResourcesModule,
     NgxSmartModalModule.forRoot(),
-    SocketIoModule.forRoot(config),
+    // SocketIoModule.forRoot(config),
     RouterModule.forRoot([
       { path: '', component: MenuComponent },
       { path: 'soz-gotta-wait-a-bit', component: SozGottaWaitComponent },
