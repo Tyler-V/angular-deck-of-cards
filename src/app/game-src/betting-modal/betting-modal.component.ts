@@ -1,16 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-
-interface Food {
-  value: string;
-  viewValue: string;
-}
-
-interface Car {
-  value: string;
-  viewValue: string;
-}
-
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'asr-betting-modal',
@@ -18,26 +6,17 @@ interface Car {
   styleUrls: ['./betting-modal.component.scss']
 })
 export class BettingModalComponent implements OnInit {
+  @Input() options: number[];
+  @Output() betMade: EventEmitter<number> = new EventEmitter<number>();
   selected: any;
 
   selectedValue: number;
+  constructor() {}
 
-  isLoading = true;
-  options: number[];
-
-  constructor(
-    private dialogRef: MatDialogRef<BettingModalComponent>,
-    @Inject(MAT_DIALOG_DATA) data
-  ) {
-    this.options = data.bettingOptions;
-    this.isLoading = false;
-  }
-
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   close(val: number): void {
-    this.dialogRef.close(val);
+    this.betMade.emit(val);
   }
 
 }

@@ -17,11 +17,8 @@ export class AuthService {
                 .pipe(
                     take(1)
                 ).subscribe(canLogIn => {
-                    
-                    
                     resolve(false);
                 }, err => {
-                    
                     resolve(false);
                 });
         });

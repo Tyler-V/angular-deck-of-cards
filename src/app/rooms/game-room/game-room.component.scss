@@ -2,59 +2,6 @@
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    .sidebar-scoreboard {
-        .scoreboard-panel-container {
-            width: 30vw;
-            display: flex;
-            align-items: flex-start;
-            .icon-container {
-                background: #E0E0E0;
-                border-left: 3px solid black;
-                box-shadow: 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-                padding: .25rem;
-                cursor: pointer;
-                img {
-                    width: 35px;
-                }
-            }
-            .data-container {
-                width: 100%;
-                background: #E0E0E0;
-                padding: .5rem;
-                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-                .scoreboard-table {
-                    text-align: center;
-                    width: 100%;
-    
-                    thead {
-                        border-bottom: 1px solid black;
-                    }
-                }
-                .bottom-cont {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                }
-                .round-container, .trump-container {
-                    width: 50%;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: space-around;
-                    align-items: center;
-                    .suit-image {
-                        height: 20px;
-                        width: 20px;
-                        background-position: center center;
-                        background-size: 20px;
-                    }
-                    doc-card {
-                        max-width: 100px;
-                        width: 90%;
-                    }
-                }
-            }
-        }
-    }
     .content-container {
         width: 100vw;
         height: 100vh;
@@ -94,15 +41,15 @@
         }
     
         .game-container {
-            height: 92vh;
+            height: 100vh;
             background-image: url('../../../assets/background/game-bg.jpeg');
             background-size: cover;
             position: relative;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            justify-content: space-between;
             .user-status-container {
-                position: absolute;
-                left: 0;
+                height: fit-content;
                 width: 100%;
                 overflow-x: auto;
                 display: flex;
@@ -115,8 +62,6 @@
             .user-action-container {
                 width: 100vw;
                 height: 30vh;
-                position: absolute;
-                bottom: 0;
                 display: flex;
                 
                 .cards-container {
@@ -147,6 +92,60 @@
             }
             .mid-section {
                 top: 50%;
+                flex-grow: 1;
+                display: flex;
+                justify-content: center;
+                .scoreboard-panel-container {
+                    width: 30vw;
+                    position: absolute;
+                    right: 0;
+                    .icon-container {
+                        background: #E0E0E0;
+                        border-left: 3px solid black;
+                        box-shadow: 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                        padding: .25rem;
+                        cursor: pointer;
+                        img {
+                            width: 35px;
+                        }
+                    }
+                    .data-container {
+                        width: 100%;
+                        background: #E0E0E0;
+                        padding: .5rem;
+                        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                        .scoreboard-table {
+                            text-align: center;
+                            width: 100%;
+            
+                            thead {
+                                border-bottom: 1px solid black;
+                            }
+                        }
+                        .bottom-cont {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                        }
+                        .round-container, .trump-container {
+                            width: 50%;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: space-around;
+                            align-items: center;
+                            .suit-image {
+                                height: 20px;
+                                width: 20px;
+                                background-position: center center;
+                                background-size: 20px;
+                            }
+                            doc-card {
+                                max-width: 100px;
+                                width: 90%;
+                            }
+                        }
+                    }
+                }
             }
         }
     }

@@ -16,15 +16,14 @@ export class MenuComponent implements OnInit {
   };
   playersInRoom = 5;
   isJoining: boolean;
-  // constructor(readonly menu: MenuService) { }
-  constructor() {}
+  constructor(readonly menu: MenuService) { }
   ngOnInit(): void {
-    // this.menu.land();
+    this.menu.land();
     this.initUser();
   }
   joinGame(): void {
     this.isJoining = true;
-    // this.menu.login(this.player);
+    this.menu.login(this.player);
   }
   private initUser() {
     this.player = {

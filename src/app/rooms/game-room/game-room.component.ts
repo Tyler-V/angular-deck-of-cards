@@ -49,6 +49,7 @@ export class GameRoomComponent implements OnInit {
   currentRound = 1;
   currentHand: Hand;
   nextToPlay: RoundPlayer;
+  isDealerRebet = false;
 
   userInfo = 'Look at the opponent hands, and make your bet!';
   trumpoCard: Card;
@@ -117,22 +118,29 @@ export class GameRoomComponent implements OnInit {
     } else {
       this.userInfo = `Make your bet! Trump: ${this.trumpoCard.suit}`;
     }
-    const modalRef = this.dialog.open(BettingModalComponent, {
-      ...modalBaseConfig,
-      id: `round-bets-${isDealerRebet ? 'delear-rebet-' + this.idPivot : this.idPivot}`,
-      data: {
-        bettingOptions: this.bettingOptions
-      }
-    });
-    modalRef.afterClosed().subscribe(bet => {
+    // slider version
+    this.toggleScorePanel();
+    // modal version
+    // const modalRef = this.dialog.open(BettingModalComponent, {
+    //   ...modalBaseConfig,
+    //   id: `round-bets-${isDealerRebet ? 'delear-rebet-' + this.idPivot : this.idPivot}`,
+    //   data: {
+    //     bettingOptions: this.bettingOptions
+    //   }
+    // });
+    // modalRef.afterClosed().subscribe(bet => {
+    // });
+  }
+  handleBet(bet: number): void {
+      this.toggleScorePanel();
       this.roundData.me.bets.bet = bet;
       this.roundData.me.bets.bettingOptions = this.bettingOptions;
-      this.gameService.makeBet(this.roundData.me.bets, isDealerRebet);
-    });
+      this.gameService.makeBet(this.roundData.me.bets, this.isDealerRebet);
   }
   openRoundResultModal(roundBets: any[]): void {
     this.userInfo = 'Round has ended. Host needs to start the next round!';
     this.currentRoundModalName = `round-result-${this.idPivot}`;
+    this.isDealerRebet = false;
     this.roundResultModalRef = this.dialog.open(RoundResultModalComponent, {
       ...modalBaseConfig,
       id: this.currentRoundModalName,
@@ -210,6 +218,7 @@ export class GameRoomComponent implements OnInit {
         setTimeout(() => {
           this.isAnimationDone = true;
           if (!currStage.madeBet) {
+            this.isDealerRebet = false;
             this.openBettingModal();
           }
         }, 2000);
@@ -302,6 +311,7 @@ export class GameRoomComponent implements OnInit {
           this.userInfo = `Dealer needs to change their bet!`;
           if (this.roundData.me.isDealer) {
             this.bettingOptions = response.options;
+            this.isDealerRebet = true;
             this.openBettingModal(true);
           }
         } else {
@@ -337,6 +347,7 @@ export class GameRoomComponent implements OnInit {
           this.userInfo = `Dealer needs to change their bet!`;
           if (this.roundData.me.isDealer) {
             this.bettingOptions = response.options;
+            this.isDealerRebet = true;
             this.openBettingModal(true);
           }
         } else {

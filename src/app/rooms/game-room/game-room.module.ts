@@ -37,9 +37,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   ],
   exports: [
     GameRoomComponent
-  ],
-  entryComponents: [
-    BettingModalComponent
   ]
 })
 export class GameRoomModule { }

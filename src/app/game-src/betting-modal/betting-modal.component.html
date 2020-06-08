@@ -2,7 +2,7 @@
     <div class="title-strip">
         What's your Bet?
     </div>
-    <mat-form-field *ngIf="!isLoading">
+    <mat-form-field>
       <mat-label>Number of hits, you wanna take</mat-label>
       <mat-select [(ngModel)]="selectedValue" name="food">
         <mat-option *ngFor="let opt of options" [value]="opt">
