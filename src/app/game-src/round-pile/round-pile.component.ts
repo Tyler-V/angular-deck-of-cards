@@ -11,18 +11,25 @@ import { IconService } from '../../services/helper-services/icon.service';
 export class RoundPileComponent implements OnInit {
   @Input() trump: Card;
   @Input() set cardOnTop(val: Card) {
-    this.isLoading = true;
-    this.justPlayedCard = Object.assign({}, val);
-    this._cards.push(this.justPlayedCard);
-    if (this._cards.length === 1) {
-      this.base = Object.assign({}, this.justPlayedCard);
-      this.baseImgSrc = this.iconService.getIconSrcFromId(this.base.uniqueId);
-      this.winnerCard = Object.assign({}, this.justPlayedCard);
-      this.winnerImgSrc = this.iconService.getIconSrcFromId(this.winnerCard.uniqueId);
+    console.log(val);
+    if (!val) {
+      this._cards = [];
+      this.justPlayedCard = null;
+      this.trump = null;
     } else {
-      this.determineWinnerCardSoFar();
+      this.isLoading = true;
+      this.justPlayedCard = Object.assign({}, val);
+      this._cards.push(this.justPlayedCard);
+      console.log(this._cards);
+      if (this._cards.length === 1) {
+        this.base = Object.assign({}, this.justPlayedCard);
+        this.baseImgSrc = this.iconService.getIconSrcFromId(this.base.uniqueId);
+        this.winnerCard = Object.assign({}, this.justPlayedCard);
+        this.winnerImgSrc = this.iconService.getIconSrcFromId(this.winnerCard.uniqueId);
+      } else {
+        this.determineWinnerCardSoFar();
+      }
     }
-
     this.isLoading = false;
   }
   @Input() set pileReset(val: Array<Card>) {

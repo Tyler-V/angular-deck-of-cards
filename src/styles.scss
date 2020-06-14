@@ -19,9 +19,13 @@ body {
 .ng-sidebar {
   height: 100%;
 }
-.ng-sidebar--right {
-  top: 30vh !important;
-  height: fit-content;
+.ng-sidebar--left {
+  top: 20vh !important;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: 50vh;
+  width: 70vw;
+  background: white;
 }
 .nsm-dialog {
   min-width: 720px;

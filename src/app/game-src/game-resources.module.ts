@@ -40,6 +40,7 @@ import { UserHandComponent } from './user-hand/user-hand.component';
   exports: [
     RoundPileComponent,
     UserCardComponent,
+    BettingModalComponent,
     UserHandComponent,
     OrderByPointsPipe,
     CorrectPlayerOrderPipe

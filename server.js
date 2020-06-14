@@ -45,9 +45,7 @@ let roundPointsAllocated = false;
 
 
 
-io.on("connection", socket => {
-    console.log('success');
-    
+io.on("connection", socket => {    
     // On landing
     socket.on('landing', (id) => {
         console.log(id);
@@ -206,7 +204,7 @@ io.on("connection", socket => {
     // Init next round
     socket.on('set up next round', () => {
         currentRound++;
-        if (currentRound > (52 / roundPlayers)) {
+        if (currentRound > (51 / roundPlayers)) {
             modifier -= 2;
         }
         setUpNextRound(currentRound + modifier);
@@ -214,7 +212,7 @@ io.on("connection", socket => {
         console.log('Round setup');
         console.log(roundPlayers);
         console.log(cards);
-        socket.broadcast.emit('start next round', currentRound);
+        io.emit('start next round', currentRound);
     });
 });
 

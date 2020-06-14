@@ -54,7 +54,7 @@ export class GameRoomComponent implements OnInit {
   userInfo = 'Look at the opponent hands, and make your bet!';
   trumpoCard: Card;
   roundData: Round;
-  scoreboardToggle = true;
+  scoreboardToggle = false;
   bettingOptions: number[];
   canPlay = false;
   currentRoundModalName = '';
@@ -100,6 +100,7 @@ export class GameRoomComponent implements OnInit {
       if (this.roundType === 'last') {
         this.router.navigate(['']);
       } else {
+        console.log(this.roundData);
         if (this.roundData.me.isHost) {
           this.gameService.initNextRound().pipe(take(1)).subscribe(round => {
             this.initNextRound(round);
@@ -150,6 +151,7 @@ export class GameRoomComponent implements OnInit {
     this.roundResultModalRef.afterClosed().subscribe((roundFromModal) => {
       if (this.roundData.me.isHost) {
         this.gameService.initNextRound().pipe(take(1)).subscribe(round => {
+          console.log('we in here mofo', round);
           this.initNextRound(round);
         });
       } else {
@@ -170,13 +172,16 @@ export class GameRoomComponent implements OnInit {
     }
   }
   // round init refactor needed cuz its pretty similar!!!
-  private initNextRound(round: number): void {
+  private  initNextRound(round: number): void {
+    console.log('iin intNextRound with', round);
     this.isLoading = true;
     this.idPivot++;
     this.initRoundAnimation();
     this.currentRound = round;
     // close all result modals
     this.gameService.initRound(round).pipe(take(1)).subscribe(response => {
+      console.log(response);
+
       this.allocateRoundData(response);
       this.isLoading = false;
     });
