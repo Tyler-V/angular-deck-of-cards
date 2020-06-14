@@ -65,6 +65,7 @@ io.on("connection", socket => {
             players.push(user);
     
             socket.emit('joining lobby', { user, players });
+            io.emit('playerCount', numOfPlayers);
             socket.broadcast.emit('user joined', user);
             socket.id = user.uniqueId;
             console.log('Added ' + user.username + ' to the game');

@@ -1,38 +1,29 @@
-import { Observable, of } from 'rxjs';
+import { Injectable, OnDestroy } from '@angular/core';
+import { Observable, Subject, of } from 'rxjs';
 import { Player, UpdatedPlayer } from '../../interfaces/player.interface';
+import { take, takeUntil } from 'rxjs/operators';
 
-import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
-import { take } from 'rxjs/operators';
-
-interface LandingData {
-  numOfPlayers: number;
-  isHost?: boolean;
-}
 
 @Injectable({
   providedIn: 'root'
 })
 export class MenuService {
-  landingData: LandingData = {
-    numOfPlayers: 0,
-    isHost: false
-  };
+
   constructor(
     private socket: Socket,
     private readonly router: Router
   ) { }
-  land(): void {
+
+  land(): Observable<any> {
     const id = this.createUniqueId();
     // create uniqueID and store it in session storage if there is none so far
     sessionStorage.setItem('userId', `${id}`);
 
     this.socket.emit('landing', id);
     // Set landing data on number of players in the lobby
-    this.socket.fromEvent<number>('playerCount').pipe(take(1)).subscribe(numOfPlayers => {
-      this.landingData = { numOfPlayers };
-    });
+    return this.socket.fromEvent<number>('playerCount');
   }
 
   // Set current user and handle reloads
