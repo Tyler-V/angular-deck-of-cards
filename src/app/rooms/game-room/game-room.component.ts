@@ -356,6 +356,7 @@ export class GameRoomComponent implements OnInit {
             this.openBettingModal(true);
           }
         } else {
+          // Scoreboard allocation
           this.rankedPlayers.forEach(playa => {
             playa.points = response.firstRoundData.scoreboard.find(user => user.uniqueId === playa.uniqueId).points;
           });
