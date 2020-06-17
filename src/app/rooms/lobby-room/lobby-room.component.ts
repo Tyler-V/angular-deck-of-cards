@@ -1,9 +1,9 @@
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { take, takeUntil } from 'rxjs/operators';
 
 import { MenuService } from '../../services/menu-service/menu.service';
 import { Player } from '../../interfaces/player.interface';
-import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -22,8 +22,13 @@ export class LobbyRoomComponent implements OnInit, OnDestroy {
     ) { }
 
   ngOnInit(): void {
-    this.getCurrentPlayer();
-    this.getLobbyPlayers();
+    const navExtras = this.router.getCurrentNavigation();
+    if (navExtras && navExtras.extras.state.players) {
+      this.repopulateLobby(navExtras.extras.state.players);
+    } else {
+      this.getCurrentPlayer();
+      this.getLobbyPlayers();
+    }
     this.listenForNewPlayers();
     this.listenForUpdatedPlayer();
     this.goToGameListener();
@@ -64,7 +69,6 @@ export class LobbyRoomComponent implements OnInit, OnDestroy {
 
   startGame(): void {
     if (this.currentPlayer.isHost) {
-      
       this.menu.startGame();
     }
   }
@@ -74,21 +78,18 @@ export class LobbyRoomComponent implements OnInit, OnDestroy {
 
   private listenForNewPlayers() {
     this.menu.listenForNewPlayers().pipe(takeUntil(this.unsubscribes)).subscribe(user => {
-      
       this.safeAdd(user);
     });
   }
 
   private goToGameListener(): void {
     this.menu.goToGameListener(this.currentPlayer.isHost).pipe(takeUntil(this.unsubscribes)).subscribe(() => {
-      
       this.router.navigate(['game']);
     });
   }
 
   private listenForUpdatedPlayer() {
     this.menu.listenForUpdatedPlayer().pipe(takeUntil(this.unsubscribes)).subscribe(playerUpdated => {
-      
       const ind = this.otherPlayers.findIndex(player => player.uniqueId === playerUpdated.id);
       if (ind !== -1) {
         this.otherPlayers[ind] = Object.assign({}, playerUpdated.player);
@@ -114,5 +115,16 @@ export class LobbyRoomComponent implements OnInit, OnDestroy {
         'otherPlayers',
         JSON.stringify(this.otherPlayers));
     });
+  }
+
+  private repopulateLobby(players: Player[]): void {
+    // get current player
+    const uniqueId = JSON.parse(sessionStorage.getItem('userId')) as number;
+    this.currentPlayer = Object.assign({}, players.find(playa => playa.uniqueId === uniqueId));
+    // get others in too
+    this.otherPlayers = players.filter(player => player.uniqueId !== uniqueId);
+      sessionStorage.setItem(
+        'otherPlayers',
+        JSON.stringify(this.otherPlayers));
   }
 }

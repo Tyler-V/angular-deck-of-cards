@@ -4,7 +4,8 @@ import { take } from 'rxjs/operators';
 
 import { EdgeRoundResult } from '../../interfaces/round.interface';
 import { GameService } from '../../services/game-service/game.service';
-import { RankedPlayer } from '../../interfaces/player.interface';
+import { RankedPlayer, Player } from '../../interfaces/player.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'asr-edge-round-modal',
@@ -25,7 +26,8 @@ export class EdgeRoundModalComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) data: EdgeRoundResult,
     private dialogRef: MatDialogRef<EdgeRoundModalComponent>,
-    private readonly gameService: GameService
+    private readonly gameService: GameService,
+    private readonly router: Router
   ) {
     this.roundData = data;
     if (data.rankedPlayers) {
@@ -78,6 +80,19 @@ export class EdgeRoundModalComponent implements OnInit {
       return 'Waiting for host...';
     }
   }
+  samePlayers(): void {
+    if (this.roundData.firstRoundData.me.isHost) {
+      this.gameService.samePlayers().subscribe((roundPlayers: Player[]) => {
+        this.router.navigate(['lobby'], { state: { players: roundPlayers } });
+      });
+    }
+  }
+  quit(): void {
+    if (this.roundData.firstRoundData.me.isHost) {
+      this.gameService.quit();
+    }
+  }
+
   private getCorrectOrderedCards(): Array<any> {
     const out = [];
     const candidate = this.roundData.firstRoundData.players.find(playa => playa.isFirst);

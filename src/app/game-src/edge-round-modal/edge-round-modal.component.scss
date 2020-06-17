@@ -47,8 +47,13 @@
         }
         
     }
+    .end-options {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
     button {
-        height: 3rem;;
+        height: 3rem;
         font-size: 35px;
         font-weight: 100;
         font-family: sans-serif;

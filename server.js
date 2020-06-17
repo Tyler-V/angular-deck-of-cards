@@ -131,10 +131,10 @@ io.on("connection", socket => {
             if (currentRound === 1 || isLastRound) {
                 const firstRoundData = getFirstRoundResults();
                 // socket.broadcast.emit('play out first round', {firstRoundData, isDealerChangeNeeded, options});
-                io.emit('play out first round', {firstRoundData, isDealerChangeNeeded, options});
-                if (isLastRound) {
-                    resetEverything();
-                }
+                io.emit('play out edge round', {firstRoundData, isDealerChangeNeeded, options});
+                // if (isLastRound) {
+                //     resetEverything();
+                // }
             } else {
                 // socket.broadcast.emit('reveal bets', {roundBets, isDealerChangeNeeded: false, options: []});
                 betsRevealed = true;
@@ -161,7 +161,7 @@ io.on("connection", socket => {
                 if (currentRound === 1) {
                     const firstRoundData = getFirstRoundResults(isDealerChangeNeeded);
                     // socket.broadcast.emit('play out first round', {firstRoundData, isDealerChangeNeeded, options});
-                    io.emit('play out first round', {firstRoundData, isDealerChangeNeeded, options});
+                    io.emit('play out edge round', {firstRoundData, isDealerChangeNeeded, options});
                     roundBets = [];
                 } else {
                     // socket.broadcast.emit('reveal bets', {roundBets, isDealerChangeNeeded, options});
@@ -215,12 +215,40 @@ io.on("connection", socket => {
         console.log(cards);
         io.emit('start next round', currentRound);
     });
+    // Init next round
+    socket.on('new game same players', () => {
+        resetToLobbyStage();
+        socket.emit('lobby players', players);  
+    });
+    socket.on('quit', () => {
+        resetEverything();
+    });
 });
 
 server.listen(4444, function() {
     console.log('Lets go!');
 });
 
+
+// Server reset and quitting methods
+
+function resetToLobbyStage() {
+    resetGameData();
+    resetLobbyPlayers();
+};
+function resetGameData() {
+    cards = [];
+    bets = [];
+    roundPlayers = [];
+    scoreboard = [];
+}
+
+function resetLobbyPlayers() {
+    players.forEach(playa => {
+        playa.iconTitle = 'Male';
+        playa.isReady = false;
+    })
+}
 
 
 function resetEverything() {
@@ -229,6 +257,7 @@ function resetEverything() {
     host = {};
     scoreboard = [];
     hitPile = [];
+    players = [];
 }
 function getNextToPlayId(prevId) {
     if (!prevId) {

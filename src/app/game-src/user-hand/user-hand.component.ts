@@ -34,9 +34,11 @@ export class UserHandComponent implements OnInit {
 
   playCard(card: Card, ind: number): void {
     if (this.canPlay && this.roundType === 'normal') {
-      this.gameService.playCard(card);
-      this.cards.splice(ind, 1);
-      this.justPlayed.emit(card);
+      if (this.canPlayCard(card)) {
+        this.gameService.playCard(card);
+        this.cards.splice(ind, 1);
+        this.justPlayed.emit(card);
+      }
     }
   }
   canPlayCard(card: Card): boolean {

@@ -35,7 +35,7 @@ import { UserHandComponent } from './user-hand/user-hand.component';
     PerfectScrollbarModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatInputModule
+    MatInputModule,
   ],
   exports: [
     RoundPileComponent,

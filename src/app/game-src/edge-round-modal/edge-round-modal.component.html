@@ -2,15 +2,9 @@
     <div class="title-strip">
         {{showEndResult ? 'Last' : 'First'}} round results
     </div>
-    <doc-cards
-        [winnerId]="winnerId"
-        [cards]="cardsToDisplay"
-        [roundPoints]="roundPoints"    
-    ></doc-cards>
+    <doc-cards [winnerId]="winnerId" [cards]="cardsToDisplay" [roundPoints]="roundPoints"></doc-cards>
     <div class="scoreboard-container">
-        <div    class="result-tile"
-            *ngFor="let playa of rankedPlayers | orderByPoints; let i = index"
-            [ngClass]="{
+        <div class="result-tile" *ngFor="let playa of rankedPlayers | orderByPoints; let i = index" [ngClass]="{
                 'first-place': i === 0,
                 'second-place': i === 1,
                 'third-place': i === 2
@@ -20,7 +14,19 @@
             <div class="points">{{ playa.points }}</div>
         </div>
     </div>
-    <button mat-button (click)="startNextRound()" [disabled]="!isHost && roundData.type !== 'last'">
-        {{ getButtonText() }}
-    </button>
+    <ng-container *ngIf="showEndResult">
+        <div class="end-options">
+            <button mat-button (click)="quit()" [disabled]="!isHost">
+                Quit
+            </button>
+            <button mat-button (click)="samePlayers()" [disabled]="!isHost">
+                New game with same players
+            </button>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="!showEndResult">
+        <button mat-button (click)="startNextRound()" [disabled]="!isHost">
+            {{ getButtonText() }}
+        </button>
+    </ng-container>
 </div>

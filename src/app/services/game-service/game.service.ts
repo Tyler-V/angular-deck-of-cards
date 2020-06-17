@@ -2,6 +2,8 @@ import { Bet, Round1APIResponse, RoundAPIResponse } from '../../interfaces/round
 import { Injectable, OnInit } from '@angular/core';
 
 import { Observable } from 'rxjs';
+import { Player } from 'src/app/interfaces/player.interface';
+import { Router } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
 import { take } from 'rxjs/operators';
 
@@ -10,7 +12,10 @@ import { take } from 'rxjs/operators';
 })
 export class GameService implements OnInit {
   userId: number;
-  constructor(private socket: Socket) { }
+  constructor(
+    private socket: Socket,
+    private readonly router: Router
+  ) { }
   ngOnInit(): void {
     this.userId = JSON.parse(sessionStorage.getItem('userId'));
   }
@@ -43,7 +48,7 @@ export class GameService implements OnInit {
     return this.socket.fromEvent<any>('reveal bets');
   }
   listenForRound1Results(): Observable<Round1APIResponse> {
-    return this.socket.fromEvent<Round1APIResponse>('play out first round');
+    return this.socket.fromEvent<Round1APIResponse>('play out edge round');
   }
   listenForNextRound(): Observable<any> {
     return this.socket.fromEvent<any>('start next round');
@@ -60,5 +65,15 @@ export class GameService implements OnInit {
   playCard(card) {
     const id = JSON.parse(sessionStorage.getItem('user')).uniqueId;
     this.socket.emit('card played', {...card, uniqueId: id});
+  }
+
+  samePlayers(): Observable<Player[]> {
+    this.socket.emit('new game same players');
+    return this.socket.fromEvent<Player[]>('round players').pipe(take(1));
+  }
+  quit(): void {
+    this.socket.emit('quit');
+    sessionStorage.clear();
+    this.router.navigate(['']);
   }
 }

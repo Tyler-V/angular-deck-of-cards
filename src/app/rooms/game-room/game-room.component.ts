@@ -15,7 +15,6 @@ import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dial
 import { first, take, takeUntil } from 'rxjs/operators';
 
 import { Animations } from '../../game-src/animations/animations';
-import { BettingModalComponent } from '../../game-src/betting-modal/betting-modal.component';
 import { EdgeRoundModalComponent } from '../../game-src/edge-round-modal/edge-round-modal.component';
 import { GameService } from '../../services/game-service/game.service';
 import { RankedPlayer } from '../../interfaces/player.interface';
@@ -86,7 +85,7 @@ export class GameRoomComponent implements OnInit {
     this.cardOnTop = Object.assign({}, card);
     this.numCardsPlayed++;
   }
-  // MODALS --> create test component and area
+  // MODALS
   openEdgeRoundModal(firstRoundData: FirstRoundData): void {
     const modalRef = this.dialog.open(EdgeRoundModalComponent, {
       ...modalBaseConfig,
@@ -429,6 +428,8 @@ export class GameRoomComponent implements OnInit {
       .subscribe(data => {
         this.cardOnTop = Object.assign({}, data.lastCard);
         this.rankedPlayers = Array.from(data.scoreboard);
+        this.trumpoCard = null;
+        this.currentHand = [];
         this.playingSubj.next();
         this.playingSubj.complete();
         this.playingSubj = new Subject<any>();
