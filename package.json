@@ -33,6 +33,7 @@
     "core-js": "^2.5.4",
     "express": "^4.17.1",
     "lodash": "^4.17.15",
+    "lodash.orderby": "^4.6.0",
     "ng-sidebar": "^9.2.0",
     "ng2-dragula": "^2.1.1",
     "ngx-perfect-scrollbar": "^9.0.0",

@@ -83,7 +83,14 @@ export class GameRoomComponent implements OnInit {
   justPlayedCard(card: Card) {
     this.canPlay = false;
     this.cardOnTop = Object.assign({}, card);
+    this.baseCard = null;
     this.numCardsPlayed++;
+    const next = this.roundData.me.seatInd + 1;
+    if (next - 1 === this.roundData.players.length) {
+      this.userInfo = `It is ${this.roundData.players.find(playa => playa.seatInd === 0).username}'s turn!`;
+    } else {
+      this.userInfo = `It is ${this.roundData.players.find(playa => playa.seatInd === next).username}'s turn!`;
+    }
   }
   // MODALS
   openEdgeRoundModal(firstRoundData: FirstRoundData): void {
@@ -170,6 +177,15 @@ export class GameRoomComponent implements OnInit {
       return 'None';
     }
   }
+  getMyStatus(): string {
+    if (this.roundData.me.isFirst) {
+      return ' (F)';
+    } else if (this.roundData.me.isDealer) {
+      return ' (D)';
+    } else {
+      return '';
+    }
+  }
   // round init refactor needed cuz its pretty similar!!!
   private  initNextRound(round: number): void {
     console.log('iin intNextRound with', round);
@@ -247,7 +263,6 @@ export class GameRoomComponent implements OnInit {
     }
     this.isLoading = false;
   }
-
   private setUpRankedPlayers(): void {
     const others = this.roundData.players.map(playa => {
       return {
@@ -314,6 +329,7 @@ export class GameRoomComponent implements OnInit {
         if (response.isDealerChangeNeeded) {
           this.userInfo = `Dealer needs to change their bet!`;
           if (this.roundData.me.isDealer) {
+            this.userInfo = `You need to change your bet!`;
             this.bettingOptions = response.options;
             this.isDealerRebet = true;
             this.openBettingModal(true);
@@ -322,7 +338,6 @@ export class GameRoomComponent implements OnInit {
           const roundBets = response.roundBets;
 
           this.numCardsPlayed = 0;
-
           this.roundData.players.forEach(playa => playa.status = 'Waiting...');
           const firstInd = this.roundData.players.findIndex(playa => playa.isFirst);
           if (firstInd === -1) {
@@ -377,6 +392,7 @@ export class GameRoomComponent implements OnInit {
       .subscribe(data => {
         console.log('listenForOthersPlayingCard', data);
         if (data.card.uniqueId !== this.userId) {
+          console.log(this.numCardsPlayed);
           if (this.numCardsPlayed === 0) {
             this.baseCard = Object.assign({}, data.card);
           }
@@ -406,6 +422,7 @@ export class GameRoomComponent implements OnInit {
       .subscribe(data => {
         console.log('listenForHitWinner', data);
         this.cardOnTop = null;
+        this.baseCard = null;
         this.roundData.players.forEach(playa => playa.status = 'Waiting...');
 
         // if u won u start
@@ -429,6 +446,7 @@ export class GameRoomComponent implements OnInit {
         this.cardOnTop = Object.assign({}, data.lastCard);
         this.rankedPlayers = Array.from(data.scoreboard);
         this.trumpoCard = null;
+        this.baseCard = null;
         this.currentHand = [];
         this.playingSubj.next();
         this.playingSubj.complete();

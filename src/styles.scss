@@ -26,6 +26,40 @@ body {
   height: 50vh;
   width: 70vw;
   background: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  asr-betting-modal {
+    flex-grow: 1;
+  }
+  .data-strip {
+    height: 100%;
+    width: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    border-left: 1px solid lightgrey;
+    .header {
+      text-align: center;
+      font-weight: 600;
+      font-size: 25px;
+    }
+    .your-bets, .your-hits {
+      text-align: center;
+      font-weight: 600;
+      font-size: 16px;
+    }
+    .rotation {
+      width: 30px;
+      height: 30px;
+      background-image: url('./assets/icons/rotation.png');
+      background-size: cover;
+    }
+  }
+}
+.ng-sidebar__content {
+  padding: 0 !important;
 }
 .nsm-dialog {
   min-width: 720px;

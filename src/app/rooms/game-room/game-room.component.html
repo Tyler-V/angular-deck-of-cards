@@ -7,12 +7,14 @@
     <ng-sidebar class="sidebar-scoreboard ng-sidebar--left" 
         [(opened)]="scoreboardToggle"
         [position]="'left'"
-        [dock]="true">
+        [dock]="true"
+        dockedSize="100px">
         <asr-betting-modal [options]="this.bettingOptions" (betMade)="handleBet($event)"></asr-betting-modal>
         <div class="data-strip">
-            <div class="your-bets"></div>
-            <div class="your-hits"></div>
-            <div class="your-status"></div>
+            <div class="header">{{ roundData.me.username }} {{ getMyStatus() }}</div>
+            <div class="your-bets">Bets: {{ roundData.me.bets.bet }}</div>
+            <div class="your-hits">Hits: {{ roundData.me.bets.hits }}</div>
+            <div class="rotation"></div>
         </div>
     </ng-sidebar>
     <div class="content-container" ng-sidebar-content>

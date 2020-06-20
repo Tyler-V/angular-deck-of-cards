@@ -33,10 +33,15 @@ export class UserHandComponent implements OnInit {
   ngOnInit(): void {}
 
   playCard(card: Card, ind: number): void {
+    console.log('base was ', this.base);
+    console.log('trump was ', this.base);
+
     if (this.canPlay && this.roundType === 'normal') {
       if (this.canPlayCard(card)) {
         this.gameService.playCard(card);
         this.cards.splice(ind, 1);
+        this.base = null;
+        this.cards = Array.from(this.cards as Array<Card>);
         this.justPlayed.emit(card);
       }
     }

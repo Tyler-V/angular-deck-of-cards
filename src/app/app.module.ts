@@ -18,7 +18,7 @@ import { SozGottaWaitComponent } from './features/soz-gotta-wait/soz-gotta-wait.
 import { UserStripComponent } from './rooms/lobby-room/user-strip/user-strip.component';
 
 const config: SocketIoConfig = {
-  url: 'http://rikiki.froghyar.com:4444'
+  url: 'http://localhost:4444'
 };
 
 @NgModule({

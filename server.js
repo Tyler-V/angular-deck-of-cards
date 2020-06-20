@@ -1,7 +1,6 @@
 //Install express server
 const express = require('express');
 const path = require('path');
-
 const app = express();
 
 
@@ -17,6 +16,10 @@ app.use(express.static(__dirname + '/dist'));
 app.get('/*', function(req,res) {
     res.sendFile(path.join(__dirname+'/dist/index.html'));
 });
+
+
+var orderBy = require('lodash.orderby');
+
 
 
 
@@ -38,7 +41,6 @@ let modifier = 0;
 let roundBets = [];
 let isLastRound = false;
 
-let roundStage = 'betting';
 let betsRevealed = false;
 let roundPointsAllocated = false;
 
@@ -586,14 +588,22 @@ function initBets(players, round) {
 }
 function dealCards(cards, numCards) {
     cards.players.forEach(player => {
+        const ind = cards.players.findIndex(user => user.uniqueId === player.uniqueId);
         for (let i = 0; i < numCards; i++) {
-            cards = dealCardTo(player, cards);
+            cards = dealCardTo(ind, cards);
         }
+        cards.players[ind].hand = Array.from(getOrderedCards(cards.players[ind].hand));
     });
     return cards;
 }
-function dealCardTo(player, cards) {
-    const ind = cards.players.findIndex(user => user.uniqueId === player.uniqueId);
+function getOrderedCards(arrOfCards) {
+    const hearts = orderBy(arrOfCards.filter(card => card.suit === 'heart'), ['value'], ['desc']);
+    const diamonds = orderBy(arrOfCards.filter(card => card.suit === 'diamond'), ['value'], ['desc']);
+    const spades = orderBy(arrOfCards.filter(card => card.suit === 'spade'), ['value'], ['desc']);
+    const clubs = orderBy(arrOfCards.filter(card => card.suit === 'club'), ['value'], ['desc']);
+    return hearts.concat(diamonds, spades, clubs);
+}
+function dealCardTo(ind, cards) {
     const stuff = getRandomInt(0, cards.deck.length - 1);
 
     cards.players[ind].hand.push(cards.deck[stuff]);
