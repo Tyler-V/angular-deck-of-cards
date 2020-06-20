@@ -20,10 +20,15 @@
           Username: {{ player.username ? '@' + player.username : '' }}
         </div>
         <div class="player-in-room">
-          <div class="user-icon">
-            <img src="../assets/icons/user-icon.png"/>
-          </div>
-          <label>{{ landingData.numOfPlayers }}</label>
+          <ng-container *ngIf="isServerOn">
+            <div class="user-icon">
+              <img src="../assets/icons/user-icon.png"/>
+            </div>
+            <label>{{ landingData.numOfPlayers }}</label>
+          </ng-container>
+          <ng-container *ngIf="!isServerOn">
+            <label>Waiting for server...</label>
+          </ng-container>
         </div>
       </mat-card-footer>
     </mat-card>  

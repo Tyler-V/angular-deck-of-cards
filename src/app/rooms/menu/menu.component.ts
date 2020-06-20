@@ -27,6 +27,7 @@ export class MenuComponent implements OnInit, OnDestroy {
     numOfPlayers: 0,
     isHost: false
   };
+  isServerOn = false;
 
   private _unsubscribe: Subject<any> = new Subject<any>();
 
@@ -46,9 +47,17 @@ export class MenuComponent implements OnInit, OnDestroy {
     this.menu.login(this.player);
   }
   private land(): void {
-    this.menu.land().pipe(takeUntil(this._unsubscribe)).subscribe(numOfPlayers => {
-      this.landingData = { numOfPlayers };
-    });
+    this.menu.land()
+      .pipe(takeUntil(this._unsubscribe))
+      .subscribe(
+        (numOfPlayers) => {
+          this.isServerOn = true;
+          this.landingData = { numOfPlayers };
+        },
+        (err) => {
+          this.isServerOn = false;
+        }
+      );
   }
   private initUser() {
     this.player = {
